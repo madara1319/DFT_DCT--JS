@@ -1,3 +1,7 @@
+//const {Chart} = await import('chart.js'); 
+import Chart from './node_modules/chart.js/dist/chart.umd.js';
+//import Chart from './node_modules/chart.js/auto';
+
 //random N element array
 //random values of probes
 const N = 32;
@@ -44,3 +48,30 @@ for (let k=0; k<normalizedFrequencies.length; k++)
 }
 
 console.log(X);
+
+
+//--------------------------------------------
+const ctx=document.getElementById('myChart');
+new Chart(ctx,{
+  type:'bar',
+  data:{
+    labels:['red','blue','green','purple','orange'],
+    datasets:[{
+      label:'# of votes',
+      data:[12,19,3,5,2,3],
+      borderWidth:1
+    }]
+  },
+  options:{
+    scales:{
+      y:{
+        beginAtZero:true
+      }
+    }
+  }
+});
+
+
+
+
+
