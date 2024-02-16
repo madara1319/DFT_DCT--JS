@@ -1,6 +1,4 @@
-//const {Chart} = await import('chart.js'); 
-import Chart from './node_modules/chart.js/dist/chart.umd.js';
-//import Chart from './node_modules/chart.js/auto';
+const { Chart } = await import('./node_modules/chart.js/dist/chart.umd.js');
 
 //random N element array
 //random values of probes
