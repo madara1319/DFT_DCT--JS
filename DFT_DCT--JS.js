@@ -1,5 +1,5 @@
 const { Chart } = await import('./node_modules/chart.js/dist/chart.umd.js');
-
+//need to use webpack to bundle the modules together
 //random N element array
 //random values of probes
 const N = 32;
