@@ -1,8 +1,7 @@
-const { Chart } = await import('./node_modules/chart.js/dist/chart.umd.js');
 //need to use webpack to bundle the modules together
 //random N element array
 //random values of probes
-const N = 32;
+export const N = 32;
 let probes = [];
 for (let i = 0; i < N; i++) {
     probes.push(Math.random());
@@ -44,30 +43,31 @@ for (let k=0; k<normalizedFrequencies.length; k++)
   }
   X.push(sum);
 }
-
-console.log(X);
-
-
+//export default N;
+//console.log(X);
+console.log("testchuj");
+window.alert("chuj");
+console.log("innytest");
 //--------------------------------------------
-const ctx=document.getElementById('myChart');
-new Chart(ctx,{
-  type:'bar',
-  data:{
-    labels:['red','blue','green','purple','orange'],
-    datasets:[{
-      label:'# of votes',
-      data:[12,19,3,5,2,3],
-      borderWidth:1
-    }]
-  },
-  options:{
-    scales:{
-      y:{
-        beginAtZero:true
-      }
-    }
-  }
-});
+//const ctx=document.getElementById('myChart');
+//new Chart(ctx,{
+//  type:'bar',
+//  data:{
+//    labels:['red','blue','green','purple','orange'],
+//    datasets:[{
+//      label:'# of votes',
+//      data:[12,19,3,5,2,3],
+//      borderWidth:1
+//    }]
+//  },
+//  options:{
+//    scales:{
+//      y:{
+//        beginAtZero:true
+//      }
+//    }
+//  }
+//});
 
 
 

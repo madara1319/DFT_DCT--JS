@@ -1,2 +1,8 @@
-import '../DFT_DCT--JS.js';
-import Chart from 'chart.js';
+import {test} from '../test.js'
+try {
+import {test} from '../test.js';
+} catch(e) {
+    alert("cos poszlo nie tak");
+    console.log(e);
+  }
+
