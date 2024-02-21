@@ -1,30 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UdemyJSCourseTasks</title>
-    <meta property="og:title" content="UdemyJSCourseTasks" />
-    <meta property="og:description" content="Tasks from Udemy JS Course" />
+    <title>udemyjscoursetasks</title>
+    <meta property="og:title" content="udemyjscoursetasks" />
+    <meta property="og:description" content="tasks from udemy js course" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main>
-      <div class="mainBox">
-        <div class="mySolution">
-          <section class="mainSection section--js">
-            <button class="mainButton mainButton--js">Kliknij</button>
-            <div class="boxOfBoxes boxOfBoxes--js">
-              <div class="container notVisible container--js">random</div>
+      <div class="mainbox">
+        <div class="mysolution">
+          <section class="mainsection section--js">
+            <button class="mainbutton mainbutton--js">kliknij</button>
+            <div class="boxofboxes boxofboxes--js">
+              <div class="container notvisible container--js">random</div>
             </div>
             <div>
-              <canvas id="myChart" width="400" height="400"></canvas>
+              <canvas id="mychart" width="400" height="400"></canvas>
               </div>
           </section>
         </div>
       </div>
     </main>
-     <script src="./src/index.js" type="module"></script> 
-      
+    <script src="./src/index.js" type="module"></script> 
+    
+    <!--   <script defer src=”https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+       <script>
+               // tworzenie wykresu
+        var ctx = document.getElementById('mychart').getContext('2d');
+        var mychart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['red', 'blue', 'yellow', 'green', 'purple', 'orange'],
+                datasets: [{
+                    label: '# of votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundcolor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    bordercolor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderwidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginatzero: true
+                    }
+                }
+            }
+        }); 
+       </script>
+-->
   </body>
 </html>
