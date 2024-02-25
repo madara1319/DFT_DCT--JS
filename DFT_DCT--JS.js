@@ -49,10 +49,10 @@ export function simpleDFT(normalizedFrequencies)
   return X;
 }
 //export default N;
-//console.log(X);
-console.log("testchuj");
-window.alert("chuj");
-console.log("innytest");
+//console.log(simpleDFT(normalizedFrequencies));
+//console.log("testchuj");
+//window.alert("chuj");
+//console.log("innytest");
 
-
+console.log(n);
 
