@@ -1,6 +1,7 @@
 import {test} from '../test.js';
 import * as dftFile from '../DFT_DCT--JS.js';
 //console.log(dftFile);
+console.log("test");
 console.log(dftFile.n);
 try {
 chuj();
