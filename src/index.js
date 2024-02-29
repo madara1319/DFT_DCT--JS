@@ -141,3 +141,38 @@ const transformData=dftFile.simpleDFT(dftFile.normalizedFrequencies);
 
 });
 
+
+
+const transformData=dftFile.simpleDCT(dftFile.normalizedFrequencies);
+  const transformCtx=document.getElementById('dctTransformChart').getContext('2d');
+  const transformChart=new Chart(transformCtx,{
+    type:'line',
+    data:{
+      labels:dftFile.normalizedFrequencies,
+      datasets:[{
+        label:'Transformed Data',
+        data:transformData,
+        fill:false,
+        borderColor:'rgb(75,192,192)',
+        tension:0.1
+      }]
+    },
+    options:{
+      scales:{
+        x:{
+          title:{
+            display:true,
+            text:'Frequency'
+          }
+        },
+        y:{
+          title:{
+            display:true,
+            text:'Magnitude'
+          }
+        }
+      }
+    }
+  });
+
+
