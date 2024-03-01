@@ -148,7 +148,7 @@ const transformData=dftFile.simpleDCT(dftFile.normalizedFrequencies);
   const transformChart=new Chart(transformCtx,{
     type:'line',
     data:{
-      labels:dftFile.normalizedFrequencies,
+      labels:dftFile.n,
       datasets:[{
         label:'Transformed Data',
         data:transformData,
@@ -175,4 +175,4 @@ const transformData=dftFile.simpleDCT(dftFile.normalizedFrequencies);
     }
   });
 
-
+console.log(dftFile.cosineProbes);
