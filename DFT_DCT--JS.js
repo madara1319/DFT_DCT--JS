@@ -9,6 +9,15 @@ export let n = [];
 for (let i = -10; i < -10 + N; i++) {
     n.push(i);
 }
+
+export let cosineProbes=[];
+for (let i=0; i<N; i++)
+{
+  cosineProbes.push(Math.cos(i)+Math.cos(2*i+5)+Math.cos(16*i-2)+Math.cos(0.5*i));
+}
+
+
+
 //console.table(probes);
 
 //random normalized frequencies values
@@ -58,7 +67,8 @@ console.log(n);
 
 export function simpleDCT(probes)
 {
-  const N=probes.length;
+  //const N=probes.length;
+  const N=cosineProbes.length;
   const X=[];
   for (let k=0; k<N; k++)
   {
@@ -66,7 +76,8 @@ export function simpleDCT(probes)
     for(let n=0; n<N; n++)
     {
       const angle=(Math.PI * k * (2 * n + 1))/(2*N);
-      sum+=probes[n] * Math.cos(angle);
+      //sum+=probes[n] * Math.cos(angle);
+      sum+=cosineProbes[n] * Math.cos(angle);
     }
     X.push(sum);
   }
