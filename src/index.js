@@ -176,3 +176,5 @@ const transformData=dftFile.simpleDCT(dftFile.normalizedFrequencies);
   });
 
 console.log(dftFile.cosineProbes);
+
+console.log("Just a check");
