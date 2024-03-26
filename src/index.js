@@ -1,8 +1,23 @@
 import {test} from '../test.js';
+import { Controller } from './pattern.js'; 
+import { View } from './pattern.js'; 
+import { Model } from './pattern.js'; 
 import * as dftFile from '../DFT_DCT--JS.js';
 //console.log(dftFile);
 console.log("test");
 console.log(dftFile.n);
+
+
+
+
+function main(){
+  const model = new Model();
+  const controller = new Controller(model);
+  const view = new View(controller);
+}
+
+main();
+
 try {
 chuj();
 } catch(e) {
