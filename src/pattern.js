@@ -1,5 +1,49 @@
 
 class Model{
+  //generateSignal
+  /*sine,square,triangle etc*/
+  
+  //loadSignal
+  /*from external sources*/
+
+  //saveSignal
+
+  //filterSignal
+
+  //addNoise
+
+  //analyzeSignal
+
+  //interPolateSignal
+
+  //exportTransform
+
+  //calculateMetrics
+
+  //visualizeSpectrum
+
+  //CalculateDFT
+
+  //CalculateDCT
+
+  //CalculateDFT2D
+
+  //CalculateDCT2D
+
+  //CalculateIDFT
+
+  //CalculateIDCT
+
+  //CalculateIDFT2D
+
+  //CalculateIDCT2D
+
+  //moveInTimeDomain
+
+  //spinProbes
+
+  //scaleSignalV
+
   constructor(){
     this.heading = "Hello";
   }
@@ -9,6 +53,14 @@ class Model{
 export { Model };
 
 class View{
+
+  //DFTView
+
+  //DCTView
+
+  //DFT2DView
+
+  //DCT2DView
 
   //encapsulate DOM selectors
   constructor(controller){
