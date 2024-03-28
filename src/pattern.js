@@ -1,3 +1,28 @@
+//abstract transformation Class
+class Transformation{
+  constructor(){
+    if(new.target ==== Transformation){
+      throw new TypeError('Cannot create instance of abstract class');
+    }
+  }
+
+  calculate(data){
+    throw new Error('Calculate method must be implemented');
+  }
+}
+
+class DFT extends Transformation{
+  calculate(data){
+    //DFT
+  }
+}
+
+class DCT extends Transformation{
+  calculate(data){
+    //DCT
+  }
+}
+
 
 class Model{
   //generateSignal
@@ -45,7 +70,25 @@ class Model{
   //scaleSignalV
 
   constructor(){
+    //transformation object
+    this.transformer = null;
     this.heading = "Hello";
+  }
+
+  setTransformation(transformationType){
+    if(transformationType === 'DFT'){
+      this.transformer = new DFT();
+    }
+    else if(transformationType === 'DCT'){
+      this.transformer = new DCT();
+    }
+  }
+
+  processSignal(signalData){
+    if(!this.transformer){
+      throw new Error('No defined transformation');
+    }
+    return this.transformer.calculate(signalData);
   }
 
 }
@@ -64,10 +107,23 @@ class View{
 
   //encapsulate DOM selectors
   constructor(controller){
+    //this.controller = null;
     this.controller = controller;
     this.heading = document.getElementById("heading");
     this.heading.innerText = controller.modelHeading;
     this.heading.addEventListener("click",controller);
+  }
+
+  setController(controller){
+    this.controller = controller;
+  }
+
+  displaySingalProcessingOptions(){
+    //show transform type UI 
+  }
+
+  displaySingalResults(result){
+    //show results
   }
 
 }
@@ -78,8 +134,31 @@ class Controller{
   with visual aspects of application, and delegates to the controller
     any decisions about interface behavior*/
 
-  constructor(model){
+  //InitiateSingalProcessing 
+  /*launch processing after click*/
+
+  //HandleSingalModification
+
+  //UpdateSignal
+
+  //UpdateView
+
+  //ExportData
+
+  //ImportData
+
+
+
+
+  constructor(model,view){
     this.model = model;
+    this.view = view;
+  }
+
+  initateSignalProcessing(transformationType, signalData){
+    this.model.setTransformation(transformationType);
+    const result = this.model.processSignal(signalData);
+    this.view.displaySingalResults(result);
   }
 
   //EVENTLISTENER INTERFACE
