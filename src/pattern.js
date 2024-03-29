@@ -112,6 +112,22 @@ class View{
     this.heading = document.getElementById("heading");
     this.heading.innerText = controller.modelHeading;
     this.heading.addEventListener("click",controller);
+    //-----------------------------------------------
+    this.button = document.getElementById('processButton');
+    this.button.addEventListener('click',this.handleButtonClick.bind(this));
+
+  }
+
+  handleButtonClick(event){
+    event.preventDefault();
+
+    const signalData = this.getSignalData();
+
+    this.controller.InitiateSingalProcessing(signalData);
+  }
+
+  getSignalData(){
+    //get signal from UI
   }
 
   setController(controller){
