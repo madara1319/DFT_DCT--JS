@@ -1,7 +1,7 @@
 //abstract transformation Class
 class Transformation{
   constructor(){
-    if(new.target ==== Transformation){
+    if(new.target === Transformation){
       throw new TypeError('Cannot create instance of abstract class');
     }
   }
@@ -114,6 +114,7 @@ class View{
     this.heading.addEventListener("click",controller);
     //-----------------------------------------------
     this.button = document.getElementById('processButton');
+    this.button.innerText="TRANsFORM";
     this.button.addEventListener('click',this.handleButtonClick.bind(this));
 
   }
