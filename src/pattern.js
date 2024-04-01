@@ -23,7 +23,17 @@ class DCT extends Transformation{
   }
 }
 
+class DCT2D extends Transformation{
+  calculate(data){
+    //DCT
+  }
+}
 
+class DFT2D extends Transformation{
+  calculate(data){
+    //DCT
+  }
+}
 class Model{
   //generateSignal
   /*sine,square,triangle etc*/
