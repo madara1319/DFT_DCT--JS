@@ -1,3 +1,4 @@
+import * as dftFile from '../DFT_DCT--JS.js';
 //abstract transformation Class
 class Transformation{
   constructor(){
@@ -11,7 +12,7 @@ class Transformation{
   }
 }
 
-class DFT extends Transformation{
+class DFT extends Transformation
   calculate(data){
     //DFT
   }
