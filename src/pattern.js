@@ -12,14 +12,16 @@ class Transformation{
   }
 }
 
-class DFT extends Transformation
+class DFT extends Transformation{
   calculate(data){
+
     //DFT
   }
 }
 
 class DCT extends Transformation{
   calculate(data){
+    
     //DCT
   }
 }
