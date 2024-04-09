@@ -191,7 +191,7 @@ class Controller{
     this.view.displaySingalResults(result);
   }
 
-  //EVENTLISTENER INTERFACE
+//EVENTLISTENER INTERFACE
   handleEvent(e){
     e.stopPropagation();
     switch(e.type){
@@ -199,7 +199,7 @@ class Controller{
         this.clickHandler(e.target);
         break;
       default:
-        console.log(e.target);
+        console.log(e.target + "test event interface");
     }
   }
 

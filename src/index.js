@@ -25,14 +25,15 @@ main();
 //    console.log(e);
 //  }
 
-
+//DOMContentLoaded event when html completely parsed and all deffered scripts and module
+//scripts have downloaded and executed
 document.addEventListener('DOMContentLoaded', function() {
     // Tworzenie wykresu za pomocą zaimportowanego modułu Chart.js
   const sineLabels=[];
   const sineData=[];
   for (let i=0; i<=2*Math.PI; i+=0.1)
   {
-    sineLabels.push(i);
+    sineLabels.push(i.toFixed(2));
     sineData.push(Math.sin(i));
   }
   const sine=document.getElementById('mySine').getContext('2d');
