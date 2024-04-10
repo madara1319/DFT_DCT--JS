@@ -14,6 +14,17 @@ class Transformation{
 
 class DFT extends Transformation{
   calculate(data){
+    let X=[];
+    for (let k=0; k<data.length; k++){
+      let sum={real:0, imag:0};
+      for (let m=0; m<N; m++){
+        let angle=-2*Math.PI*data[k]*n[m];
+        sum.real+=probes[m]*Math.cos(angle);
+        sum.imag+=probes[m]*Math.sin(angle);
+      }
+      X.push(sum);
+    }
+    return X;
 
     //DFT
   }
