@@ -95,6 +95,8 @@ class Model{
 
   constructor(){
     //transformation object
+    this.probes=[];
+    this.normalizedFrequencies=[];
     this.transformer = null;
     this.heading = "Hello";
   }
@@ -165,6 +167,36 @@ class View{
 
   displaySingalResults(result){
     //show results
+  const transformChart=new Chart(transformCtx,{
+    type:'line',
+    data:{
+      labels:normalizedFrequencies,
+      datasets:[{
+        label:'Transformed Data',
+        data:transformData.map(x=>Math.sqrt(x.real * x.real + x.imag * x.imag)),
+        fill:false,
+        borderColor:'rgb(75,192,192)',
+        tension:0.1
+      }]
+    },
+    options:{
+      scales:{
+        x:{
+          title:{
+            display:true,
+            text:'Frequency'
+          }
+        },
+        y:{
+          title:{
+            display:true,
+            text:'Magnitude'
+          }
+        }
+      }
+    }
+  })
+
   }
 
 }
