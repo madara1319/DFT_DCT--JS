@@ -1,125 +1,77 @@
 main, body{
-  display:flex;
-  justify-content:center;
-  align-content:center;
-  align-items:center;
-  background-color:#FAF0CA;
-  width:100%;
-  height:100%;
+  background-color: aquamarine;
+  text-align: center;
+  margin-top: 5vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
 }
 a,ul,ol,li{
   list-style-type:none;
   text-decoration:none;
 }
-.mainSection
-{
-  height:80vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-.mainHeader{
-  position:absolute;
-  top:20px;
-  left:20px;
-  background-color:#0D3B66;
-}
-.navigation{
-  display:flex;
-  margin:6px;
- padding:25px; 
-  display:flex;
-  background-color:#F4D35E:
-}
-.navigation__link{
-  margin:25px;
-  color:#F4D35E;
-}
-.mainButton{
-  margin:25px;
-  font-size:25px;
-  color:#FAF0CA;
-  background-color:#F95738;
-}
-.boxOfBoxes
-{
-  display:flex;
-  flex-direction:row;
-  background-color:#FAF0CA;
- gap:45px;
- flex-wrap:wrap;
-}
-.mainBox{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-}
-.mySolution{
-  grid-column-start:1;
-}
-.courseSolution{
-  grid-column-start:2;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.container
-{
-  display:flex;
-  flex-direction:row;
-  background-color:#F95738;
-  justify-content:center;
-  align-items:center;
-  color:#FAF0CA;
-  width:5vh;
-  height:5vh;
-}
 
-.notVisible
-{
+.selectionButtons{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-around;
+  text-align:center;
+  
+}
+.open{
+  display:flex;
+}
+.hidden{
   display:none;
 }
-.circleElement{
+.selectButtons{
   
-  border-radius:50%;
-  border:solid;
-  border-width:1px;
-  border-color:#F95738;
-  border-color:#F95738;
-  color:#F95738;
-  background-color:#FAF0CA;
+  display: flex;
+  flex-direction: column;
+  background-color: #15d77d;
+  width: 170px;
+  height: 60px;
+  text-align:center;
+  border-radius: 30px;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
+  /* w3schools  */
+  /* padding: 5px 5px; */
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  color: #043b06;
+  /* background-color: #04aa6d; */
+  border: none;
+  /* border-radius: 15px; */
+  box-shadow: 3px 3px #999;
 }
-.courseSolution{
-  background-color:#EE964B;
-  width:50vw;
-  height:100vh;
+.selectButtons:hover{
+  background-color:#3e8e41;
 }
-.courseMainButton
-{
-  color:#FAF0CA;
-  background-color:#F95738;
 
-}
-.courseMainSection{
-            display: flex;
-            margin: 10px auto;
+.selectButtons:active{
+  background-color:#3e8e41;
+  box-shadow:3px 3px #666;
+  transform:translateY(4px);
 }
 
-        .courseDivElement {
-            width: 30px;
-            height: 30px;
-            background-color: #F95738;
-            margin: 5px;
-            float: left;
-            color: #FAF0CA ;
-            text-align: center;
-            line-height: 30px;
-            border: 2px solid black;
-        }
+.boxofboxes{
+}
 
-        .circle {
-            background-color:#FAF0CA ;
-            border-radius: 50%;
-            color: #F95738;
-            border: 2px solid black;
-        }
+#sampleChart{
+  width:400px;
+  height:400px;
+}
+#transformChart{
+}
+#reverseTransformChart{
+}
+
+
+.entering, .options{
+  padding:20px;
+}

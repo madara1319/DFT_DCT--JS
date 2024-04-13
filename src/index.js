@@ -1,161 +1,175 @@
-import {test} from '../test.js';
-import { Controller } from './pattern.js'; 
-import { View } from './pattern.js'; 
-import { Model } from './pattern.js'; 
-import * as dftFile from '../DFT_DCT--JS.js';
-//console.log(dftFile);
-console.log("test");
-console.log(dftFile.n);
+//import { Controller } from './pattern.js'; 
+//import { View } from './pattern.js'; 
+//import { Model } from './pattern.js'; 
+//import * as dftFile from '../DFT_DCT--JS.js';
+class SignalGenerator{
+  static generateSineWave(length){
+    const wave=[];
+    for(let i=0; i<length; i++){
+      wave.push(Math.sin(i));
+    }
+    return wave;
+  }
+  static generateSquareWave(period,amplitude, length){
+    const wave=[];
+    const halfPeriod=Math.floor(period/2);
+    for (let i=0; i<length; i++){
+      const phase = i% period;
+      wave.push(phase<halfPeriod ? amplitude : -amplitude);
+    }
+    return wave;
+  }
+  static generateTriangleWave(period, amplitude, length){
+    const wave=[];
+    const halfPeriod=Math.floor(period/2);
+    for(let i=0; i<length; i++){
+      const phase = i%period;
+      wave.push((2/halfPeriod)*(Math.abs(phase-halfPeriod)-halfPeriod)*amplitude);
+    }
+    return wave;
+  }
+}
 
 
+class View{
+  constructor(){
+    //przyciski wyboru tryby wprowadzania danych
+    this.baseFuncButton=document.querySelector(".showSelection");
+    this.enterProbesButton=document.querySelector(".enterProbes");
+    
+    this.optionsDisplay=document.querySelector(".options");
+    this.enterBox=document.querySelector(".entering");
 
+    this.baseFuncButton.addEventListener('click',this.toggleElement.bind(this,this.optionsDisplay));
+    this.enterProbesButton.addEventListener('click',this.toggleElement.bind(this,this.enterBox));
+    
+    this.selectedOption=document.querySelector(".selection");
+    this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
+    
+    this.enterBox.querySelector(".textArea").addEventListener('keydown',this.handleTextArea.bind(this));
+    document.addEventListener('DOMContentLoaded',this.setupCharts.bind(this));
+  }
+  //wyswietlanie ukrywanie opcji wprowadzania danych
+  toggleElement(element, event){
+    event.preventDefault();
+    console.log(element);
+
+    const isOpen=element.classList.contains("open");
+
+    if(isOpen){
+      element.classList.add("hidden");
+      element.classList.remove("open");
+    }
+    else{
+      element.classList.remove("hidden");
+      element.classList.add("open");
+    }
+  }
+
+//rysuj jeden z wykresow z listy
+  handleOptionChange(event){
+    const selectedValue = event.target.value;
+    console.log(selectedValue);
+    this.drawChart(selectedValue);
+    
+  }
+//daj wykres jak sie strona zaladuje
+  setupCharts(){
+    this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'));
+    this.sampleChart.canvas.width=400;
+    this.sampleChart.canvas.height=400;
+  }
+//czy wprowadzona tablica git
+  handleTextArea(event){
+    if(event.key==="Enter"){
+      const data=event.target.value.trim();
+      const dataArray=data.split(",");
+      const areNumbers=dataArray.every(value=>!isNaN(value.trim()));
+      if(areNumbers){
+        console.log("liczby",dataArray);
+        this.drawChart("Custom",dataArray.map(Number));
+
+      }
+      else{
+        console.log("nieprowadilowe dane");
+      }
+    }
+  }
+//rysuj wykres
+  drawChart(optionValue, customData=[]){
+    let labels=[];
+    let data=[];
+
+    if (customData.length>0){
+      
+      labels=Array.from({length:customData.length},(_,i)=>i.toString());
+      data=customData;
+    }
+    else{
+    switch (optionValue){
+      case "Sine function": 
+      data=SignalGenerator.generateSineWave(10);
+      labels=Array.from({length:10},(_,i)=>i.toString());
+      break;
+      case "Quadratic function":
+      
+      data=SignalGenerator.generateSquareWave(4,1,10);
+      labels=Array.from({length:10},(_,i)=>i.toString());
+        break;
+        case "Triangle function":
+      
+      data=SignalGenerator.generateTriangleWave(4,1,10);
+      labels=Array.from({length:10},(_,i)=>i.toString());
+      break;
+        default:
+        break;
+      }
+    }
+
+    //nie wiem czy one na siebie nie nachodza
+  //  if(this.sampleChart){
+  //    this.sampleChart.destroy();
+  //  }
+
+    const chartType=customData.length > 0 ? 'bar' : 'line';
+
+    const myChart=new Chart(this.sampleChart,{
+      type:chartType,
+      data:{
+        labels:labels,
+        datasets:[{
+          label:"Custom",
+          data:data,
+          fill:false,
+
+        backgroundColor:'rgba(255,99,132,0.5)',
+          borderColor:'rgb(255,99,132,1)',
+          tension:0.1
+        }]
+      },
+      options:{
+        scales:{
+          x:{
+            title:{
+              display:true,
+              text:'X'
+            }
+          },
+          y:{
+            title:{
+              display:true,
+              text:'Y'
+            }
+          }
+        }
+      }
+    });
+  }
+
+}
 
 function main(){
-  const model = new Model();
-  const controller = new Controller(model);
-  const view = new View(controller);
+  const view = new View();
 }
 
 main();
-//try catch do ogarniecia
-//try {
-//chuj();
-//} catch(e) {
-//    alert("cos poszlo nie tak");
-//    console.log(e);
-//  }
-
-//DOMContentLoaded event when html completely parsed and all deffered scripts and module
-//scripts have downloaded and executed
-document.addEventListener('DOMContentLoaded', function() {
-    // Tworzenie wykresu za pomocą zaimportowanego modułu Chart.js
-  const sineLabels=[];
-  const sineData=[];
-  for (let i=0; i<=2*Math.PI; i+=0.1)
-  {
-    sineLabels.push(i.toFixed(2));
-    sineData.push(Math.sin(i));
-  }
-  const sine=document.getElementById('mySine').getContext('2d');
-  const mySine=new Chart(sine,{
-   type: 'line',
-      data: {
-        labels: sineLabels,
-        datasets: [{
-          label: 'Sine Function',
-          data: sineData,
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'X'
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Y'
-            }
-          }
-        }
-      }
-  })
-
-const sampleCtx=document.getElementById('sampleChart').getContext('2d');
-  const sampleChart=new Chart(sampleCtx,{
-    type: 'bar',
-    data:{
-      labels:dftFile.n,
-      datasets:[{
-        label:'Probes',
-        data:dftFile.probes,
-        backgroundColor:'rgba(255,99,132,0.2)',
-        borderColor:'rgba(255,99,132,1)',
-        borderWidth:1
-      }]
-    },
-    options:{
-      scales:{
-        y:{
-          beginAtZero:true
-        }
-      }
-    }
-  })
-const transformData=dftFile.simpleDFT(dftFile.normalizedFrequencies);
-  const transformCtx=document.getElementById('transformChart').getContext('2d');
-  const transformChart=new Chart(transformCtx,{
-    type:'line',
-    data:{
-      labels:dftFile.normalizedFrequencies,
-      datasets:[{
-        label:'Transformed Data',
-        data:transformData.map(x=>Math.sqrt(x.real * x.real + x.imag * x.imag)),
-        fill:false,
-        borderColor:'rgb(75,192,192)',
-        tension:0.1
-      }]
-    },
-    options:{
-      scales:{
-        x:{
-          title:{
-            display:true,
-            text:'Frequency'
-          }
-        },
-        y:{
-          title:{
-            display:true,
-            text:'Magnitude'
-          }
-        }
-      }
-    }
-  })
-
-});
-
-
-
-const transformData=dftFile.simpleDCT(dftFile.normalizedFrequencies);
-  const transformCtx=document.getElementById('dctTransformChart').getContext('2d');
-  const transformChart=new Chart(transformCtx,{
-    type:'line',
-    data:{
-      labels:dftFile.n,
-      datasets:[{
-        label:'Transformed Data',
-        data:transformData,
-        fill:false,
-        borderColor:'rgb(75,192,192)',
-        tension:0.1
-      }]
-    },
-    options:{
-      scales:{
-        x:{
-          title:{
-            display:true,
-            text:'Frequency'
-          }
-        },
-        y:{
-          title:{
-            display:true,
-            text:'Magnitude'
-          }
-        }
-      }
-    }
-  });
-
-console.log(dftFile.cosineProbes);
-
-console.log("Just a check");
