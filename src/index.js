@@ -3,14 +3,14 @@
 //import { Model } from './pattern.js'; 
 //import * as dftFile from '../DFT_DCT--JS.js';
 class SignalGenerator{
-  static generateSineWave(length){
+  static generateSineWave(amplitude=1,length){
     const wave=[];
     for(let i=0; i<length; i++){
-      wave.push(Math.sin(i));
+      wave.push(amplitude*Math.sin(i));
     }
     return wave;
   }
-  static generateSquareWave(period,amplitude, length){
+  static generateSquareWave(period,amplitude=1, length){
     const wave=[];
     const halfPeriod=Math.floor(period/2);
     for (let i=0; i<length; i++){
@@ -19,7 +19,7 @@ class SignalGenerator{
     }
     return wave;
   }
-  static generateTriangleWave(period, amplitude, length){
+  static generateTriangleWave(period, amplitude=1, length){
     const wave=[];
     const halfPeriod=Math.floor(period/2);
     for(let i=0; i<length; i++){
@@ -31,12 +31,14 @@ class SignalGenerator{
 }
 
 
+
 class View{
   constructor(){
     //przyciski wyboru tryby wprowadzania danych
     this.baseFuncButton=document.querySelector(".showSelection");
     this.enterProbesButton=document.querySelector(".enterProbes");
-    
+   
+    //tryby wprowadzania danych
     this.optionsDisplay=document.querySelector(".options");
     this.enterBox=document.querySelector(".entering");
 
@@ -44,8 +46,14 @@ class View{
     this.enterProbesButton.addEventListener('click',this.toggleElement.bind(this,this.enterBox));
     
     this.selectedOption=document.querySelector(".selection");
+   // this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
+    //this.selectedOption.addEventListener('change',this.handleUserChange.bind(this));
+    //do slidera
+    this.amplitudeSlider=document.querySelector(".amplitudeSlider");
+    this.frequencySlider=document.querySelector(".frequencySlider");
+    //this.amplitudeSlider.addEventListener('change',this.handleSlider.bind(this));
+    //this.amplitudeSlider.addEventListener('change',this.handleUserChange.bind(this)); 
     this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
-    
     this.enterBox.querySelector(".textArea").addEventListener('keydown',this.handleTextArea.bind(this));
     document.addEventListener('DOMContentLoaded',this.setupCharts.bind(this));
   }
@@ -66,13 +74,33 @@ class View{
     }
   }
 
-//rysuj jeden z wykresow z listy
   handleOptionChange(event){
-    const selectedValue = event.target.value;
-    console.log(selectedValue);
-    this.drawChart(selectedValue);
-    
+    const selectedOption=event.target.value;
+    if(this.isFunctionOpen(selectedOption)){
+      const amplitudeValue=parseFloat(this.amplitudeSlider.value);
+      this.drawChart(selectedOption,amplitudeValue);
+    }
+    else{
+      this.drawChart(selectedOption);
+    }
   }
+
+  isFunctionOpen(option){
+    return["Sine function", "Quadratic function", "Triangle function"].includes(option);
+  }
+//  handleSlider(event){
+//    const amplitudeValue=event.target.value;
+//    const selectedOption=this.selectedOption.value;
+//    this.drawChart(selectedOption, amplitudeValue);
+//  }
+
+//rysuj jeden z wykresow z listy
+//  handleOptionChange(event){
+//    const selectedValue = event.target.value;
+//    console.log(selectedValue);
+//    this.drawChart(selectedValue);
+//    
+//  }
 //daj wykres jak sie strona zaladuje
   setupCharts(){
     this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'));
@@ -96,7 +124,7 @@ class View{
     }
   }
 //rysuj wykres
-  drawChart(optionValue, customData=[]){
+  drawChart(optionValue, amplitudeValue, customData=[]){
     let labels=[];
     let data=[];
 
@@ -108,17 +136,17 @@ class View{
     else{
     switch (optionValue){
       case "Sine function": 
-      data=SignalGenerator.generateSineWave(10);
+      data=SignalGenerator.generateSineWave(amplitudeValue,10);
       labels=Array.from({length:10},(_,i)=>i.toString());
       break;
       case "Quadratic function":
       
-      data=SignalGenerator.generateSquareWave(4,1,10);
+      data=SignalGenerator.generateSquareWave(4,amplitudeValue,10);
       labels=Array.from({length:10},(_,i)=>i.toString());
         break;
         case "Triangle function":
       
-      data=SignalGenerator.generateTriangleWave(4,1,10);
+      data=SignalGenerator.generateTriangleWave(4,amplitudeValue,10);
       labels=Array.from({length:10},(_,i)=>i.toString());
       break;
         default:
