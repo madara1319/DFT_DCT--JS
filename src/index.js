@@ -73,7 +73,7 @@ class View{
       element.classList.add("open");
     }
   }
-
+//cos nie tak 
   handleOptionChange(event){
     const selectedOption=event.target.value;
     if(this.isFunctionOpen(selectedOption)){
