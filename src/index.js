@@ -155,9 +155,9 @@ class View{
     }
 
     //nie wiem czy one na siebie nie nachodza
-  //  if(this.sampleChart){
-  //    this.sampleChart.destroy();
-  //  }
+    if(this.sampleChart){
+      this.sampleChart.destroy();
+    }
 
     const chartType=customData.length > 0 ? 'bar' : 'line';
 
