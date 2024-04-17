@@ -46,14 +46,15 @@ class View{
     this.enterProbesButton.addEventListener('click',this.toggleElement.bind(this,this.enterBox));
     
     this.selectedOption=document.querySelector(".selection");
-   // this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
+    this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
     //this.selectedOption.addEventListener('change',this.handleUserChange.bind(this));
     //do slidera
     this.amplitudeSlider=document.querySelector(".amplitudeSlider");
     this.frequencySlider=document.querySelector(".frequencySlider");
-    //this.amplitudeSlider.addEventListener('change',this.handleSlider.bind(this));
+    this.amplitudeSlider.addEventListener('change',this.handleSlider.bind(this));
     //this.amplitudeSlider.addEventListener('change',this.handleUserChange.bind(this)); 
-    this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
+    //zlaczone
+    //this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
     this.enterBox.querySelector(".textArea").addEventListener('keydown',this.handleTextArea.bind(this));
     document.addEventListener('DOMContentLoaded',this.setupCharts.bind(this));
   }
@@ -74,33 +75,33 @@ class View{
     }
   }
 //cos nie tak 
-  handleOptionChange(event){
-    const selectedOption=event.target.value;
-    if(this.isFunctionOpen(selectedOption)){
-      const amplitudeValue=parseFloat(this.amplitudeSlider.value);
-      this.drawChart(selectedOption,amplitudeValue);
-    }
-    else{
-      this.drawChart(selectedOption);
-    }
-  }
+//  handleOptionChange(event){
+//    const selectedOption=event.target.value;
+//    if(this.isFunctionOpen(selectedOption)){
+//      const amplitudeValue=parseFloat(this.amplitudeSlider.value);
+//      this.drawChart(selectedOption,amplitudeValue);
+//    }
+//    else{
+//      this.drawChart(selectedOption);
+//    }
+//  }
 
   isFunctionOpen(option){
     return["Sine function", "Quadratic function", "Triangle function"].includes(option);
   }
-//  handleSlider(event){
-//    const amplitudeValue=event.target.value;
-//    const selectedOption=this.selectedOption.value;
-//    this.drawChart(selectedOption, amplitudeValue);
-//  }
+  handleSlider(event){
+    const amplitudeValue=event.target.value;
+    const selectedOption=this.selectedOption.value;
+    this.drawChart(selectedOption, amplitudeValue);
+  }
 
 //rysuj jeden z wykresow z listy
-//  handleOptionChange(event){
-//    const selectedValue = event.target.value;
-//    console.log(selectedValue);
-//    this.drawChart(selectedValue);
-//    
-//  }
+  handleOptionChange(event){
+    const selectedValue = event.target.value;
+    console.log(selectedValue);
+    this.drawChart(selectedValue);
+    
+  }
 //daj wykres jak sie strona zaladuje
   setupCharts(){
     this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'));
@@ -155,9 +156,9 @@ class View{
     }
 
     //nie wiem czy one na siebie nie nachodza
-    if(this.sampleChart){
-      this.sampleChart.destroy();
-    }
+//    if(this.sampleChart){
+//      this.sampleChart.destroy();
+//    }
 
     const chartType=customData.length > 0 ? 'bar' : 'line';
 
@@ -176,6 +177,8 @@ class View{
         }]
       },
       options:{
+        responsive:true,
+        maintainAspectRatio:false,
         scales:{
           x:{
             title:{
