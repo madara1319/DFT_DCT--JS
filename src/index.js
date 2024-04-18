@@ -51,6 +51,7 @@ class View{
     //do slidera
     this.amplitudeSlider=document.querySelector(".amplitudeSlider");
     this.frequencySlider=document.querySelector(".frequencySlider");
+    this.frequencySlider.addEventListener('change',this.handleSlider.bind(this));
     this.amplitudeSlider.addEventListener('change',this.handleSlider.bind(this));
     //this.amplitudeSlider.addEventListener('change',this.handleUserChange.bind(this)); 
     //zlaczone
@@ -91,8 +92,10 @@ class View{
   }
   handleSlider(event){
     const amplitudeValue=event.target.value;
+    const frequencyValue=event.target.value;
     const selectedOption=this.selectedOption.value;
-    this.drawChart(selectedOption, amplitudeValue);
+    console.log("amplituda wynosi: " + amplitudeValue + " czestotliwosc wynosi: " + frequencyValue + " wybrana funkcja to " + selectedOption);
+    this.drawChart(selectedOption, amplitudeValue, frequencyValue);
   }
 
 //rysuj jeden z wykresow z listy
@@ -125,7 +128,7 @@ class View{
     }
   }
 //rysuj wykres
-  drawChart(optionValue, amplitudeValue, customData=[]){
+  drawChart(optionValue, amplitudeValue, frequencyValue, customData=[]){
     let labels=[];
     let data=[];
 
@@ -137,17 +140,17 @@ class View{
     else{
     switch (optionValue){
       case "Sine function": 
-      data=SignalGenerator.generateSineWave(amplitudeValue,10);
+      data=SignalGenerator.generateSineWave(amplitudeValue,frequencyValue);
       labels=Array.from({length:10},(_,i)=>i.toString());
       break;
       case "Quadratic function":
       
-      data=SignalGenerator.generateSquareWave(4,amplitudeValue,10);
+      data=SignalGenerator.generateSquareWave(4,amplitudeValue,frequencyValue);
       labels=Array.from({length:10},(_,i)=>i.toString());
         break;
         case "Triangle function":
       
-      data=SignalGenerator.generateTriangleWave(4,amplitudeValue,10);
+      data=SignalGenerator.generateTriangleWave(4,amplitudeValue,frequencyValue);
       labels=Array.from({length:10},(_,i)=>i.toString());
       break;
         default:
