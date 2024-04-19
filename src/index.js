@@ -90,6 +90,7 @@ class View{
   isFunctionOpen(option){
     return["Sine function", "Quadratic function", "Triangle function"].includes(option);
   }
+  //need to handle multiple sliders events
   handleSlider(event){
     const amplitudeValue=event.target.value;
     const frequencyValue=event.target.value;
