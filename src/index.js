@@ -205,6 +205,7 @@ class View{
 
 function main(){
   const view = new View();
+  window.alert("test");
 }
 
 main();
