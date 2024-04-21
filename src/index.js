@@ -130,6 +130,9 @@ class View{
   }
 //rysuj wykres
   drawChart(optionValue, amplitudeValue, frequencyValue, customData=[]){
+    if(this.sampleChart){
+      this.sampleChart.destroy();
+    }
     let labels=[];
     let data=[];
 
