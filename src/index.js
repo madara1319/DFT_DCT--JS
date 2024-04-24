@@ -139,9 +139,11 @@ class View{
       const dataArray=data.split(",");
       const areNumbers=dataArray.every(value=>!isNaN(value.trim()));
       if(areNumbers){
-        console.log("liczby",dataArray);
-        this.drawChart("Custom",dataArray.map(Number));
+        //this.drawChart("Custom",dataArray.map(Number));
+        const numberArray=dataArray.map(value=>parseFloat(value.trim()));
 
+        console.log("liczby",numberArray);
+        this.drawChart("Custom",undefined,undefined, numberArray);
       }
       else{
         console.log("nieprowadilowe dane");
