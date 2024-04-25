@@ -2,6 +2,8 @@
 //import { View } from './pattern.js'; 
 //import { Model } from './pattern.js'; 
 //import * as dftFile from '../DFT_DCT--JS.js';
+
+//te funkcje do poprawy zeby czestotliwosc faktycznie sie dalo i moze zageszczenie ilosci probek teraz jest zle
 class SignalGenerator{
   static generateSineWave(amplitude=1,length){
     const wave=[];
