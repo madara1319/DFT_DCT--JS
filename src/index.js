@@ -32,7 +32,7 @@ class SignalGenerator{
   }
 }
 
-
+console.log('test');
 
 class View{
   constructor(){
