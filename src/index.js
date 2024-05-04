@@ -5,7 +5,7 @@
 
 //te funkcje do poprawy zeby czestotliwosc faktycznie sie dalo i moze zageszczenie ilosci probek teraz jest zle
 //to do fix 
-
+console.log('signal');
 class SignalGenerator{
   static generateSineWave(amplitude=1,length){
     const wave=[];
