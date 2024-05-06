@@ -3,19 +3,20 @@
 //import { Model } from './pattern.js'; 
 //import * as dftFile from '../DFT_DCT--JS.js';
 
-//te funkcje do poprawy zeby czestotliwosc faktycznie sie dalo i moze zageszczenie ilosci probek teraz jest zle
-//to do fix 
-console.log('signal');
 class SignalGenerator{
-  static generateSineWave(amplitude=1,length){
+  static generateSineWave(frequency, amplitude=1,sampleRate,length){
     const wave=[];
+    const angularFrequency=2*Math.PI*frequency;
+    const timeIncrement=1/sampleRate;
     for(let i=0; i<length; i++){
-      wave.push(amplitude*Math.sin(i));
+      const time=i*timeIncrement;
+      wave.push(amplitude*Math.sin(angularFrequency*time));
     }
     return wave;
   }
-  static generateSquareWave(period,amplitude=1, length){
+  static generateSquareWave(frequency,amplitude=1, sampleRate, length){
     const wave=[];
+    const period=Math.floor(sampleRate/frequency);
     const halfPeriod=Math.floor(period/2);
     for (let i=0; i<length; i++){
       const phase = i% period;
@@ -23,8 +24,9 @@ class SignalGenerator{
     }
     return wave;
   }
-  static generateTriangleWave(period, amplitude=1, length){
+  static generateTriangleWave(frequency, amplitude=1,sampleRate, length){
     const wave=[];
+    const period=Math.floor(sampleRate/frequency);
     const halfPeriod=Math.floor(period/2);
     for(let i=0; i<length; i++){
       const phase = i%period;
@@ -172,18 +174,18 @@ class View{
 
       case "Sine function": 
 
-      data=SignalGenerator.generateSineWave(amplitudeValue,frequencyValue);
+      data=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,100,1000);
       labels=Array.from({length:10},(_,i)=>i.toString());
       break;
 
       case "Quadratic function":
       
-      data=SignalGenerator.generateSquareWave(4,amplitudeValue,frequencyValue);
+      data=SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,100,1000);
       labels=Array.from({length:10},(_,i)=>i.toString());
         break;
         case "Triangle function":
       
-      data=SignalGenerator.generateTriangleWave(4,amplitudeValue,frequencyValue);
+      data=SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,100,1000);
       labels=Array.from({length:10},(_,i)=>i.toString());
       break;
 
