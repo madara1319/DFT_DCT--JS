@@ -238,41 +238,8 @@ function main(){
   const view = new View();
   window.alert("test");
 }
-function draw() {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-
-    context.clearRect(0, 0, 500, 500);
-    showAxes(context);
-    context.save();            
-    
-    plotSine(context, step, 50);
-    context.restore();
-    
-    step += 4;
-    window.requestAnimationFrame(draw);
-}
-const ctx=document.getElementById("canvas");
-function plotSine(ctx) {
-    var width = ctx.canvas.width;
-    var height = ctx.canvas.height;
-    var scale = 20;
-
-    ctx.beginPath();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgb(66,44,255)";
-    
-    var x = 0;
-    var y = 0;
-    var amplitude = 40;
-    var frequency = 20;
-    //ctx.moveTo(x, y);
-    while (x < width) {
-        y = height/2 + amplitude * Math.sin(x/frequency);
-        ctx.lineTo(x, y);
-        x = x + 1;
-    }
-    ctx.stroke();
-}
-plotSine();
 main();
+console.log(SignalGenerator.__proto__.constructor);
+console.log(SignalGenerator.constructor);
+const testSignal = new SignalGenerator();
+console.log(Object.getPrototypeOf(testSignal));
