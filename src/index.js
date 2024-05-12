@@ -242,4 +242,8 @@ main();
 console.log(SignalGenerator.__proto__.constructor);
 console.log(SignalGenerator.constructor);
 const testSignal = new SignalGenerator();
+SignalGenerator.testMethod=function(){
+  console.log("test method");
+} ;
+SignalGenerator.testMethod();
 console.log(Object.getPrototypeOf(testSignal));
