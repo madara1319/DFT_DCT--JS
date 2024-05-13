@@ -241,9 +241,11 @@ function main(){
 main();
 console.log(SignalGenerator.__proto__.constructor);
 console.log(SignalGenerator.constructor);
-const testSignal = new SignalGenerator();
-SignalGenerator.testMethod=function(){
-  console.log("test method");
-} ;
-SignalGenerator.testMethod();
+//const testSignal = new SignalGenerator();
+
+//SignalGenerator.testMethod=function(){
+//  console.log("test method");
+//} ;
+//SignalGenerator.testMethod();
+console.log(SignalGenerator.generateSineWave(100,1,100,1000));
 console.log(Object.getPrototypeOf(testSignal));
