@@ -108,6 +108,7 @@ class View{
   //need to handle multiple sliders events
   handleSlider(event){
 
+    console.log(`this w handleSlider to ${this}`);
     let amplitudeValue;
     let frequencyValue;
     console.log('event to ' + event);
@@ -127,6 +128,8 @@ class View{
 
 //rysuj jeden z wykresow z listy
   handleOptionChange(event){
+
+    console.log(`this w handleOptionChange to ${this}`);
     const selectedValue = event.target.value;
     console.log(selectedValue);
     this.drawChart(selectedValue);
@@ -134,12 +137,15 @@ class View{
   }
 //daj wykres jak sie strona zaladuje
   setupCharts(){
+    console.log(`this w setupCharts to ${this}`);
     this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'));
     this.sampleChart.canvas.width=400;
     this.sampleChart.canvas.height=400;
   }
 //czy wprowadzona tablica git
   handleTextArea(event){
+
+    console.log(`this w handleTextArea to ${this}`);
     if(event.key==="Enter"){
       const data=event.target.value.trim();
       const dataArray=data.split(",");
@@ -158,6 +164,9 @@ class View{
   }
 //rysuj wykres
   drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
+
+
+    console.log(`this w drawChart to ${this} `);
    // if(this.sampleChart){
    //   this.sampleChart.destroy();
    // }
@@ -236,16 +245,5 @@ class View{
 
 function main(){
   const view = new View();
-  window.alert("test");
 }
 main();
-console.log(SignalGenerator.__proto__.constructor);
-console.log(SignalGenerator.constructor);
-//const testSignal = new SignalGenerator();
-
-//SignalGenerator.testMethod=function(){
-//  console.log("test method");
-//} ;
-//SignalGenerator.testMethod();
-console.log(SignalGenerator.generateSineWave(100,1,100,1000));
-console.log(Object.getPrototypeOf(testSignal));
