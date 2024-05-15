@@ -183,19 +183,19 @@ class View{
 
       case "Sine function": 
 
-      data=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,4000,1000);
-      labels=Array.from({length:10},(_,i)=>i.toString());
+      data=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,400,100);
+      labels=Array.from({length:100},(_,i)=>i.toString());
       break;
 
       case "Quadratic function":
       
-      data=SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,4000,1000);
-      labels=Array.from({length:10},(_,i)=>i.toString());
+      data=SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,400,100);
+      labels=Array.from({length:100},(_,i)=>i.toString());
         break;
         case "Triangle function":
       
-      data=SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,4000,1000);
-      labels=Array.from({length:10},(_,i)=>i.toString());
+      data=SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,400,100);
+      labels=Array.from({length:100},(_,i)=>i.toString());
       break;
 
         default:
