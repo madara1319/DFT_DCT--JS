@@ -5,12 +5,15 @@
 
 class SignalGenerator{
   static generateSineWave(frequency, amplitude=1,sampleRate,length){
-    const wave=[];
+    //const wave=[];
+    const wave= new Map();
     const angularFrequency=2*Math.PI*frequency;
     const timeIncrement=1/sampleRate;
     for(let i=0; i<length; i++){
       const time=i*timeIncrement;
-      wave.push(amplitude*Math.sin(angularFrequency*time));
+      //wave.push(amplitude*Math.sin(angularFrequency*time));
+
+      wave.set(time,amplitude*Math.sin(angularFrequency*time));
     }
     return wave;
   }
@@ -35,7 +38,13 @@ class SignalGenerator{
     return wave;
   }
 }
+//console.log(SignalGenerator.generateSineWave(10,1,400,100).keys());
+//console.log(Array.from(SignalGenerator.generateSineWave(10,1,400,100).keys()).toFixed());
 
+const testWave=SignalGenerator.generateSineWave(10,1,400,100);
+const keysy=(Array.from(testWave.keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//const keysArray=keysy.forEach((element)=>Number(element));
+console.log(keysy);
 console.log('test');
 
 class View{
@@ -183,8 +192,14 @@ class View{
 
       case "Sine function": 
 
-      data=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,400,100);
-      labels=Array.from({length:100},(_,i)=>i.toString());
+      //data=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,400,100);
+
+      //data=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,400,100).values();
+      data=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+      //labels=Array.from({length:100},(_,i)=>i.toString());
+
+      labels=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+      //labels=SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,400,100).keys();
       break;
 
       case "Quadratic function":
