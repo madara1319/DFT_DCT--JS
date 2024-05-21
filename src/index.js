@@ -18,22 +18,28 @@ class SignalGenerator{
     return wave;
   }
   static generateSquareWave(frequency,amplitude=1, sampleRate, length){
-    const wave=[];
+    //const wave=[];
+    const wave=new Map();
     const period=Math.floor(sampleRate/frequency);
     const halfPeriod=Math.floor(period/2);
+    const timeIncrement=1/sampleRate;
     for (let i=0; i<length; i++){
       const phase = i% period;
-      wave.push(phase<halfPeriod ? amplitude : -amplitude);
+      const time=i*timeIncrement;
+      wave.set(time,phase<halfPeriod ? amplitude : -amplitude);
     }
     return wave;
   }
   static generateTriangleWave(frequency, amplitude=1,sampleRate, length){
-    const wave=[];
+    //const wave=[];
+    const wave=new Map();
     const period=Math.floor(sampleRate/frequency);
     const halfPeriod=Math.floor(period/2);
+    const timeIncrement=1/sampleRate;
     for(let i=0; i<length; i++){
       const phase = i%period;
-      wave.push((2/halfPeriod)*(Math.abs(phase-halfPeriod)-halfPeriod)*amplitude);
+      const time=i*timeIncrement;
+      wave.set(time,(2/halfPeriod)*(Math.abs(phase-halfPeriod)-halfPeriod)*amplitude);
     }
     return wave;
   }
