@@ -86,7 +86,6 @@ class View{
   //wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(firstElement,secondElement, event){
     event.preventDefault();
-    //console.log(firstElement);
 
     const isFirstOpen=firstElement.classList.contains("open");
     const isSecondOpen=secondElement.classList.contains("open");
@@ -105,17 +104,6 @@ class View{
       firstElement.classList.add("open");
     }
   }
-//cos nie tak 
-//  handleOptionChange(event){
-//    const selectedOption=event.target.value;
-//    if(this.isFunctionOpen(selectedOption)){
-//      const amplitudeValue=parseFloat(this.amplitudeSlider.value);
-//      this.drawChart(selectedOption,amplitudeValue);
-//    }
-//    else{
-//      this.drawChart(selectedOption);
-//    }
-//  }
 
   isFunctionOpen(option){
     return["Sine function", "Quadratic function", "Triangle function"].includes(option);
@@ -124,10 +112,13 @@ class View{
   handleSlider(event){
 
     console.log(`this w handleSlider to ${this}`);
+
     let amplitudeValue;
     let frequencyValue;
+
     console.log('event to ' + event);
     console.log('id to ' + event.target.id);
+
     if(event.target.id==='amplitudeSlider'){
       amplitudeValue=event.target.value;
       frequencyValue=this.frequencySlider.value;
@@ -138,7 +129,12 @@ class View{
     }
     const selectedOption=this.selectedOption.value;
     console.log("amplituda wynosi: " + amplitudeValue + " czestotliwosc wynosi: " + frequencyValue + " wybrana funkcja to " + selectedOption);
-    this.drawChart(selectedOption, amplitudeValue, frequencyValue);
+
+    //nowe
+    const {labels,data}=this.calculateInput(selectedOption,amplitudeValue,frequencyValue);
+    ChartDrawer.drawChart(labels,data,'line');
+
+    //this.calculateInput(selectedOption, amplitudeValue, frequencyValue);
   }
 
 //rysuj jeden z wykresow z listy
@@ -147,7 +143,9 @@ class View{
     console.log(`this w handleOptionChange to ${this}`);
     const selectedValue = event.target.value;
     console.log(selectedValue);
-    this.drawChart(selectedValue);
+    const {labels,data}=this.calculateInput(selectedValue);
+    ChartDrawer.drawChart(labels,data,'line');
+    //this.calculateInput(selectedValue);
     
   }
 //daj wykres jak sie strona zaladuje
@@ -170,17 +168,16 @@ class View{
         const numberArray=dataArray.map(value=>parseFloat(value.trim()));
 
         console.log("liczby",numberArray);
-        this.drawChart("Custom",undefined,undefined, numberArray);
+        //this.calculateInput("Custom",undefined,undefined, numberArray);
+        const {labels,data}=this.calculateInput("Custom",undefined,undefined,numberArray);
+        ChartDrawer.drawChart(labels,data,'bar');
       }
       else{
         console.log("nieprowadilowe dane");
       }
     }
   }
-//rysuj wykres
-  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
-
-
+  calculateInput(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
     console.log(`this w drawChart to ${this} `);
    // if(this.sampleChart){
    //   this.sampleChart.destroy();
@@ -219,8 +216,92 @@ class View{
         break;
       }
     }
-    
-
+    return {labels, data};
+}
+//rysuj wykres
+//  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
+//
+//
+//    console.log(`this w drawChart to ${this} `);
+//   // if(this.sampleChart){
+//   //   this.sampleChart.destroy();
+//   // }
+//    let labels=[];
+//    let data=[];
+//
+//    if (customData.length>0){
+//      
+//      labels=Array.from({length:customData.length},(_,i)=>i.toString());
+//      data=customData;
+//    }
+//    else{
+//    switch (optionValue){
+//
+//      case "Sine function": 
+//
+//
+//      data=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//      break;
+//
+//      case "Quadratic function":
+//      
+//      //this doesnt work properly
+//      data=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//        break;
+//        case "Triangle function":
+//      
+//      data=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//      break;
+//
+//        default:
+//        break;
+//      }
+//    }
+//    
+//
+//    //nie wiem czy one na siebie nie nachodza
+//    if(this.sampleChart){
+//      this.sampleChart.destroy();
+//    }
+//  this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
+//    type: customData.length > 0 ? 'bar' : 'line',
+//    data: {
+//      labels,
+//      datasets: [{
+//        label: 'Signal',
+//        data,
+//        fill: false,
+//        backgroundColor: 'rgba(255,99,132,0.5)',
+//        borderColor: 'rgb(255,99,132,1)',
+//        tension: 0.1
+//      }]
+//    },
+//    options: {
+//      responsive: true,
+//      maintainAspectRatio: false,
+//      scales: {
+//        x: {
+//          title: {
+//            display: true,
+//            text: 'X'
+//          }
+//        },
+//        y: {
+//          title: {
+//            display: true,
+//            text: 'Y'
+//          }
+//        }
+//      }
+//    }
+//  });
+//}
+}
+class ChartDrawer{
+  static drawChart(labels,data,type){
     //nie wiem czy one na siebie nie nachodza
     if(this.sampleChart){
       this.sampleChart.destroy();
