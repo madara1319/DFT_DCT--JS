@@ -44,14 +44,12 @@ class SignalGenerator{
     return wave;
   }
 }
-//console.log(SignalGenerator.generateSineWave(10,1,400,100).keys());
-//console.log(Array.from(SignalGenerator.generateSineWave(10,1,400,100).keys()).toFixed());
 
-const testWave=SignalGenerator.generateSineWave(10,1,400,100);
-const keysy=(Array.from(testWave.keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//const testWave=SignalGenerator.generateSineWave(10,1,400,100);
+//const keysy=(Array.from(testWave.keys()).map(key=>parseFloat(Number(key).toFixed(5))));
 //const keysArray=keysy.forEach((element)=>Number(element));
-console.log(keysy);
-console.log('test');
+//console.log(keysy);
+//console.log('test');
 
 class View{
   constructor(){
@@ -70,7 +68,7 @@ class View{
     
 
     this.selectedOption=document.querySelector(".selection");
-    this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
+    this.selectedOption.addEventListener('click',this.handleOptionChange.bind(this));
 
     //do slidera
     this.amplitudeSlider=document.querySelector(".amplitudeSlider");
@@ -82,6 +80,8 @@ class View{
     //this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
     this.enterBox.querySelector(".textArea").addEventListener('keydown',this.handleTextArea.bind(this));
     document.addEventListener('DOMContentLoaded',this.setupCharts.bind(this));
+
+    this.handleOptionChange({target:this.selectedOption});
   }
   //wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(firstElement,secondElement, event){
@@ -111,7 +111,6 @@ class View{
   //need to handle multiple sliders events
   handleSlider(event){
 
-    console.log(`this w handleSlider to ${this}`);
 
     let amplitudeValue;
     let frequencyValue;
@@ -143,22 +142,20 @@ class View{
     console.log(`this w handleOptionChange to ${this}`);
     const selectedValue = event.target.value;
     console.log(selectedValue);
-    const {labels,data}=this.calculateInput(selectedValue);
+    const {labels,data}=this.calculateInput(selectedValue,this.amplitudeSlider.value,this.frequencySlider.value);
     ChartDrawer.drawChart(labels,data,'line');
     //this.calculateInput(selectedValue);
     
   }
 //daj wykres jak sie strona zaladuje
   setupCharts(){
-    console.log(`this w setupCharts to ${this}`);
     this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'));
     this.sampleChart.canvas.width=400;
     this.sampleChart.canvas.height=400;
   }
-//czy wprowadzona tablica git
+  //do rysowania charta z array
   handleTextArea(event){
 
-    console.log(`this w handleTextArea to ${this}`);
     if(event.key==="Enter"){
       const data=event.target.value.trim();
       const dataArray=data.split(",");
@@ -178,10 +175,6 @@ class View{
     }
   }
   calculateInput(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
-    console.log(`this w drawChart to ${this} `);
-   // if(this.sampleChart){
-   //   this.sampleChart.destroy();
-   // }
     let labels=[];
     let data=[];
 
@@ -307,7 +300,8 @@ class ChartDrawer{
       this.sampleChart.destroy();
     }
   this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
-    type: customData.length > 0 ? 'bar' : 'line',
+    //type: data.length > 0 ? 'bar' : 'line',
+    type:type,
     data: {
       labels,
       datasets: [{
