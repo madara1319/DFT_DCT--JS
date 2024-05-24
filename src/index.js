@@ -3,6 +3,11 @@
 //import { Model } from './pattern.js'; 
 //import * as dftFile from '../DFT_DCT--JS.js';
 
+
+//dodac mozliwosc generowania sygnalow zlozonych z kilku sinusow roznych
+class SignalCompositor{
+
+}
 class SignalGenerator{
   static generateSineWave(frequency, amplitude=1,sampleRate,length){
     //const wave=[];
@@ -20,13 +25,19 @@ class SignalGenerator{
   static generateSquareWave(frequency,amplitude=1, sampleRate, length){
     //const wave=[];
     const wave=new Map();
-    const period=Math.floor(sampleRate/frequency);
-    const halfPeriod=Math.floor(period/2);
+    //const period=Math.floor(sampleRate/frequency);
+    //const halfPeriod=Math.floor(period/2);
+    const period=Number((sampleRate/frequency).toFixed(6));
+    const halfPeriod=period/2;
     const timeIncrement=1/sampleRate;
     for (let i=0; i<length; i++){
-      const phase = i% period;
-      const time=i*timeIncrement;
-      wave.set(time,phase<halfPeriod ? amplitude : -amplitude);
+      //const phase = (i% period);
+      const time=Number((i*timeIncrement).toFixed(3));
+      console.log("amplitude = " + amplitude);
+      const phase = Number((((i% period)*timeIncrement).toFixed(6)));
+      console.log(`phase to ${phase} a halfPeriod to ${halfPeriod}`);
+      wave.set(time,(phase<halfPeriod ? amplitude : -amplitude));
+      console.log(wave);
     }
     return wave;
   }
@@ -70,6 +81,87 @@ class View{
     this.selectedOption=document.querySelector(".selection");
     this.selectedOption.addEventListener('click',this.handleOptionChange.bind(this));
 
+//rysuj wykres
+//  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
+//
+//
+//    console.log(`this w drawChart to ${this} `);
+//   // if(this.sampleChart){
+//   //   this.sampleChart.destroy();
+//   // }
+//    let labels=[];
+//    let data=[];
+//
+//    if (customData.length>0){
+//      
+//      labels=Array.from({length:customData.length},(_,i)=>i.toString());
+//      data=customData;
+//    }
+//    else{
+//    switch (optionValue){
+//
+//      case "Sine function": 
+//
+//
+//      data=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//      break;
+//
+//      case "Quadratic function":
+//      
+//      //this doesnt work properly
+//      data=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//        break;
+//        case "Triangle function":
+//      
+//      data=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//      break;
+//
+//        default:
+//        break;
+//      }
+//    }
+//    
+//
+//    //nie wiem czy one na siebie nie nachodza
+//    if(this.sampleChart){
+//      this.sampleChart.destroy();
+//    }
+//  this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
+//    type: customData.length > 0 ? 'bar' : 'line',
+//    data: {
+//      labels,
+//      datasets: [{
+//        label: 'Signal',
+//        data,
+//        fill: false,
+//        backgroundColor: 'rgba(255,99,132,0.5)',
+//        borderColor: 'rgb(255,99,132,1)',
+//        tension: 0.1
+//      }]
+//    },
+//    options: {
+//      responsive: true,
+//      maintainAspectRatio: false,
+//      scales: {
+//        x: {
+//          title: {
+//            display: true,
+//            text: 'X'
+//          }
+//        },
+//        y: {
+//          title: {
+//            display: true,
+//            text: 'Y'
+//          }
+//        }
+//      }
+//    }
+//  });
+//}
     //do slidera
     this.amplitudeSlider=document.querySelector(".amplitudeSlider");
     this.frequencySlider=document.querySelector(".frequencySlider");
@@ -211,88 +303,9 @@ class View{
     }
     return {labels, data};
 }
-//rysuj wykres
-//  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
-//
-//
-//    console.log(`this w drawChart to ${this} `);
-//   // if(this.sampleChart){
-//   //   this.sampleChart.destroy();
-//   // }
-//    let labels=[];
-//    let data=[];
-//
-//    if (customData.length>0){
-//      
-//      labels=Array.from({length:customData.length},(_,i)=>i.toString());
-//      data=customData;
-//    }
-//    else{
-//    switch (optionValue){
-//
-//      case "Sine function": 
-//
-//
-//      data=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
-//      labels=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
-//      break;
-//
-//      case "Quadratic function":
-//      
-//      //this doesnt work properly
-//      data=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
-//      labels=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
-//        break;
-//        case "Triangle function":
-//      
-//      data=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
-//      labels=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
-//      break;
-//
-//        default:
-//        break;
-//      }
-//    }
-//    
-//
-//    //nie wiem czy one na siebie nie nachodza
-//    if(this.sampleChart){
-//      this.sampleChart.destroy();
-//    }
-//  this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
-//    type: customData.length > 0 ? 'bar' : 'line',
-//    data: {
-//      labels,
-//      datasets: [{
-//        label: 'Signal',
-//        data,
-//        fill: false,
-//        backgroundColor: 'rgba(255,99,132,0.5)',
-//        borderColor: 'rgb(255,99,132,1)',
-//        tension: 0.1
-//      }]
-//    },
-//    options: {
-//      responsive: true,
-//      maintainAspectRatio: false,
-//      scales: {
-//        x: {
-//          title: {
-//            display: true,
-//            text: 'X'
-//          }
-//        },
-//        y: {
-//          title: {
-//            display: true,
-//            text: 'Y'
-//          }
-//        }
-//      }
-//    }
-//  });
-//}
 }
+
+
 class ChartDrawer{
   static drawChart(labels,data,type){
     //nie wiem czy one na siebie nie nachodza
