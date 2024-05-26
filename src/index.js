@@ -3,6 +3,11 @@
 //import { Model } from './pattern.js'; 
 //import * as dftFile from '../DFT_DCT--JS.js';
 
+
+//dodac mozliwosc generowania sygnalow zlozonych z kilku sinusow roznych
+class SignalCompositor{
+
+}
 class SignalGenerator{
   static generateSineWave(frequency, amplitude=1,sampleRate,length){
     //const wave=[];
@@ -20,13 +25,19 @@ class SignalGenerator{
   static generateSquareWave(frequency,amplitude=1, sampleRate, length){
     //const wave=[];
     const wave=new Map();
-    const period=Math.floor(sampleRate/frequency);
-    const halfPeriod=Math.floor(period/2);
+    //const period=Math.floor(sampleRate/frequency);
+    //const halfPeriod=Math.floor(period/2);
+    const period=Number((sampleRate/frequency).toFixed(6));
+    const halfPeriod=period/2;
     const timeIncrement=1/sampleRate;
     for (let i=0; i<length; i++){
-      const phase = i% period;
-      const time=i*timeIncrement;
-      wave.set(time,phase<halfPeriod ? amplitude : -amplitude);
+      //const phase = (i% period);
+      const time=Number((i*timeIncrement).toFixed(3));
+      console.log("amplitude = " + amplitude);
+      const phase = Number((((i% period)*timeIncrement).toFixed(6)));
+      console.log(`phase to ${phase} a halfPeriod to ${halfPeriod}`);
+      wave.set(time,(phase<halfPeriod ? amplitude : -amplitude));
+      console.log(wave);
     }
     return wave;
   }
@@ -44,14 +55,12 @@ class SignalGenerator{
     return wave;
   }
 }
-//console.log(SignalGenerator.generateSineWave(10,1,400,100).keys());
-//console.log(Array.from(SignalGenerator.generateSineWave(10,1,400,100).keys()).toFixed());
 
-const testWave=SignalGenerator.generateSineWave(10,1,400,100);
-const keysy=(Array.from(testWave.keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//const testWave=SignalGenerator.generateSineWave(10,1,400,100);
+//const keysy=(Array.from(testWave.keys()).map(key=>parseFloat(Number(key).toFixed(5))));
 //const keysArray=keysy.forEach((element)=>Number(element));
-console.log(keysy);
-console.log('test');
+//console.log(keysy);
+//console.log('test');
 
 class View{
   constructor(){
@@ -70,8 +79,89 @@ class View{
     
 
     this.selectedOption=document.querySelector(".selection");
-    this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
+    this.selectedOption.addEventListener('click',this.handleOptionChange.bind(this));
 
+//rysuj wykres
+//  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
+//
+//
+//    console.log(`this w drawChart to ${this} `);
+//   // if(this.sampleChart){
+//   //   this.sampleChart.destroy();
+//   // }
+//    let labels=[];
+//    let data=[];
+//
+//    if (customData.length>0){
+//      
+//      labels=Array.from({length:customData.length},(_,i)=>i.toString());
+//      data=customData;
+//    }
+//    else{
+//    switch (optionValue){
+//
+//      case "Sine function": 
+//
+//
+//      data=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//      break;
+//
+//      case "Quadratic function":
+//      
+//      //this doesnt work properly
+//      data=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//        break;
+//        case "Triangle function":
+//      
+//      data=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
+//      labels=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
+//      break;
+//
+//        default:
+//        break;
+//      }
+//    }
+//    
+//
+//    //nie wiem czy one na siebie nie nachodza
+//    if(this.sampleChart){
+//      this.sampleChart.destroy();
+//    }
+//  this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
+//    type: customData.length > 0 ? 'bar' : 'line',
+//    data: {
+//      labels,
+//      datasets: [{
+//        label: 'Signal',
+//        data,
+//        fill: false,
+//        backgroundColor: 'rgba(255,99,132,0.5)',
+//        borderColor: 'rgb(255,99,132,1)',
+//        tension: 0.1
+//      }]
+//    },
+//    options: {
+//      responsive: true,
+//      maintainAspectRatio: false,
+//      scales: {
+//        x: {
+//          title: {
+//            display: true,
+//            text: 'X'
+//          }
+//        },
+//        y: {
+//          title: {
+//            display: true,
+//            text: 'Y'
+//          }
+//        }
+//      }
+//    }
+//  });
+//}
     //do slidera
     this.amplitudeSlider=document.querySelector(".amplitudeSlider");
     this.frequencySlider=document.querySelector(".frequencySlider");
@@ -82,11 +172,12 @@ class View{
     //this.selectedOption.addEventListener('change',this.handleOptionChange.bind(this));
     this.enterBox.querySelector(".textArea").addEventListener('keydown',this.handleTextArea.bind(this));
     document.addEventListener('DOMContentLoaded',this.setupCharts.bind(this));
+
+    this.handleOptionChange({target:this.selectedOption});
   }
   //wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(firstElement,secondElement, event){
     event.preventDefault();
-    //console.log(firstElement);
 
     const isFirstOpen=firstElement.classList.contains("open");
     const isSecondOpen=secondElement.classList.contains("open");
@@ -105,17 +196,6 @@ class View{
       firstElement.classList.add("open");
     }
   }
-//cos nie tak 
-//  handleOptionChange(event){
-//    const selectedOption=event.target.value;
-//    if(this.isFunctionOpen(selectedOption)){
-//      const amplitudeValue=parseFloat(this.amplitudeSlider.value);
-//      this.drawChart(selectedOption,amplitudeValue);
-//    }
-//    else{
-//      this.drawChart(selectedOption);
-//    }
-//  }
 
   isFunctionOpen(option){
     return["Sine function", "Quadratic function", "Triangle function"].includes(option);
@@ -123,11 +203,13 @@ class View{
   //need to handle multiple sliders events
   handleSlider(event){
 
-    console.log(`this w handleSlider to ${this}`);
+
     let amplitudeValue;
     let frequencyValue;
+
     console.log('event to ' + event);
     console.log('id to ' + event.target.id);
+
     if(event.target.id==='amplitudeSlider'){
       amplitudeValue=event.target.value;
       frequencyValue=this.frequencySlider.value;
@@ -138,7 +220,12 @@ class View{
     }
     const selectedOption=this.selectedOption.value;
     console.log("amplituda wynosi: " + amplitudeValue + " czestotliwosc wynosi: " + frequencyValue + " wybrana funkcja to " + selectedOption);
-    this.drawChart(selectedOption, amplitudeValue, frequencyValue);
+
+    //nowe
+    const {labels,data}=this.calculateInput(selectedOption,amplitudeValue,frequencyValue);
+    ChartDrawer.drawChart(labels,data,'line');
+
+    //this.calculateInput(selectedOption, amplitudeValue, frequencyValue);
   }
 
 //rysuj jeden z wykresow z listy
@@ -147,20 +234,20 @@ class View{
     console.log(`this w handleOptionChange to ${this}`);
     const selectedValue = event.target.value;
     console.log(selectedValue);
-    this.drawChart(selectedValue);
+    const {labels,data}=this.calculateInput(selectedValue,this.amplitudeSlider.value,this.frequencySlider.value);
+    ChartDrawer.drawChart(labels,data,'line');
+    //this.calculateInput(selectedValue);
     
   }
 //daj wykres jak sie strona zaladuje
   setupCharts(){
-    console.log(`this w setupCharts to ${this}`);
     this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'));
     this.sampleChart.canvas.width=400;
     this.sampleChart.canvas.height=400;
   }
-//czy wprowadzona tablica git
+  //do rysowania charta z array
   handleTextArea(event){
 
-    console.log(`this w handleTextArea to ${this}`);
     if(event.key==="Enter"){
       const data=event.target.value.trim();
       const dataArray=data.split(",");
@@ -170,21 +257,16 @@ class View{
         const numberArray=dataArray.map(value=>parseFloat(value.trim()));
 
         console.log("liczby",numberArray);
-        this.drawChart("Custom",undefined,undefined, numberArray);
+        //this.calculateInput("Custom",undefined,undefined, numberArray);
+        const {labels,data}=this.calculateInput("Custom",undefined,undefined,numberArray);
+        ChartDrawer.drawChart(labels,data,'bar');
       }
       else{
         console.log("nieprowadilowe dane");
       }
     }
   }
-//rysuj wykres
-  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
-
-
-    console.log(`this w drawChart to ${this} `);
-   // if(this.sampleChart){
-   //   this.sampleChart.destroy();
-   // }
+  calculateInput(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
     let labels=[];
     let data=[];
 
@@ -219,14 +301,20 @@ class View{
         break;
       }
     }
-    
+    return {labels, data};
+}
+}
 
+
+class ChartDrawer{
+  static drawChart(labels,data,type){
     //nie wiem czy one na siebie nie nachodza
     if(this.sampleChart){
       this.sampleChart.destroy();
     }
   this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
-    type: customData.length > 0 ? 'bar' : 'line',
+    //type: data.length > 0 ? 'bar' : 'line',
+    type:type,
     data: {
       labels,
       datasets: [{
