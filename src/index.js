@@ -67,101 +67,21 @@ class View{
     //przyciski wyboru tryby wprowadzania danych
     this.baseFuncButton=document.querySelector(".showSelection");
     this.enterProbesButton=document.querySelector(".enterProbes");
+    this.composerButton=document.querySelector(".showComposer");
    
     //tryby wprowadzania danych
     this.optionsDisplay=document.querySelector(".options");
     this.enterBox=document.querySelector(".entering");
-
+    this.composerBox=document.querySelector(".composer");
     
     //toggle do do przyciskow wprowadzania 
-    this.baseFuncButton.addEventListener('click',(event)=>this.toggleElement(this.optionsDisplay,this.enterBox,event));  
-    this.enterProbesButton.addEventListener('click',(event)=>this.toggleElement(this.enterBox,this.optionsDisplay,event));  
+    this.baseFuncButton.addEventListener('click',(event)=>this.toggleElement(event,this.optionsDisplay));  
+    this.enterProbesButton.addEventListener('click',(event)=>this.toggleElement(event,this.enterBox));  
     
 
     this.selectedOption=document.querySelector(".selection");
     this.selectedOption.addEventListener('click',this.handleOptionChange.bind(this));
 
-//rysuj wykres
-//  drawChart(optionValue, amplitudeValue = 1, frequencyValue = 10, customData=[]){
-//
-//
-//    console.log(`this w drawChart to ${this} `);
-//   // if(this.sampleChart){
-//   //   this.sampleChart.destroy();
-//   // }
-//    let labels=[];
-//    let data=[];
-//
-//    if (customData.length>0){
-//      
-//      labels=Array.from({length:customData.length},(_,i)=>i.toString());
-//      data=customData;
-//    }
-//    else{
-//    switch (optionValue){
-//
-//      case "Sine function": 
-//
-//
-//      data=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
-//      labels=(Array.from(SignalGenerator.generateSineWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
-//      break;
-//
-//      case "Quadratic function":
-//      
-//      //this doesnt work properly
-//      data=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
-//      labels=(Array.from(SignalGenerator.generateSquareWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
-//        break;
-//        case "Triangle function":
-//      
-//      data=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).values()).map(value=>parseFloat(Number(value).toFixed(5))));
-//      labels=(Array.from(SignalGenerator.generateTriangleWave(frequencyValue,amplitudeValue,99,100).keys()).map(key=>parseFloat(Number(key).toFixed(5))));
-//      break;
-//
-//        default:
-//        break;
-//      }
-//    }
-//    
-//
-//    //nie wiem czy one na siebie nie nachodza
-//    if(this.sampleChart){
-//      this.sampleChart.destroy();
-//    }
-//  this.sampleChart = new Chart(document.getElementById('sampleChart').getContext('2d'), {
-//    type: customData.length > 0 ? 'bar' : 'line',
-//    data: {
-//      labels,
-//      datasets: [{
-//        label: 'Signal',
-//        data,
-//        fill: false,
-//        backgroundColor: 'rgba(255,99,132,0.5)',
-//        borderColor: 'rgb(255,99,132,1)',
-//        tension: 0.1
-//      }]
-//    },
-//    options: {
-//      responsive: true,
-//      maintainAspectRatio: false,
-//      scales: {
-//        x: {
-//          title: {
-//            display: true,
-//            text: 'X'
-//          }
-//        },
-//        y: {
-//          title: {
-//            display: true,
-//            text: 'Y'
-//          }
-//        }
-//      }
-//    }
-//  });
-//}
     //do slidera
     this.amplitudeSlider=document.querySelector(".amplitudeSlider");
     this.frequencySlider=document.querySelector(".frequencySlider");
@@ -176,26 +96,43 @@ class View{
     this.handleOptionChange({target:this.selectedOption});
   }
   //wyswietlanie ukrywanie opcji wprowadzania danych
-  toggleElement(firstElement,secondElement, event){
+  toggleElement(event,...elements){
     event.preventDefault();
 
-    const isFirstOpen=firstElement.classList.contains("open");
-    const isSecondOpen=secondElement.classList.contains("open");
+    elements.forEach((element)=>{
+      const isOpen=element.classList.contains("open");
+      if(isOpen){
+        element.classList.add("hidden");
+        element.classList.remove("open");
 
-    if(isFirstOpen){
-      firstElement.classList.add("hidden");
-      firstElement.classList.remove("open");
-      
-    }
-    else{
-      if(isSecondOpen){
-        secondElement.classList.remove("open");
-        secondElement.classList.add("hidden");
       }
-      firstElement.classList.remove("hidden");
-      firstElement.classList.add("open");
-    }
+      else{
+        element.classList.remove("hidden");
+        element.classList.add("open");
+      }
+    });
+    
   }
+ // toggleElement(firstElement,secondElement, event){
+ //   event.preventDefault();
+
+ //   const isFirstOpen=firstElement.classList.contains("open");
+ //   const isSecondOpen=secondElement.classList.contains("open");
+
+ //   if(isFirstOpen){
+ //     firstElement.classList.add("hidden");
+ //     firstElement.classList.remove("open");
+ //     
+ //   }
+ //   else{
+ //     if(isSecondOpen){
+ //       secondElement.classList.remove("open");
+ //       secondElement.classList.add("hidden");
+ //     }
+ //     firstElement.classList.remove("hidden");
+ //     firstElement.classList.add("open");
+ //   }
+ // }
 
   isFunctionOpen(option){
     return["Sine function", "Quadratic function", "Triangle function"].includes(option);

@@ -16,6 +16,7 @@ a,ul,ol,li{
   flex-direction:row;
   justify-content:space-around;
   text-align:center;
+  gap:15px;
   
 }
 .open{
@@ -29,13 +30,14 @@ a,ul,ol,li{
   display: flex;
   flex-direction: column;
   background-color: #15d77d;
-  width: 170px;
+  width: 200px;
   height: 60px;
   text-align:center;
   border-radius: 30px;
   justify-content: center;
   align-content: center;
   align-self: center;
+  align-items:center;
   /* w3schools  */
   /* padding: 5px 5px; */
   font-size: 24px;
