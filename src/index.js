@@ -346,7 +346,60 @@ class ChartDrawer {
   }
 }
 
+class SignalComposer{
+  constructor(){
+  this.signalsList=document.querySelector('.signalListElement');
+  this.signalsList.innerHTML="kutas";
+    for (const i=0; i<=this.signalsList.length; i++){
+      const span=document.createElement("SPAN");
+      const txt=document.createTextNode("\u00D7");
+      span.className="close";
+      span.appendChild(txt);
+      signalsList[i].appendChild(span);
+    }
+    const close = document.querySelector(".close");
+    for (const i=0; i<close.length; i++){
+      close[i].onclick=function(){
+        const div=this.parentElement;
+        div.style.display="none";
+      }
+    }
+    this.list=document.querySelector('.composerList');
+    this.list.addEventListener('click',function(event){
+      if(event.target.tagName==="LI"){
+        event.target.classList.toggle('checked');
+      }
+    },false);
+
+    this.newElement=function(){
+      const li=document.createElement("li");
+      const inputValue=document.querySelector('.composerInput').value;
+      const t=document.createTextNode(inputValue);
+      li.appendChild(t);
+      if(inputValue===''){
+        alert("You must write sth");
+
+      }
+      else{
+        document.querySelector(".composerList").appendChild(li);
+      }
+      document.querySelector('.composerList').value="";
+      const span=document.createElement("SPAN");
+      const txt=document.createTextNode("\u00D7");
+      span.className="close";
+      span.appendChild(txt);
+      li.appendChild(span);
+      for(const i=0; i<close.length; i++){
+        close[i].onclick=function(){
+          const div=this.parentElement;
+          div.style.display="none";
+        }
+      }
+    }
+}
+}
 function main() {
+  const test=new SignalComposer();
   const view = new View()
 }
 main()
