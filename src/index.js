@@ -31,7 +31,7 @@ class SignalGenerator {
       //const phase = (i% period);
       const time = Number((i * timeIncrement).toFixed(3))
       console.log('amplitude = ' + amplitude)
-      const phase = Number(((i % period) * timeIncrement).toFixed(6))
+      const phase=Number((i%period).toFixed(3));
       console.log(`phase to ${phase} a halfPeriod to ${halfPeriod}`)
       wave.set(time, phase < halfPeriod ? amplitude : -amplitude)
       console.log(wave)
@@ -346,60 +346,132 @@ class ChartDrawer {
   }
 }
 
-class SignalComposer{
-  constructor(){
-  this.signalsList=document.querySelector('.signalListElement');
-  this.signalsList.innerHTML="kutas";
-    for (const i=0; i<=this.signalsList.length; i++){
-      const span=document.createElement("SPAN");
-      const txt=document.createTextNode("\u00D7");
-      span.className="close";
-      span.appendChild(txt);
-      signalsList[i].appendChild(span);
-    }
-    const close = document.querySelector(".close");
-    for (const i=0; i<close.length; i++){
-      close[i].onclick=function(){
-        const div=this.parentElement;
-        div.style.display="none";
-      }
-    }
-    this.list=document.querySelector('.composerList');
-    this.list.addEventListener('click',function(event){
-      if(event.target.tagName==="LI"){
-        event.target.classList.toggle('checked');
-      }
-    },false);
+class SignalComposer {
+  constructor() {
+    this.signalsList = document.querySelector('.signalListElement')
+    this.removeInitialElement();    
+    this.addCloseButtons();
+    this.addCloseEventListeners();
 
-    this.newElement=function(){
-      const li=document.createElement("li");
-      const inputValue=document.querySelector('.composerInput').value;
-      const t=document.createTextNode(inputValue);
-      li.appendChild(t);
-      if(inputValue===''){
-        alert("You must write sth");
-
-      }
-      else{
-        document.querySelector(".composerList").appendChild(li);
-      }
-      document.querySelector('.composerList').value="";
-      const span=document.createElement("SPAN");
-      const txt=document.createTextNode("\u00D7");
-      span.className="close";
-      span.appendChild(txt);
-      li.appendChild(span);
-      for(const i=0; i<close.length; i++){
-        close[i].onclick=function(){
-          const div=this.parentElement;
-          div.style.display="none";
+    this.list = document.querySelector('.composerList')
+    this.list.addEventListener(
+      'click',
+      (event) => {
+        if (event.target.tagName === 'LI') {
+          event.target.classList.toggle('checked')
         }
+      },
+      false,
+    )
+  }
+
+  removeInitialElement(){
+    const initialElements=document.querySelectorAll('.composerList .signalListElement');
+    initialElements.forEach(element=>{
+      element.remove();
+    });
+  }
+
+  addCloseButtons() {
+    const items = this.signalsList.getElementsByTagName('LI')
+    for (let i = 0; i < items.length; i++) {
+      const span = document.createElement('SPAN')
+      const txt = document.createTextNode('\u00D7')
+      span.appendChild(txt)
+      items[i].appendChild(span)
+    }
+  }
+
+  addCloseEventListeners() {
+    const closeButtons = this.signalsList.getElementsByClassName('close')
+    for (let i = 0; i < closeButtons.length; i++) {
+      closeButtons[i].onclick = function () {
+        const div = this.parentElement
+        div.style.display = 'none'
       }
     }
+  }
+
+  newElement() {
+    const li = document.createElement('li')
+    li.className = 'signalListElement'
+    const inputValue = document.querySelector('.composerInput').value
+    const t = document.createTextNode(inputValue)
+    li.appendChild(t)
+    if (inputValue === '') {
+      alert('You must type sth')
+    } else {
+      this.list.appendChild(li)
+    }
+
+    document.querySelector('.composerInput').value = ''
+
+    const span = document.createElement('SPAN')
+    const txt = document.createTextNode('\u00D7')
+    span.className = 'close'
+    span.appendChild(txt)
+    li.appendChild(span)
+
+    span.onclick = function () {
+      const div = this.parentElement
+      div.style.display = 'none'
+    }
+  }
 }
+
+function addHTMLElement()
+{
+  const newDiv=document.createElement("div");
+  const newContent=document.createTextNode("Hello There!");
+  newDiv.appendChild(newContent);
+  const currentDiv=document.querySelector("main");
+  document.body.insertBefore(newDiv,currentDiv);
 }
+
+
+function floatingDiv(){
+  document.querySelector(".showDivBtn").addEventListener('click',()=>{
+    let floatingDiv=document.getElementById('floatingDiv');
+    if(!floatingDiv){
+    let floatingDiv=document.createElement('div');
+    floatingDiv.style.class='showDiv';
+    floatingDiv.textContent="Drag me!";
+    document.body.appendChild(floatingDiv);
+    floatingDiv.style.display='block';
+    floatingDiv.style.top="100px";
+    floatingDiv.style.left="100px";
+    
+    let offsetX, offsetY;
+    floatingDiv.addEventListener('mousedown',(event)=>{
+      offsetX=event.clientX - floatingDiv.getBoundingClientRect().left;
+      offsetY=event.clientY - floatingDiv.getBoundingClientRect().top;
+      document.addEventListener('mousemove',mouseMoveHandler);
+      document.addEventListener('mouseup',mouseUpHandler);
+
+    });
+    function mouseMoveHandler(event){
+      floatingDiv.style.left=`${event.clientX-offsetX}px`;
+      floatingDiv.style.top=`${event.clientY-offsetY}px`;
+    }
+    function mouseUpHandler(event){
+      document.removeEventListener('mousemove',mouseMoveHandler);
+      document.removeEventListener('mouseup',mouseUpHandler);
+    }
+  }
+    else{
+      floatingDiv.style.display=floatingDiv.style.display==='none' ? 'block' :'none';
+    }});
+  
+}
+
+
 function main() {
-  const test=new SignalComposer();
+  floatingDiv();
+  addHTMLElement();
+  const test = new SignalComposer();
+  document.querySelector('.composerAddButton').addEventListener('click', () => {
+    test.newElement()
+  })
   const view = new View()
 }
 main()

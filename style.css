@@ -107,3 +107,15 @@ a,ul,ol,li{
   background:#04AA6d;
   cursor:pointer;
 }
+
+.showDiv{
+  position:absolute;
+  width:200px;
+  height:100px;
+  background-color:lightblue;
+  border:1px solid #000;
+  display:none;
+  cursor:move;
+  z-index:1000;
+}
+
