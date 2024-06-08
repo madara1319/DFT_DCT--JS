@@ -31,7 +31,7 @@ class SignalGenerator {
       //const phase = (i% period);
       const time = Number((i * timeIncrement).toFixed(3))
       console.log('amplitude = ' + amplitude)
-      const phase=Number((i%period).toFixed(3));
+      const phase = Number((i % period).toFixed(3))
       console.log(`phase to ${phase} a halfPeriod to ${halfPeriod}`)
       wave.set(time, phase < halfPeriod ? amplitude : -amplitude)
       console.log(wave)
@@ -349,9 +349,9 @@ class ChartDrawer {
 class SignalComposer {
   constructor() {
     this.signalsList = document.querySelector('.signalListElement')
-    this.removeInitialElement();    
-    this.addCloseButtons();
-    this.addCloseEventListeners();
+    this.removeInitialElement()
+    this.addCloseButtons()
+    this.addCloseEventListeners()
 
     this.list = document.querySelector('.composerList')
     this.list.addEventListener(
@@ -363,13 +363,19 @@ class SignalComposer {
       },
       false,
     )
+
+    document.querySelector('.composerAddButton').addEventListener('click',()=>{
+      this.newElement();
+    })
   }
 
-  removeInitialElement(){
-    const initialElements=document.querySelectorAll('.composerList .signalListElement');
-    initialElements.forEach(element=>{
-      element.remove();
-    });
+  removeInitialElement() {
+    const initialElements = document.querySelectorAll(
+      '.composerList .signalListElement',
+    )
+    initialElements.forEach((element) => {
+      element.remove()
+    })
   }
 
   addCloseButtons() {
@@ -392,86 +398,84 @@ class SignalComposer {
     }
   }
 
-  newElement() {
-    const li = document.createElement('li')
-    li.className = 'signalListElement'
-    const inputValue = document.querySelector('.composerInput').value
-    const t = document.createTextNode(inputValue)
-    li.appendChild(t)
-    if (inputValue === '') {
-      alert('You must type sth')
+  newElement(){
+    this.showFloatingDiv();
+  }
+
+  showFloatingDiv(){
+    let floatingDiv = document.querySelector('.showDiv')
+    if (!floatingDiv) {
+      floatingDiv = document.createElement('div')
+      floatingDiv.className = 'showDiv'
+      floatingDiv.innerHTML=`
+      <input type="text" id="composerInput" class="composerInput" placeholder="Funkcja...">
+      <span class="composerAddButton">Enter </span>
+      `
+      document.body.appendChild(floatingDiv)
+      floatingDiv.style.display = 'block'
+      floatingDiv.style.top = '100px'
+      floatingDiv.style.left = '100px'
+
+      let offsetX, offsetY
+      floatingDiv.addEventListener('mousedown', (event) => {
+        offsetX = event.clientX - floatingDiv.getBoundingClientRect().left
+        offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
+        document.addEventListener('mousemove', mouseMoveHandler)
+        document.addEventListener('mouseup', mouseUpHandler)
+      })
+      function mouseMoveHandler(event) {
+        floatingDiv.style.left = `${event.clientX - offsetX}px`
+        floatingDiv.style.top = `${event.clientY - offsetY}px`
+      }
+      function mouseUpHandler(event) {
+        document.removeEventListener('mousemove', mouseMoveHandler)
+        document.removeEventListener('mouseup', mouseUpHandler)
+      }
+      const input=floatingDiv.querySelector('#composerInput')
+      input.addEventListener('keydown',(event)=>{
+        if(event.key==='Enter'){
+          this.addElementToList(input.value)
+          input.value='';
+        }
+      })
+
+      const addButton=floatingDiv.querySelector('.composerAddButton')
+      addButton.addEventListener('click',()=>{
+        this.addElementToList(input.value)
+        input.value=''
+      })
+
     } else {
+      floatingDiv.style.display =
+        floatingDiv.style.display === 'none' ? 'block' : 'none'
+    }
+  }
+  addElementToList(element){
+    if(element.trim()!==''){
+      const li=document.createElement('li');
+      li.className='signalListElement';
+      li.textContent=element;
+      const span=document.createElement('SPAN');
+      const txt=document.createTextNode('\u00D7');
+      span.className='close';
+      span.appendChild(txt);
+      li.appendChild(span);
       this.list.appendChild(li)
-    }
-
-    document.querySelector('.composerInput').value = ''
-
-    const span = document.createElement('SPAN')
-    const txt = document.createTextNode('\u00D7')
-    span.className = 'close'
-    span.appendChild(txt)
-    li.appendChild(span)
-
-    span.onclick = function () {
-      const div = this.parentElement
-      div.style.display = 'none'
+      span.onclick=function(){
+        const div = this.parentElement;
+        div.style.display='none';
+      }
     }
   }
-}
-
-function addHTMLElement()
-{
-  const newDiv=document.createElement("div");
-  const newContent=document.createTextNode("Hello There!");
-  newDiv.appendChild(newContent);
-  const currentDiv=document.querySelector("main");
-  document.body.insertBefore(newDiv,currentDiv);
-}
-
-
-function floatingDiv(){
-  document.querySelector(".showDivBtn").addEventListener('click',()=>{
-    let floatingDiv=document.getElementById('floatingDiv');
-    if(!floatingDiv){
-    let floatingDiv=document.createElement('div');
-    floatingDiv.style.class='showDiv';
-    floatingDiv.textContent="Drag me!";
-    document.body.appendChild(floatingDiv);
-    floatingDiv.style.display='block';
-    floatingDiv.style.top="100px";
-    floatingDiv.style.left="100px";
-    
-    let offsetX, offsetY;
-    floatingDiv.addEventListener('mousedown',(event)=>{
-      offsetX=event.clientX - floatingDiv.getBoundingClientRect().left;
-      offsetY=event.clientY - floatingDiv.getBoundingClientRect().top;
-      document.addEventListener('mousemove',mouseMoveHandler);
-      document.addEventListener('mouseup',mouseUpHandler);
-
-    });
-    function mouseMoveHandler(event){
-      floatingDiv.style.left=`${event.clientX-offsetX}px`;
-      floatingDiv.style.top=`${event.clientY-offsetY}px`;
-    }
-    function mouseUpHandler(event){
-      document.removeEventListener('mousemove',mouseMoveHandler);
-      document.removeEventListener('mouseup',mouseUpHandler);
-    }
   }
-    else{
-      floatingDiv.style.display=floatingDiv.style.display==='none' ? 'block' :'none';
-    }});
-  
-}
+
+
+
+
 
 
 function main() {
-  floatingDiv();
-  addHTMLElement();
-  const test = new SignalComposer();
-  document.querySelector('.composerAddButton').addEventListener('click', () => {
-    test.newElement()
-  })
+  const test = new SignalComposer()
   const view = new View()
 }
 main()
