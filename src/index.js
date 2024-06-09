@@ -410,6 +410,7 @@ class SignalComposer {
       floatingDiv.innerHTML=`
       <input type="text" id="composerInput" class="composerInput" placeholder="Funkcja...">
       <span class="composerAddButton">Enter </span>
+      <button class="closeFloatingDiv">\u00D7</button>
       `
       document.body.appendChild(floatingDiv)
       floatingDiv.style.display = 'block'
@@ -439,6 +440,10 @@ class SignalComposer {
         }
       })
 
+    const closeFloatingDiv=floatingDiv.querySelector('.closeFloatingDiv')
+    closeFloatingDiv.addEventListener('click',()=>{
+      floatingDiv.remove(); 
+    })
       const addButton=floatingDiv.querySelector('.composerAddButton')
       addButton.addEventListener('click',()=>{
         this.addElementToList(input.value)
@@ -456,6 +461,7 @@ class SignalComposer {
       li.className='signalListElement';
       li.textContent=element;
       const span=document.createElement('SPAN');
+      //unicode X sign
       const txt=document.createTextNode('\u00D7');
       span.className='close';
       span.appendChild(txt);
@@ -463,7 +469,8 @@ class SignalComposer {
       this.list.appendChild(li)
       span.onclick=function(){
         const div = this.parentElement;
-        div.style.display='none';
+        //div.style.display='none';
+        div.remove();
       }
     }
   }
