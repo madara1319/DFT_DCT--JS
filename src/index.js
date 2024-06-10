@@ -113,8 +113,8 @@ class View {
       .querySelector('.textArea')
       .addEventListener('keydown', this.handleTextArea.bind(this))
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
-
-    this.handleOptionChange({ target: this.selectedOption })
+//dodanie handlera tutaj od razu rysuje sinusa 
+    //this.handleOptionChange({ target: this.selectedOption })
   }
   //wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(event, chosenButton) {
@@ -407,15 +407,25 @@ class SignalComposer {
     if (!floatingDiv) {
       floatingDiv = document.createElement('div')
       floatingDiv.className = 'showDiv'
-      floatingDiv.innerHTML=`
-      <input type="text" id="composerInput" class="composerInput" placeholder="Funkcja...">
-      <span class="composerAddButton">Enter </span>
+      floatingDiv.innerHTML=`<div class="composerFloatingDiv">
+      <div class="composerInputInsideDiv">
+      <select class="composerSelect">
+      <option class="sine">Sine function</option>
+      <option class="quad">Quadratic function</option>
+      <option class="triangle">Triangle function</option>
+      </select>
+
+      <input type="text" id=amplitudeComposerInput" class="amplitudeComposerInput" placeholder="Enter amplitude...">
+      <input type="text" id="frequencyComposerInput" class="frequencyComposerInput" placeholder="Enter frequency...">
+      </div>
+      <span class="composerAddToList">Enter </span>
       <button class="closeFloatingDiv">\u00D7</button>
+      </div>
       `
       document.body.appendChild(floatingDiv)
       floatingDiv.style.display = 'block'
-      floatingDiv.style.top = '100px'
-      floatingDiv.style.left = '100px'
+      floatingDiv.style.top = '50%'
+      floatingDiv.style.left = '50%'
 
       let offsetX, offsetY
       floatingDiv.addEventListener('mousedown', (event) => {
@@ -432,7 +442,7 @@ class SignalComposer {
         document.removeEventListener('mousemove', mouseMoveHandler)
         document.removeEventListener('mouseup', mouseUpHandler)
       }
-      const input=floatingDiv.querySelector('#composerInput')
+      const input=floatingDiv.querySelector('.amplitudeComposerInput')
       input.addEventListener('keydown',(event)=>{
         if(event.key==='Enter'){
           this.addElementToList(input.value)
@@ -444,7 +454,7 @@ class SignalComposer {
     closeFloatingDiv.addEventListener('click',()=>{
       floatingDiv.remove(); 
     })
-      const addButton=floatingDiv.querySelector('.composerAddButton')
+      const addButton=floatingDiv.querySelector('.composerAddToList')
       addButton.addEventListener('click',()=>{
         this.addElementToList(input.value)
         input.value=''
