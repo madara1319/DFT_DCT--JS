@@ -146,3 +146,12 @@ a,ul,ol,li{
   top:5px;
   right:5px;
 }
+
+.chartCloseButton{
+
+  position:absolute;
+  top:350px;
+  right:350px;
+  width:50px;
+  height:50px;
+}
