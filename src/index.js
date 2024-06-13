@@ -373,24 +373,16 @@ class SignalComposer {
     this.addCloseEventListeners()
 
     this.list = document.querySelector('.composerList')
-    this.list.addEventListener(
-      'click',
-      (event) => {
-        if (event.target.tagName === 'LI') {
-          event.target.classList.toggle('checked')
-        }
-      },
-      false,
-    )
 
     document.querySelector('.composerAddButton').addEventListener('click',()=>{
-      this.newElement();
+      //this.newElement();
+      this.showFloatingDiv();
     })
   }
 
   removeInitialElement() {
     const initialElements = document.querySelectorAll(
-      '.composerList .signalListElement',
+      '.signalListElement',
     )
     initialElements.forEach((element) => {
       element.remove()
@@ -417,9 +409,6 @@ class SignalComposer {
     }
   }
 
-  newElement(){
-    this.showFloatingDiv();
-  }
 
   showFloatingDiv(){
     let floatingDiv = document.querySelector('.showDiv')
@@ -484,6 +473,9 @@ class SignalComposer {
         floatingDiv.style.display === 'none' ? 'block' : 'none'
     }
   }
+  //this.list zaimplementowac jako liste z 2 elementami badz mape
+  //tak zeby bylo amplitude i czestotliwosc i zebrac z 2 inputow
+  //napisac combinedSignal metode do wyliczania lacznego sygnalu
   addElementToList(element){
     if(element.trim()!==''){
       const li=document.createElement('li');
