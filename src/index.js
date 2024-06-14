@@ -476,6 +476,7 @@ class SignalComposer {
   //this.list zaimplementowac jako liste z 2 elementami badz mape
   //tak zeby bylo amplitude i czestotliwosc i zebrac z 2 inputow
   //napisac combinedSignal metode do wyliczania lacznego sygnalu
+  //przemyslec klasy
   addElementToList(element){
     if(element.trim()!==''){
       const li=document.createElement('li');
