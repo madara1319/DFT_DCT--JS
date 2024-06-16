@@ -220,10 +220,12 @@ class View {
       }
     }
   }
+
+
   calculateInput(
     optionValue,
-    amplitudeValue = 1,
-    frequencyValue = 10,
+    amplitudeArray = [1],
+    frequencyArray = [10],
     customData = [],
   ) {
     let labels = []
@@ -235,6 +237,19 @@ class View {
     } else {
       switch (optionValue) {
         case 'Sine function':
+          //array with zeros
+          data=new Array(100).fill(0);
+          labels=Array.from({length:100},(_,i)=>(i/99).toFixed(5));
+          amplitudes.forEach((amplitude,index)=>{
+            const frequency=frequencyArray[index];
+            const wave=Array.from(SignalGenerator.generateSineWave(frequency,amplitude,99,100)).values()).map(value=>parseFloat(Number(value).toFixed(5)));
+
+            //sum data
+          data=data.map((value,i)=>value+wave[i]);
+          });
+        break;
+
+
           data = Array.from(
             SignalGenerator.generateSineWave(
               frequencyValue,
@@ -297,6 +312,88 @@ class View {
     }
     return { labels, data }
   }
+
+
+
+//  calculateInput(
+//    optionValue,
+//    amplitudeValue = 1,
+//    frequencyValue = 10,
+//    customData = [],
+//  ) {
+//    let labels = []
+//    let data = []
+//
+//    if (customData.length > 0) {
+//      labels = Array.from({ length: customData.length }, (_, i) => i.toString())
+//      data = customData
+//    } else {
+//      switch (optionValue) {
+//        case 'Sine function':
+//          data = Array.from(
+//            SignalGenerator.generateSineWave(
+//              frequencyValue,
+//              amplitudeValue,
+//              99,
+//              100,
+//            ).values(),
+//          ).map((value) => parseFloat(Number(value).toFixed(5)))
+//          labels = Array.from(
+//            SignalGenerator.generateSineWave(
+//              frequencyValue,
+//              amplitudeValue,
+//              99,
+//              100,
+//            ).keys(),
+//          ).map((key) => parseFloat(Number(key).toFixed(5)))
+//          break
+//
+//        case 'Quadratic function':
+//          //this doesnt work properly
+//          data = Array.from(
+//            SignalGenerator.generateSquareWave(
+//              frequencyValue,
+//              amplitudeValue,
+//              99,
+//              100,
+//            ).values(),
+//          ).map((value) => parseFloat(Number(value).toFixed(5)))
+//          labels = Array.from(
+//            SignalGenerator.generateSquareWave(
+//              frequencyValue,
+//              amplitudeValue,
+//              99,
+//              100,
+//            ).keys(),
+//          ).map((key) => parseFloat(Number(key).toFixed(5)))
+//          break
+//        case 'Triangle function':
+//          data = Array.from(
+//            SignalGenerator.generateTriangleWave(
+//              frequencyValue,
+//              amplitudeValue,
+//              99,
+//              100,
+//            ).values(),
+//          ).map((value) => parseFloat(Number(value).toFixed(5)))
+//          labels = Array.from(
+//            SignalGenerator.generateTriangleWave(
+//              frequencyValue,
+//              amplitudeValue,
+//              99,
+//              100,
+//            ).keys(),
+//          ).map((key) => parseFloat(Number(key).toFixed(5)))
+//          break
+//
+//        default:
+//          break
+//      }
+//    }
+//    return { labels, data }
+//  }
+
+  
 }
 
 class ChartDrawer {
