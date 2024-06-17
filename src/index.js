@@ -242,69 +242,13 @@ class View {
           labels=Array.from({length:100},(_,i)=>(i/99).toFixed(5));
           amplitudes.forEach((amplitude,index)=>{
             const frequency=frequencyArray[index];
-            const wave=Array.from(SignalGenerator.generateSineWave(frequency,amplitude,99,100)).values()).map(value=>parseFloat(Number(value).toFixed(5)));
+            const wave=Array.from(SignalGenerator.generateSineWave(frequency,amplitude,99,100)).values().map(value=>parseFloat(Number(value).toFixed(5)));
 
             //sum data
           data=data.map((value,i)=>value+wave[i]);
           });
         break;
-
-
-          data = Array.from(
-            SignalGenerator.generateSineWave(
-              frequencyValue,
-              amplitudeValue,
-              99,
-              100,
-            ).values(),
-          ).map((value) => parseFloat(Number(value).toFixed(5)))
-          labels = Array.from(
-            SignalGenerator.generateSineWave(
-              frequencyValue,
-              amplitudeValue,
-              99,
-              100,
-            ).keys(),
-          ).map((key) => parseFloat(Number(key).toFixed(5)))
-          break
-
-        case 'Quadratic function':
-          //this doesnt work properly
-          data = Array.from(
-            SignalGenerator.generateSquareWave(
-              frequencyValue,
-              amplitudeValue,
-              99,
-              100,
-            ).values(),
-          ).map((value) => parseFloat(Number(value).toFixed(5)))
-          labels = Array.from(
-            SignalGenerator.generateSquareWave(
-              frequencyValue,
-              amplitudeValue,
-              99,
-              100,
-            ).keys(),
-          ).map((key) => parseFloat(Number(key).toFixed(5)))
-          break
-        case 'Triangle function':
-          data = Array.from(
-            SignalGenerator.generateTriangleWave(
-              frequencyValue,
-              amplitudeValue,
-              99,
-              100,
-            ).values(),
-          ).map((value) => parseFloat(Number(value).toFixed(5)))
-          labels = Array.from(
-            SignalGenerator.generateTriangleWave(
-              frequencyValue,
-              amplitudeValue,
-              99,
-              100,
-            ).keys(),
-          ).map((key) => parseFloat(Number(key).toFixed(5)))
-          break
+//dodac pozostale funckje
 
         default:
           break
@@ -474,6 +418,10 @@ class SignalComposer {
     document.querySelector('.composerAddButton').addEventListener('click',()=>{
       //this.newElement();
       this.showFloatingDiv();
+    });
+
+    document.querySelector('.generateCombinedSignalButton').addEventListener('click',()=>{
+      this.generateCombinedSignal();
     })
   }
 
@@ -484,6 +432,14 @@ class SignalComposer {
     initialElements.forEach((element) => {
       element.remove()
     })
+  }
+
+  generateCombinedSignal(){
+    const amplitudeInputs=Array.from(this.list.querySelectorAll('.signalListElement')).map(li=>parseFloat(li.textContent.match(/Amplitude: (\d+\.?\d*)/)[1]));
+    const frequencyInputs=Array.from(this.list.querySelectorAll('.signalListElement')).map(li=>parseFloat(li.textContent.match(/Frequency: (\d+\.?\d*)/)[1]));
+    const view=new View();
+    const {labels,data}=view.calculateInput('Sine function',amplitudeInput,frequencyInput);
+    ChartDrawer.drawChart(labels,data,'line');
   }
 
   addCloseButtons() {
@@ -561,8 +517,13 @@ class SignalComposer {
     })
       const addButton=floatingDiv.querySelector('.composerAddToList')
       addButton.addEventListener('click',()=>{
+        const amplitudeInput=floatingDiv.querySelector('.amplitudeComposerInput').value;
+        const frequencyInput=floatingDiv.querySelector('.frequencyComposerInput').value;
+        this.addElementToList(amplitudeComposerInput,frequencyArray);
         this.addElementToList(input.value)
-        input.value=''
+
+        floatingDiv.remove();
+        //input.value=''
       })
 
     } else {
