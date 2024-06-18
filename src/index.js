@@ -240,7 +240,7 @@ class View {
           //array with zeros
           data=new Array(100).fill(0);
           labels=Array.from({length:100},(_,i)=>(i/99).toFixed(5));
-          amplitudes.forEach((amplitude,index)=>{
+          amplitudeArray.forEach((amplitude,index)=>{
             const frequency=frequencyArray[index];
             const wave=Array.from(SignalGenerator.generateSineWave(frequency,amplitude,99,100)).values().map(value=>parseFloat(Number(value).toFixed(5)));
 
