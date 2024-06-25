@@ -139,8 +139,6 @@ class View {
       //this.amplitudeSlider.value,
       //this.frequencySlider.value,
     )
-    //tu jest cos zdupione panie kolego
-    console.log(data);
     ChartDrawer.drawChart(labels, data, 'line')
     //this.calculateInput(selectedValue);
   }
@@ -204,26 +202,39 @@ class View {
           break;
       }
     }
+    //console.log(data);
     return { labels, data };
   }
 
-  // Helper function to generate signal and labels
-  generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
-    const labels = [];
-    const data = [];
-    const sampleRate = 100; // 100 samples per second
-    const duration = 1; // 1 second
+  // podaje funkcje z generatora amp i freq
+  //do poprawy ta funkcja
+generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
+  const labels = [];
+  const data = [];
+  const sampleRate = 100; // 100 samples per second
+  const duration = 1; // 1 second
+  const length = sampleRate * duration;
 
-    for (let t = 0; t <= duration; t += 1 / sampleRate) {
-      let value = 0;
-      for (let i = 0; i < amplitudeArray.length; i++) {
-        value += generatorFunction(frequencyArray[i], amplitudeArray[i], t);
+  // Generate the signals for all amplitudes and frequencies
+  let waveMapArray = amplitudeArray.map((amplitude, index) => {
+    return generatorFunction(frequencyArray[index], amplitude, sampleRate, length);
+  });
+
+  // Sum the values at each time point
+  for (let i = 0; i <= length; i++) {
+    const t = i / sampleRate;
+    let value = 0;
+    waveMapArray.forEach(waveMap => {
+      if (waveMap.has(t)) {
+        value += waveMap.get(t);
       }
-      labels.push(t.toFixed(3));
-      data.push(value);
-    }
-    return { labels, data };
+    });
+    labels.push(t.toFixed(3));
+    data.push(value);
   }
+
+  return { labels, data };
+}
 
 
   //  calculateInput(
