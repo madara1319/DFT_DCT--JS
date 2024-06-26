@@ -139,7 +139,8 @@ class View {
       //this.amplitudeSlider.value,
       //this.frequencySlider.value,
     )
-    ChartDrawer.drawChart(labels, data, 'line')
+    //console.log(data)
+   ChartDrawer.drawChart(labels, data, 'line')
     //this.calculateInput(selectedValue);
   }
 
@@ -209,111 +210,37 @@ class View {
   // podaje funkcje z generatora amp i freq
   //do poprawy ta funkcja
 generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
-  const labels = [];
-  const data = [];
-  const sampleRate = 100; // 100 samples per second
-  const duration = 1; // 1 second
-  const length = sampleRate * duration;
-
-  // Generate the signals for all amplitudes and frequencies
-  let waveMapArray = amplitudeArray.map((amplitude, index) => {
-    return generatorFunction(frequencyArray[index], amplitude, sampleRate, length);
-  });
-
-  // Sum the values at each time point
-  for (let i = 0; i <= length; i++) {
-    const t = i / sampleRate;
-    let value = 0;
-    waveMapArray.forEach(waveMap => {
-      if (waveMap.has(t)) {
-        value += waveMap.get(t);
-      }
+    const labels = [];
+    const data = [];
+    const sampleRate = 100; // 100 samples per second
+    const duration = 1; // 1 second
+    const length = sampleRate * duration;
+    console.log("jestem tu")
+    // Generate the signals for all amplitudes and frequencies
+    let waveMapArray = amplitudeArray.map((amplitude, index) => {
+        return generatorFunction(frequencyArray[index], amplitude, sampleRate, length);
     });
-    labels.push(t.toFixed(3));
-    data.push(value);
-  }
 
-  return { labels, data };
+    // Sum the values at each time point
+    for (let i = 0; i < length; i++) {
+        const t = Number((i / sampleRate).toFixed(3));
+        let value = 0;
+        waveMapArray.forEach(waveMap => {
+            if (waveMap.has(t)) {
+                value += waveMap.get(t);
+              //console.log(value);
+            }
+        });
+        labels.push(t.toFixed(3));
+        data.push(value);
+      //console.log(data);
+    }
+
+    return { labels, data };
 }
 
 
-  //  calculateInput(
-  //    optionValue,
-  //    amplitudeValue = 1,
-  //    frequencyValue = 10,
-  //    customData = [],
-  //  ) {
-  //    let labels = []
-  //    let data = []
-  //
-  //    if (customData.length > 0) {
-  //      labels = Array.from({ length: customData.length }, (_, i) => i.toString())
-  //      data = customData
-  //    } else {
-  //      switch (optionValue) {
-  //        case 'Sine function':
-  //          data = Array.from(
-  //            SignalGenerator.generateSineWave(
-  //              frequencyValue,
-  //              amplitudeValue,
-  //              99,
-  //              100,
-  //            ).values(),
-  //          ).map((value) => parseFloat(Number(value).toFixed(5)))
-  //          labels = Array.from(
-  //            SignalGenerator.generateSineWave(
-  //              frequencyValue,
-  //              amplitudeValue,
-  //              99,
-  //              100,
-  //            ).keys(),
-  //          ).map((key) => parseFloat(Number(key).toFixed(5)))
-  //          break
-  //
-  //        case 'Quadratic function':
-  //          //this doesnt work properly
-  //          data = Array.from(
-  //            SignalGenerator.generateSquareWave(
-  //              frequencyValue,
-  //              amplitudeValue,
-  //              99,
-  //              100,
-  //            ).values(),
-  //          ).map((value) => parseFloat(Number(value).toFixed(5)))
-  //          labels = Array.from(
-  //            SignalGenerator.generateSquareWave(
-  //              frequencyValue,
-  //              amplitudeValue,
-  //              99,
-  //              100,
-  //            ).keys(),
-  //          ).map((key) => parseFloat(Number(key).toFixed(5)))
-  //          break
-  //        case 'Triangle function':
-  //          data = Array.from(
-  //            SignalGenerator.generateTriangleWave(
-  //              frequencyValue,
-  //              amplitudeValue,
-  //              99,
-  //              100,
-  //            ).values(),
-  //          ).map((value) => parseFloat(Number(value).toFixed(5)))
-  //          labels = Array.from(
-  //            SignalGenerator.generateTriangleWave(
-  //              frequencyValue,
-  //              amplitudeValue,
-  //              99,
-  //              100,
-  //            ).keys(),
-  //          ).map((key) => parseFloat(Number(key).toFixed(5)))
-  //          break
-  //
-  //        default:
-  //          break
-  //      }
-  //    }
-  //    return { labels, data }
-  //  }
+
 }
 
 
