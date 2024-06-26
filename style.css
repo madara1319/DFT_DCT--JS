@@ -138,13 +138,23 @@ a,ul,ol,li{
 .composerFloatingDiv{
   display:flex;
   flex-direction:column;
-  gap:5px;
+  gap:15px;
 }
 
 .closeFloatingDiv{
   position:absolute;
   top:5px;
   right:5px;
+  align-items:center;
+}
+.composerInputInsideDiv{
+  display:flex;
+  flex-wrap:wrap;
+  flex-direction:row;
+  align-items:center;
+  justify-content:flex-end;
+  margin-right:50px;
+  height:150px;
 }
 
 .chartCloseButton{
