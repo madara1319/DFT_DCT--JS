@@ -271,15 +271,21 @@ class SignalComposer {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
       };
-
-      const input = floatingDiv.querySelector('.amplitudeComposerInput');
-      input.addEventListener('keydown', (event) => {
+      const frequencyInput=floatingDiv.querySelector('.frequencyComposerInput');
+      const amplitudeInput = floatingDiv.querySelector('.amplitudeComposerInput');
+      frequencyInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
           this.addElementToList();
           floatingDiv.remove();
         }
       });
 
+      amplitudeInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.addElementToList();
+          floatingDiv.remove();
+        }
+      });
       const closeFloatingDiv = floatingDiv.querySelector('.closeFloatingDiv');
       closeFloatingDiv.addEventListener('click', () => {
         floatingDiv.remove();
