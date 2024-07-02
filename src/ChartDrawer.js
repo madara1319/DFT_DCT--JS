@@ -1,4 +1,4 @@
-
+//klasa do korzystania w View
 class ChartDrawer {
   static drawChart(labels, data, type) {
     //nie wiem czy one na siebie nie nachodza

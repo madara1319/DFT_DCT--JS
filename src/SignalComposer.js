@@ -30,6 +30,7 @@ class SignalComposer {
   }
 
   //________________________________________________________________________________
+  //zastanow sie czy nie przerzucic do innej klasy
   generateCombinedSignal() {
     const signals = Array.from(this.list.querySelectorAll('.signalListElement')).map((li) => {
       return {
@@ -71,6 +72,7 @@ class SignalComposer {
     const data = Array.from(combinedWave.values());
 
     ChartDrawer.drawChart(labels, data, 'line');
+    //dodac funkcje pokazujaca guzik do tranformacji
   }
 
   //________________________________________________________________________________

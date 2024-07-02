@@ -119,6 +119,7 @@ class View {
      // frequencyArray,
     )
     ChartDrawer.drawChart(labels, data, 'line')
+    //dodac funkcje pokazujaca guzik do transformacji
   }
 //________________________________________________________________________________
   //funckja obslugujaca rysowanie defaultowych wykresow po zmianie base function
@@ -141,6 +142,7 @@ class View {
     )
     //console.log(data)
    ChartDrawer.drawChart(labels, data, 'line')
+    //dodac funkcje pokazujaca guzik do transformacji
     //this.calculateInput(selectedValue);
   }
 
@@ -172,6 +174,7 @@ class View {
           dataArray,
         )
         ChartDrawer.drawChart(labels, data, 'bar')
+    //dodac funkcje pokazujaca guzik do transformacji
       } else {
         console.log('nieprowadilowe dane')
       }

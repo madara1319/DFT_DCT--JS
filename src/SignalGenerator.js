@@ -1,3 +1,4 @@
+//klasa do korzystania w modelu
 class SignalGenerator {
   static generateSineWave(frequency, amplitude = 1, sampleRate, length) {
     console.log("weszles sinus")
