@@ -261,6 +261,8 @@
 import { View } from './View.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('jestm przed');
   const view = new View();
   const controller = new Controller(view);
+  console.log("jestm po funkcjach");
 });

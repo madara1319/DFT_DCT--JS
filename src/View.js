@@ -1,12 +1,13 @@
 
-import {Controller} from './Controller.js';
+//import {Controller} from './Controller.js';
 //import {SignalComposer} from './SignalComposer.js';
 import {ChartDrawer} from './ChartDrawer.js';
-import { SignalGenerator } from './SignalGenerator.js';
+//import { SignalGenerator } from './SignalGenerator.js';
 
 
 class View {
   constructor() {
+    console.log('odpalam konstruktor view')
     //przyciski wyboru tryby wprowadzania danych
     this.baseFuncButton = document.querySelector('.showSelection')
     this.enterProbesButton = document.querySelector('.enterProbes')
@@ -80,7 +81,8 @@ class View {
     });
 
     //jak strona sie zaladuje odpal funkcje setupCharts
-    document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
+   document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
+    console.log('wewnetrzna initializacja')
 }
 //________________________________________________________________________________
 
@@ -122,7 +124,7 @@ setController(controller){
     const amplitudeArray = [parseFloat(amplitudeValue)]
     const frequencyArray = [parseFloat(frequencyValue)]
     //oblicz dane ze sladjerow i narsysuj nowego charta
-    this.controller.updateChart(selectedOption,[amplitudeArray],[frequencyArray]);
+    this.controller.updateChart(selectedOption,amplitudeArray,frequencyArray);
     //dodac funkcje pokazujaca guzik do transformacji
   }
 //________________________________________________________________________________
@@ -136,7 +138,7 @@ setController(controller){
     const frequencyValue = parseFloat(this.frequencySlider.value)
 
     //oblicz dane ze sladjerow i narsysuj nowego charta
-    this.controller.updateChart(selectedOption,[amplitudeArray],[frequencyArray]);
+    this.controller.updateChart(selectedOption,[amplitudeValue],[frequencyValue]);
     //dodac funkcje pokazujaca guzik do transformacji
   }
 
@@ -189,7 +191,7 @@ setController(controller){
         <span class="composerAddToList">Enter</span>
         <button class="closeFloatingDiv">\u00D7</button>
       </div>`;
-      document.body.appendChild(floatingDiv);
+ document.body.appendChild(floatingDiv);
       floatingDiv.style.display = 'block';
       floatingDiv.style.top = '50%';
       floatingDiv.style.left = '50%';
@@ -198,44 +200,28 @@ setController(controller){
       floatingDiv.addEventListener('mousedown', (event) => {
         offsetX = event.clientX - floatingDiv.getBoundingClientRect().left;
         offsetY = event.clientY - floatingDiv.getBoundingClientRect().top;
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
-      });
-      const mouseMoveHandler = (event) => {
-        floatingDiv.style.left = `${event.clientX - offsetX}px`;
-        floatingDiv.style.top = `${event.clientY - offsetY}px`;
-      };
-      const mouseUpHandler = () => {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      };
-      const frequencyInput=floatingDiv.querySelector('.frequencyComposerInput');
-      const amplitudeInput = floatingDiv.querySelector('.amplitudeComposerInput');
-      frequencyInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          this.addElementToList();
-          floatingDiv.remove();
+
+        function moveFloatingDiv(event) {
+          floatingDiv.style.left = `${event.clientX - offsetX}px`;
+          floatingDiv.style.top = `${event.clientY - offsetY}px`;
         }
+
+        document.addEventListener('mousemove', moveFloatingDiv);
+        document.addEventListener('mouseup', () => {
+          document.removeEventListener('mousemove', moveFloatingDiv);
+        }, { once: true });
       });
 
-      amplitudeInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          this.addElementToList();
-          floatingDiv.remove();
-        }
-      });
-      const closeFloatingDiv = floatingDiv.querySelector('.closeFloatingDiv');
-      closeFloatingDiv.addEventListener('click', () => {
-        floatingDiv.remove();
+      document.querySelector('.composerAddToList').addEventListener('click', () => {
+        const selectedOption = document.querySelector('.composerSelect').value;
+        const amplitude = document.querySelector('#amplitudeComposerInput').value;
+        const frequency = document.querySelector('#frequencyComposerInput').value;
+        this.controller.addElementToList(selectedOption, amplitude, frequency);
       });
 
-      const addButton = floatingDiv.querySelector('.composerAddToList');
-      addButton.addEventListener('click', () => {
-        this.addElementToList();
+      document.querySelector('.closeFloatingDiv').addEventListener('click', () => {
         floatingDiv.remove();
       });
-    } else {
-      floatingDiv.style.display = floatingDiv.style.display === 'none' ? 'block' : 'none';
     }
   }
 

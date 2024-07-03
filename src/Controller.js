@@ -1,17 +1,19 @@
 
 import { SignalGenerator } from './SignalGenerator.js';
-import { ChartDrawer } from './ChartDrawer.js';
+//import { ChartDrawer } from './ChartDrawer.js';
 import {View} from './View.js';
 
 class Controller{
   constructor(view){
+    console.log('odpalam konstriktor kontrolera')
     this.view=view;
     this.view.setController(this);
     this.view.initialize();
+    console.log('przeszelm inicjalizacje')
   }
 
   updateChart(selectedOption, amplitudeArray=[1], frequencyArray=[10],customData=[]){
-    const {labels,data}=this.calculateInput(selectedOption,amplitudeArray,frequencyArra, customData);
+    const {labels,data}=this.calculateInput(selectedOption,amplitudeArray,frequencyArray, customData);
    this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line'); 
   }
 
