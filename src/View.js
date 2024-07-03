@@ -1,0 +1,269 @@
+
+import {Controller} from './Controller.js';
+//import {SignalComposer} from './SignalComposer.js';
+import {ChartDrawer} from './ChartDrawer.js';
+import { SignalGenerator } from './SignalGenerator.js';
+
+
+class View {
+  constructor() {
+    //przyciski wyboru tryby wprowadzania danych
+    this.baseFuncButton = document.querySelector('.showSelection')
+    this.enterProbesButton = document.querySelector('.enterProbes')
+    this.composerButton = document.querySelector('.showComposer')
+
+    //tryby wprowadzania danych
+    this.optionsDisplay = document.querySelector('.options')
+    this.enterBox = document.querySelector('.entering')
+    this.composerBox = document.querySelector('.composer')
+
+    this.toggleButtons = [this.optionsDisplay, this.enterBox, this.composerBox]
+
+
+    //wybor baseFunction 
+    this.selectedOption = document.querySelector('.selection')
+
+    //podpiecie sliderow
+    this.amplitudeSlider = document.querySelector('.amplitudeSlider')
+    this.frequencySlider = document.querySelector('.frequencySlider')
+
+
+    //przeniesienie z signalComposer
+    this.list=document.querySelector('.composerList');
+
+    //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
+    this.initialize();
+
+  }
+  //________________________________________________________________________________
+  //koniec konstruktora
+  //TOGGLE EVENTlISTENERY FLOATINGDIV COMBINEDSIGNALGUZIK
+  initialize(){
+    //toggle do do przyciskow wprowadzania
+    this.baseFuncButton.addEventListener('click', (event) =>
+      this.toggleElement(event, this.optionsDisplay),
+    )
+    this.enterProbesButton.addEventListener('click', (event) =>
+      this.toggleElement(event, this.enterBox),
+    )
+    this.composerButton.addEventListener('click', (event) =>
+      this.toggleElement(event, this.composerBox),
+    )
+
+    //podpiecie naslichiwania rusowanie po zmianie
+    this.selectedOption.addEventListener(
+      'click',
+        this.handleOptionChange.bind(this),
+    )
+
+    //nasluchiwanie sliderow i rysowanie z nich baseFunction
+    this.frequencySlider.addEventListener(
+      'change',
+      this.handleSlider.bind(this),
+    )
+    this.amplitudeSlider.addEventListener(
+      'change',
+      this.handleSlider.bind(this),
+    )
+    //dodanie do rysowania z trybu wprowadzania tablicy
+    this.enterBox
+      .querySelector('.textArea')
+      .addEventListener('keydown', this.handleTextArea.bind(this))
+
+    //do composera przcysiki  
+    document.querySelector('.composerAddButton').addEventListener('click', () => {
+      this.showFloatingDiv();
+    });
+
+    document.querySelector('.generateCombinedSignalButton').addEventListener('click', () => {
+      this.generateCombinedSignal();
+    });
+
+    //jak strona sie zaladuje odpal funkcje setupCharts
+    document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
+}
+//________________________________________________________________________________
+
+setController(controller){
+  this.controller=controller;
+}
+
+
+  //funkcja wyswietlanie ukrywanie opcji wprowadzania danych
+  toggleElement(event, chosenButton) {
+    event.preventDefault()
+
+    const openButton = chosenButton.classList.contains('open')
+
+    this.toggleButtons.forEach((element) => {
+      element.classList.add('hidden')
+      element.classList.remove('open')
+    })
+    if (!openButton) {
+      chosenButton.classList.remove('hidden')
+      chosenButton.classList.add('open')
+    }
+  }
+
+  //funkcja oblusgujaca rysowanie ze sliderow
+  handleSlider(event) {
+    let amplitudeValue
+    let frequencyValue
+
+    if (event.target.id === 'amplitudeSlider') {
+      amplitudeValue = event.target.value
+      frequencyValue = this.frequencySlider.value
+    } else if (event.target.id === 'frequencySlider') {
+      amplitudeValue = this.amplitudeSlider.value
+      frequencyValue = event.target.value
+    }
+    const selectedOption = this.selectedOption.value
+
+    const amplitudeArray = [parseFloat(amplitudeValue)]
+    const frequencyArray = [parseFloat(frequencyValue)]
+    //oblicz dane ze sladjerow i narsysuj nowego charta
+    this.controller.updateChart(selectedOption,[amplitudeArray],[frequencyArray]);
+    //dodac funkcje pokazujaca guzik do transformacji
+  }
+//________________________________________________________________________________
+  //funckja obslugujaca rysowanie defaultowych wykresow po zmianie base function
+  handleOptionChange(event) {
+    const selectedValue = event.target.value
+    console.log(selectedValue);
+
+
+    const amplitudeValue = parseFloat(this.amplitudeSlider.value)
+    const frequencyValue = parseFloat(this.frequencySlider.value)
+
+    //oblicz dane ze sladjerow i narsysuj nowego charta
+    this.controller.updateChart(selectedOption,[amplitudeArray],[frequencyArray]);
+    //dodac funkcje pokazujaca guzik do transformacji
+  }
+
+  //________________________________________________________________________________
+  //daj wykres jak sie strona zaladuje
+
+  //wymiary do przemyslania pod katem designu
+  setupCharts() {
+    this.sampleChart = new Chart(
+      document.getElementById('sampleChart').getContext('2d'),
+    )
+    this.sampleChart.canvas.width = 400
+    this.sampleChart.canvas.height = 400
+  }
+
+  //________________________________________________________________________________
+  //funkcja oblusgujaca rysowanie wykresu z probek
+  handleTextArea(event) {
+    if (event.key === 'Enter') {
+      const data = event.target.value.trim()
+
+      const dataArray = data.split(',').map((value) => parseFloat(value.trim()))
+      const areNumbers = dataArray.every((value) => !isNaN(value))
+      if (areNumbers) {
+
+    //dane probki  i narsysuj nowego charta
+    this.controller.updateChart('Custom',[],[],dataArray);
+      } else {
+        console.log('nieprowadilowe dane')
+      }
+    }
+  }
+//________________________________________________________________________________
+
+  showFloatingDiv() {
+    let floatingDiv = document.querySelector('.showDiv');
+    if (!floatingDiv) {
+      floatingDiv = document.createElement('div');
+      floatingDiv.className = 'showDiv';
+      floatingDiv.innerHTML = `<div class="composerFloatingDiv">
+        <div class="composerInputInsideDiv">
+          <select class="composerSelect">
+            <option value="Sine function">Sine function</option>
+            <option value="Square function">Square function</option>
+            <option value="Triangle function">Triangle function</option>
+          </select>
+          <input type="text" id="amplitudeComposerInput" class="amplitudeComposerInput" placeholder="Enter amplitude...">
+          <input type="text" id="frequencyComposerInput" class="frequencyComposerInput" placeholder="Enter frequency...">
+        </div>
+        <span class="composerAddToList">Enter</span>
+        <button class="closeFloatingDiv">\u00D7</button>
+      </div>`;
+      document.body.appendChild(floatingDiv);
+      floatingDiv.style.display = 'block';
+      floatingDiv.style.top = '50%';
+      floatingDiv.style.left = '50%';
+
+      let offsetX, offsetY;
+      floatingDiv.addEventListener('mousedown', (event) => {
+        offsetX = event.clientX - floatingDiv.getBoundingClientRect().left;
+        offsetY = event.clientY - floatingDiv.getBoundingClientRect().top;
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
+      });
+      const mouseMoveHandler = (event) => {
+        floatingDiv.style.left = `${event.clientX - offsetX}px`;
+        floatingDiv.style.top = `${event.clientY - offsetY}px`;
+      };
+      const mouseUpHandler = () => {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+      };
+      const frequencyInput=floatingDiv.querySelector('.frequencyComposerInput');
+      const amplitudeInput = floatingDiv.querySelector('.amplitudeComposerInput');
+      frequencyInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.addElementToList();
+          floatingDiv.remove();
+        }
+      });
+
+      amplitudeInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.addElementToList();
+          floatingDiv.remove();
+        }
+      });
+      const closeFloatingDiv = floatingDiv.querySelector('.closeFloatingDiv');
+      closeFloatingDiv.addEventListener('click', () => {
+        floatingDiv.remove();
+      });
+
+      const addButton = floatingDiv.querySelector('.composerAddToList');
+      addButton.addEventListener('click', () => {
+        this.addElementToList();
+        floatingDiv.remove();
+      });
+    } else {
+      floatingDiv.style.display = floatingDiv.style.display === 'none' ? 'block' : 'none';
+    }
+  }
+
+  //________________________________________________________________________________
+//nowa metoda przerobka z addElementToList()
+addElementToListView(element){
+  const li=document.createElement('li');
+  li.className='signalElement';
+  li.textContent = `${selectedOption} - Amplitude: ${amplitude}, Frequency: ${frequency}`;
+   this.list.appendChild(li);
+
+  this.controller.addCloseButtons();
+  this.controller.addCloseEventListeners();
+}
+
+getSignalListElements(){
+  return document.getElementsByClassName('signalElement');
+}
+
+getCloseButtons(){
+  return document.getElementsByClassName('close');
+}
+
+drawChart(labels,data,type){
+  ChartDrawer.drawChart(labels,data,type);
+}
+
+
+}
+
+export {View};

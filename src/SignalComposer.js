@@ -1,6 +1,7 @@
 import { SignalGenerator } from './SignalGenerator.js';
 import { ChartDrawer } from './ChartDrawer.js';
 
+
 class SignalComposer {
   constructor() {
     this.signalsList = document.querySelector('.signalListElement');
@@ -9,13 +10,14 @@ class SignalComposer {
 
 
     this.addCloseEventListeners();
-
+    //przenosze do View
     this.list = document.querySelector('.composerList');
-
+      //przeniesione do View initialize()
     document.querySelector('.composerAddButton').addEventListener('click', () => {
       this.showFloatingDiv();
     });
 
+      //przeniesione do View initialize()
     document.querySelector('.generateCombinedSignalButton').addEventListener('click', () => {
       this.generateCombinedSignal();
     });
@@ -96,7 +98,7 @@ class SignalComposer {
       };
     }
   }
-
+  //przenosze do View
   //________________________________________________________________________________
   showFloatingDiv() {
     let floatingDiv = document.querySelector('.showDiv');
@@ -174,20 +176,31 @@ class SignalComposer {
     const frequency = document.querySelector('.frequencyComposerInput').value;
 
     if (amplitude.trim() !== '' && frequency.trim() !== '') {
+      //przenoszenie do View
       const li = document.createElement('li');
       li.className = 'signalListElement';
+
+
+      //to jeszcze nie wiem
     //dodaj customowe wlasciwlosci do HTML - dataset 
       li.dataset.selectedOption = selectedOption;
       li.dataset.amplitude = amplitude;
       li.dataset.frequency = frequency;
+
+      //przenoszenie do View
       li.textContent = `${selectedOption} - Amplitude: ${amplitude}, Frequency: ${frequency}`;
+
+      //to jeszcze nie wiem moze funkcja addCloseButtons
       const span = document.createElement('SPAN');
       const txt = document.createTextNode('\u00D7');
       span.className = 'close';
       span.appendChild(txt);
       li.appendChild(span);
-      this.list.appendChild(li);
 
+      //przenoszenie do View
+      this.list.appendChild(li);
+      
+      //to jeszcze nie wiem
       span.onclick = function () {
         const div = this.parentElement;
         div.remove();
