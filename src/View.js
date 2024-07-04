@@ -1,9 +1,7 @@
-
 //import {Controller} from './Controller.js';
 //import {SignalComposer} from './SignalComposer.js';
-import {ChartDrawer} from './ChartDrawer.js';
+import { ChartDrawer } from './ChartDrawer.js'
 //import { SignalGenerator } from './SignalGenerator.js';
-
 
 class View {
   constructor() {
@@ -20,41 +18,45 @@ class View {
 
     this.toggleButtons = [this.optionsDisplay, this.enterBox, this.composerBox]
 
-
-    //wybor baseFunction 
+    //wybor baseFunction
     this.selectedOption = document.querySelector('.selection')
 
     //podpiecie sliderow
     this.amplitudeSlider = document.querySelector('.amplitudeSlider')
     this.frequencySlider = document.querySelector('.frequencySlider')
 
-
     //przeniesienie z signalComposer
-    this.list=document.querySelector('.composerList');
+    this.list = document.querySelector('.composerList')
 
     //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
-    this.initialize();
-
+    this.initialize()
   }
   //________________________________________________________________________________
   //koniec konstruktora
   //TOGGLE EVENTlISTENERY FLOATINGDIV COMBINEDSIGNALGUZIK
-  initialize(){
+  initialize() {
+    let clickCount = 0
     //toggle do do przyciskow wprowadzania
-    this.baseFuncButton.addEventListener('click', (event) =>
-      this.toggleElement(event, this.optionsDisplay),
-    )
-    this.enterProbesButton.addEventListener('click', (event) =>
-      this.toggleElement(event, this.enterBox),
-    )
-    this.composerButton.addEventListener('click', (event) =>
-      this.toggleElement(event, this.composerBox),
-    )
+    this.baseFuncButton.addEventListener('click', (event) => {
+      clickCount++
+      console.log('baseFuncButton klikniety', clickCount)
+      this.toggleElement(event, this.optionsDisplay)
+    })
+    this.enterProbesButton.addEventListener('click', (event) => {
+      clickCount++
+      console.log('enterProbesButton klikniety', clickCount)
+      this.toggleElement(event, this.enterBox)
+    })
+    this.composerButton.addEventListener('click', (event) => {
+      clickCount++
+      console.log('composerButton klikniety', clickCount)
+      this.toggleElement(event, this.composerBox)
+    })
 
     //podpiecie naslichiwania rusowanie po zmianie
     this.selectedOption.addEventListener(
       'click',
-        this.handleOptionChange.bind(this),
+      this.handleOptionChange.bind(this),
     )
 
     //nasluchiwanie sliderow i rysowanie z nich baseFunction
@@ -71,40 +73,56 @@ class View {
       .querySelector('.textArea')
       .addEventListener('keydown', this.handleTextArea.bind(this))
 
-    //do composera przcysiki  
-    document.querySelector('.composerAddButton').addEventListener('click', () => {
-      this.showFloatingDiv();
-    });
+    //do composera przcysiki
+    document
+      .querySelector('.composerAddButton')
+      .addEventListener('click', () => {
+        this.showFloatingDiv()
+      })
 
-    document.querySelector('.generateCombinedSignalButton').addEventListener('click', () => {
-      this.generateCombinedSignal();
-    });
+    document
+      .querySelector('.generateCombinedSignalButton')
+      .addEventListener('click', () => {
+        this.generateCombinedSignal()
+      })
 
     //jak strona sie zaladuje odpal funkcje setupCharts
-   document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
+    document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
     console.log('wewnetrzna initializacja')
-}
-//________________________________________________________________________________
+  }
+  //________________________________________________________________________________
 
-setController(controller){
-  this.controller=controller;
-}
-
+  setController(controller) {
+    this.controller = controller
+  }
 
   //funkcja wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(event, chosenButton) {
     event.preventDefault()
-
+    console.log(' toggle start')
+    console.log('Chosen button:', chosenButton)
+    console.log('Initial state:', chosenButton.className)
     const openButton = chosenButton.classList.contains('open')
+    console.log('Is open?', openButton)
 
     this.toggleButtons.forEach((element) => {
       element.classList.add('hidden')
       element.classList.remove('open')
+      console.log("Toggled off: ",element.className);
     })
     if (!openButton) {
       chosenButton.classList.remove('hidden')
       chosenButton.classList.add('open')
+      console.log('powinien byc open')
+      console.log("toggled on: ",chosenButton.className);
     }
+    console.log(' toggle end')
+    console.log('Final state:', chosenButton.className)
+
+
+  this.toggleButtons.forEach((element, index) => {
+    console.log(`Button ${index} final state: ${element.className}`);
+  });
   }
 
   //funkcja oblusgujaca rysowanie ze sliderow
@@ -124,21 +142,27 @@ setController(controller){
     const amplitudeArray = [parseFloat(amplitudeValue)]
     const frequencyArray = [parseFloat(frequencyValue)]
     //oblicz dane ze sladjerow i narsysuj nowego charta
-    this.controller.updateChart(selectedOption,amplitudeArray,frequencyArray);
+    this.controller.updateChart(selectedOption, amplitudeArray, frequencyArray)
     //dodac funkcje pokazujaca guzik do transformacji
+    console.log('czy handleSlider dziala?')
   }
-//________________________________________________________________________________
+  //________________________________________________________________________________
   //funckja obslugujaca rysowanie defaultowych wykresow po zmianie base function
   handleOptionChange(event) {
+    console.log(' handleOptionChange start')
     const selectedValue = event.target.value
-    console.log(selectedValue);
-
+    console.log('Selected value:', selectedValue)
 
     const amplitudeValue = parseFloat(this.amplitudeSlider.value)
     const frequencyValue = parseFloat(this.frequencySlider.value)
 
     //oblicz dane ze sladjerow i narsysuj nowego charta
-    this.controller.updateChart(selectedOption,[amplitudeValue],[frequencyValue]);
+    this.controller.updateChart(
+      selectedOption,
+      [amplitudeValue],
+      [frequencyValue],
+    )
+    console.log(' handleOptionChange end')
     //dodac funkcje pokazujaca guzik do transformacji
   }
 
@@ -147,11 +171,14 @@ setController(controller){
 
   //wymiary do przemyslania pod katem designu
   setupCharts() {
+    console.log('czy setupCharts dziala? 1')
     this.sampleChart = new Chart(
       document.getElementById('sampleChart').getContext('2d'),
     )
     this.sampleChart.canvas.width = 400
     this.sampleChart.canvas.height = 400
+
+    console.log(' setupCharts dziala')
   }
 
   //________________________________________________________________________________
@@ -163,21 +190,20 @@ setController(controller){
       const dataArray = data.split(',').map((value) => parseFloat(value.trim()))
       const areNumbers = dataArray.every((value) => !isNaN(value))
       if (areNumbers) {
-
-    //dane probki  i narsysuj nowego charta
-    this.controller.updateChart('Custom',[],[],dataArray);
+        //dane probki  i narsysuj nowego charta
+        this.controller.updateChart('Custom', [], [], dataArray)
       } else {
         console.log('nieprowadilowe dane')
       }
     }
   }
-//________________________________________________________________________________
+  //________________________________________________________________________________
 
   showFloatingDiv() {
-    let floatingDiv = document.querySelector('.showDiv');
+    let floatingDiv = document.querySelector('.showDiv')
     if (!floatingDiv) {
-      floatingDiv = document.createElement('div');
-      floatingDiv.className = 'showDiv';
+      floatingDiv = document.createElement('div')
+      floatingDiv.className = 'showDiv'
       floatingDiv.innerHTML = `<div class="composerFloatingDiv">
         <div class="composerInputInsideDiv">
           <select class="composerSelect">
@@ -190,66 +216,76 @@ setController(controller){
         </div>
         <span class="composerAddToList">Enter</span>
         <button class="closeFloatingDiv">\u00D7</button>
-      </div>`;
- document.body.appendChild(floatingDiv);
-      floatingDiv.style.display = 'block';
-      floatingDiv.style.top = '50%';
-      floatingDiv.style.left = '50%';
+      </div>`
+      document.body.appendChild(floatingDiv)
+      floatingDiv.style.display = 'block'
+      floatingDiv.style.top = '50%'
+      floatingDiv.style.left = '50%'
 
-      let offsetX, offsetY;
+      let offsetX, offsetY
       floatingDiv.addEventListener('mousedown', (event) => {
-        offsetX = event.clientX - floatingDiv.getBoundingClientRect().left;
-        offsetY = event.clientY - floatingDiv.getBoundingClientRect().top;
+        offsetX = event.clientX - floatingDiv.getBoundingClientRect().left
+        offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
 
         function moveFloatingDiv(event) {
-          floatingDiv.style.left = `${event.clientX - offsetX}px`;
-          floatingDiv.style.top = `${event.clientY - offsetY}px`;
+          floatingDiv.style.left = `${event.clientX - offsetX}px`
+          floatingDiv.style.top = `${event.clientY - offsetY}px`
         }
 
-        document.addEventListener('mousemove', moveFloatingDiv);
-        document.addEventListener('mouseup', () => {
-          document.removeEventListener('mousemove', moveFloatingDiv);
-        }, { once: true });
-      });
+        document.addEventListener('mousemove', moveFloatingDiv)
+        document.addEventListener(
+          'mouseup',
+          () => {
+            document.removeEventListener('mousemove', moveFloatingDiv)
+          },
+          { once: true },
+        )
+      })
 
-      document.querySelector('.composerAddToList').addEventListener('click', () => {
-        const selectedOption = document.querySelector('.composerSelect').value;
-        const amplitude = document.querySelector('#amplitudeComposerInput').value;
-        const frequency = document.querySelector('#frequencyComposerInput').value;
-        this.controller.addElementToList(selectedOption, amplitude, frequency);
-      });
+      document
+        .querySelector('.composerAddToList')
+        .addEventListener('click', () => {
+          const selectedOption = document.querySelector('.composerSelect').value
+          const amplitude = document.querySelector(
+            '#amplitudeComposerInput',
+          ).value
+          const frequency = document.querySelector(
+            '#frequencyComposerInput',
+          ).value
+          this.controller.addElementToList(selectedOption, amplitude, frequency)
+        })
 
-      document.querySelector('.closeFloatingDiv').addEventListener('click', () => {
-        floatingDiv.remove();
-      });
+      document
+        .querySelector('.closeFloatingDiv')
+        .addEventListener('click', () => {
+          floatingDiv.remove()
+        })
     }
   }
 
   //________________________________________________________________________________
-//nowa metoda przerobka z addElementToList()
-addElementToListView(element){
-  const li=document.createElement('li');
-  li.className='signalElement';
-  li.textContent = `${selectedOption} - Amplitude: ${amplitude}, Frequency: ${frequency}`;
-   this.list.appendChild(li);
+  //nowa metoda przerobka z addElementToList()
+  addElementToListView(element) {
+    const li = document.createElement('li')
+    li.className = 'signalElement'
+    li.textContent = `${selectedOption} - Amplitude: ${amplitude}, Frequency: ${frequency}`
+    this.list.appendChild(li)
 
-  this.controller.addCloseButtons();
-  this.controller.addCloseEventListeners();
+   // this.controller.addCloseButtons()
+   // this.controller.addCloseEventListeners()
+  }
+
+  getSignalListElements() {
+    return document.getElementsByClassName('signalElement')
+  }
+
+  getCloseButtons() {
+    return document.getElementsByClassName('close')
+  }
+
+  drawChart(labels, data, type) {
+    ChartDrawer.drawChart(labels, data, type)
+  }
 }
 
-getSignalListElements(){
-  return document.getElementsByClassName('signalElement');
-}
-
-getCloseButtons(){
-  return document.getElementsByClassName('close');
-}
-
-drawChart(labels,data,type){
-  ChartDrawer.drawChart(labels,data,type);
-}
-
-
-}
-
-export {View};
+export { View }

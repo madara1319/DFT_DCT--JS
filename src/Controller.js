@@ -13,8 +13,11 @@ class Controller{
   }
 
   updateChart(selectedOption, amplitudeArray=[1], frequencyArray=[10],customData=[]){
+    console.log("updateChart start");
     const {labels,data}=this.calculateInput(selectedOption,amplitudeArray,frequencyArray, customData);
    this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line'); 
+
+    console.log("updateChart end");
   }
 
 //________________________________________________________________________________
@@ -54,7 +57,7 @@ generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const sampleRate = 100; // 100 samples per second
     const duration = 1; // 1 second
     const length = sampleRate * duration;
-    console.log("jestem tu")
+    console.log("generateSignal start ")
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
         return generatorFunction(frequencyArray[index], amplitude, sampleRate, length);
@@ -75,18 +78,23 @@ generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
       //console.log(data);
     }
 
+    console.log("generateSignal end ")
     return { labels, data };
 }
 
 //________________________________________________________________________________
   //do weryfikacji
 addElementToList(selectedOption,amplitude,frequency){
+
+    console.log("addElementToList start ")
   const element={
     selectedOption,
     amplitude:parseFloat(amplitude),
     frequency:parseFloat(frequency),
   };
   this.view.addElementToListView(element);
+
+    console.log("addElementToList end ")
 }
   //________________________________________________________________________________
   addCloseButtons() {
@@ -100,15 +108,28 @@ addElementToList(selectedOption,amplitude,frequency){
   }
 
   //________________________________________________________________________________
-  addCloseEventListeners() {
-    const closeButtons = this.signalsList.getElementsByClassName('close');
-    for (let i = 0; i < closeButtons.length; i++) {
-      closeButtons[i].onclick = function () {
-        const div = this.parentElement;
+//  addCloseEventListeners() {
+//    const closeButtons = this.signalsList.getElementsByClassName('close');
+//    for (let i = 0; i < closeButtons.length; i++) {
+//      closeButtons[i].onclick = function () {
+//        const div = this.parentElement;
+//        div.style.display = 'none';
+//      };
+//    }
+//  }
+addCloseEventListeners() {
+  if (!this.closeEventListenersAdded) {
+    this.signalsList.addEventListener('click', (event) => {
+      if (event.target.classList.contains('close')) {
+        const div = event.target.parentElement;
         div.style.display = 'none';
-      };
-    }
+      }
+    });
+    this.closeEventListenersAdded = true;
   }
+}
+
+
 }
 
 export{Controller};
