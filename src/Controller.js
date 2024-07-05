@@ -8,7 +8,9 @@ class Controller{
     console.log('odpalam konstriktor kontrolera')
     this.view=view;
     this.view.setController(this);
-    this.view.initialize();
+    //ok to powodowalo podwojny nasluch:w
+
+   // this.view.initialize();
     console.log('przeszelm inicjalizacje')
   }
 

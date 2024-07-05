@@ -271,8 +271,8 @@ class View {
     li.textContent = `${selectedOption} - Amplitude: ${amplitude}, Frequency: ${frequency}`
     this.list.appendChild(li)
 
-   // this.controller.addCloseButtons()
-   // this.controller.addCloseEventListeners()
+  // this.controller.addCloseButtons()
+  //  this.controller.addCloseEventListeners()
   }
 
   getSignalListElements() {
