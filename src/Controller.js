@@ -10,7 +10,7 @@ class Controller{
     this.view.setController(this);
     //ok to powodowalo podwojny nasluch:w
 
-   // this.view.initialize();
+    this.view.initialize();
     console.log('przeszelm inicjalizacje')
   }
 

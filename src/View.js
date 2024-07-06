@@ -29,7 +29,8 @@ class View {
     this.list = document.querySelector('.composerList')
 
     //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
-    this.initialize()
+    //wywolanie w konstrutorze controllera
+   // this.initialize()
   }
   //________________________________________________________________________________
   //koniec konstruktora
@@ -158,7 +159,7 @@ class View {
 
     //oblicz dane ze sladjerow i narsysuj nowego charta
     this.controller.updateChart(
-      selectedOption,
+      selectedValue,
       [amplitudeValue],
       [frequencyValue],
     )
@@ -268,7 +269,8 @@ class View {
   addElementToListView(element) {
     const li = document.createElement('li')
     li.className = 'signalElement'
-    li.textContent = `${selectedOption} - Amplitude: ${amplitude}, Frequency: ${frequency}`
+    //tu jest cos nie tak z przypiswaniem do ogarniecia  
+    li.textContent = `${this.selectedOption} - Amplitude: ${this.amplitude}, Frequency: ${this.frequency}`
     this.list.appendChild(li)
 
   // this.controller.addCloseButtons()
