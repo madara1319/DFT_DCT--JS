@@ -74,6 +74,9 @@ class View {
       .querySelector('.textArea')
       .addEventListener('keydown', this.handleTextArea.bind(this))
 
+
+    //wywal initial elementy z composera
+    this.removeInitialElement();
     //do composera przcysiki
     document
       .querySelector('.composerAddButton')
@@ -86,6 +89,7 @@ class View {
       .addEventListener('click', () => {
         this.generateCombinedSignal()
       })
+
 
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
@@ -288,6 +292,15 @@ class View {
   drawChart(labels, data, type) {
     ChartDrawer.drawChart(labels, data, type)
   }
+
+  //________________________________________________________________________________
+  removeInitialElement() {
+    const initialElements = document.querySelectorAll('.signalListElement');
+    initialElements.forEach((element) => {
+      element.remove();
+    });
+  }
+
 }
 
 export { View }

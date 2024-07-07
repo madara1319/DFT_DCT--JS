@@ -110,15 +110,6 @@ addElementToList(selectedOption,amplitude,frequency){
   }
 
   //________________________________________________________________________________
-//  addCloseEventListeners() {
-//    const closeButtons = this.signalsList.getElementsByClassName('close');
-//    for (let i = 0; i < closeButtons.length; i++) {
-//      closeButtons[i].onclick = function () {
-//        const div = this.parentElement;
-//        div.style.display = 'none';
-//      };
-//    }
-//  }
 addCloseEventListeners() {
   if (!this.closeEventListenersAdded) {
     this.signalsList.addEventListener('click', (event) => {
