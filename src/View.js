@@ -270,12 +270,14 @@ class View {
 
   //________________________________________________________________________________
   //nowa metoda przerobka z addElementToList()
+  //tu cos nie tak
   addElementToListView(element) {
     const li = document.createElement('li')
     li.className = 'signalElement'
     //tu jest cos nie tak z przypiswaniem do ogarniecia  
     li.textContent = `${this.selectedOption} - Amplitude: ${this.amplitude}, Frequency: ${this.frequency}`
     this.list.appendChild(li)
+    console.log("addElementToListView" + li.textContent);
 
   // this.controller.addCloseButtons()
   //  this.controller.addCloseEventListeners()

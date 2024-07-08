@@ -96,9 +96,10 @@ addElementToList(selectedOption,amplitude,frequency){
   };
   this.view.addElementToListView(element);
 
-    console.log("addElementToList end ")
+    console.log("addElementToList end " + element.selectedOption + element.amplitude)
 }
   //________________________________________________________________________________
+//to nie dziala
   addCloseButtons() {
     const items = this.signalsList.getElementsByTagName('LI');
     for (let i = 0; i < items.length; i++) {
