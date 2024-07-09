@@ -30,7 +30,7 @@ class View {
 
     //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
     //wywolanie w konstrutorze controllera
-   // this.initialize()
+    // this.initialize()
   }
   //________________________________________________________________________________
   //koniec konstruktora
@@ -74,9 +74,8 @@ class View {
       .querySelector('.textArea')
       .addEventListener('keydown', this.handleTextArea.bind(this))
 
-
     //wywal initial elementy z composera
-    this.removeInitialElement();
+    this.removeInitialElement()
     //do composera przcysiki
     document
       .querySelector('.composerAddButton')
@@ -87,9 +86,8 @@ class View {
     document
       .querySelector('.generateCombinedSignalButton')
       .addEventListener('click', () => {
-        this.generateCombinedSignal()
+        this.controller.generateSignal()
       })
-
 
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
@@ -113,21 +111,20 @@ class View {
     this.toggleButtons.forEach((element) => {
       element.classList.add('hidden')
       element.classList.remove('open')
-      console.log("Toggled off: ",element.className);
+      console.log('Toggled off: ', element.className)
     })
     if (!openButton) {
       chosenButton.classList.remove('hidden')
       chosenButton.classList.add('open')
       console.log('powinien byc open')
-      console.log("toggled on: ",chosenButton.className);
+      console.log('toggled on: ', chosenButton.className)
     }
     console.log(' toggle end')
     console.log('Final state:', chosenButton.className)
 
-
-  this.toggleButtons.forEach((element, index) => {
-    console.log(`Button ${index} final state: ${element.className}`);
-  });
+    this.toggleButtons.forEach((element, index) => {
+      console.log(`Button ${index} final state: ${element.className}`)
+    })
   }
 
   //funkcja oblusgujaca rysowanie ze sliderow
@@ -245,42 +242,61 @@ class View {
           },
           { once: true },
         )
-      })
+      });
+
+
+
+
+
+    
+  
+
+       const addElementToListHandler=()=> {
+          const selectedOption = document.querySelector('.composerSelect').value;
+          const amplitude = document.querySelector('.amplitudeComposerInput').value;
+          const frequency = document.querySelector('.frequencyComposerInput').value;
+         console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
+          this.controller.addElementToList(selectedOption, amplitude, frequency);
+      };
+
+      document.querySelector('.composerAddToList').addEventListener('click', addElementToListHandler.bind(this))
 
       document
-        .querySelector('.composerAddToList')
-        .addEventListener('click', () => {
-          const selectedOption = document.querySelector('.composerSelect').value
-          const amplitude = document.querySelector(
-            '#amplitudeComposerInput',
-          ).value
-          const frequency = document.querySelector(
-            '#frequencyComposerInput',
-          ).value
-          this.controller.addElementToList(selectedOption, amplitude, frequency)
+        .querySelector('.amplitudeComposerInput')
+        .addEventListener('keydown', (event) => {
+          if(event.key==='Enter'){
+            addElementToListHandler.bind(this)();
+          }
         })
-
+      document
+        .querySelector('.frequencyComposerInput')
+        .addEventListener('keydown', (event) => {
+          if(event.key==='Enter'){
+            addElementToListHandler.bind(this)();
+          }
+        })
       document
         .querySelector('.closeFloatingDiv')
         .addEventListener('click', () => {
           floatingDiv.remove()
-        })
-    }
-  }
-
+        });
+      
+     // this.controller.addCloseEventListeners()
+}
+}
   //________________________________________________________________________________
   //nowa metoda przerobka z addElementToList()
   //tu cos nie tak
   addElementToListView(element) {
     const li = document.createElement('li')
     li.className = 'signalElement'
-    //tu jest cos nie tak z przypiswaniem do ogarniecia  
-    li.textContent = `${this.selectedOption} - Amplitude: ${this.amplitude}, Frequency: ${this.frequency}`
+    //tu jest cos nie tak z przypiswaniem do ogarniecia
+    li.textContent = `${element.selectedOption} - Amplitude: ${element.amplitude}, Frequency: ${element.frequency}`
     this.list.appendChild(li)
-    console.log("addElementToListView" + li.textContent);
+    console.log('addElementToListView i textConent ' + li.textContent)
 
-  // this.controller.addCloseButtons()
-  //  this.controller.addCloseEventListeners()
+    // this.controller.addCloseButtons()
+     // this.controller.addCloseEventListeners()
   }
 
   getSignalListElements() {
@@ -297,12 +313,11 @@ class View {
 
   //________________________________________________________________________________
   removeInitialElement() {
-    const initialElements = document.querySelectorAll('.signalListElement');
+    const initialElements = document.querySelectorAll('.signalListElement')
     initialElements.forEach((element) => {
-      element.remove();
-    });
+      element.remove()
+    })
   }
-
 }
 
 export { View }
