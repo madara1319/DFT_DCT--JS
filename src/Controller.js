@@ -86,6 +86,7 @@ generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
 
 //________________________________________________________________________________
   //do weryfikacji
+//przekazuje parametry do metody view ktora dodaje punkt do listy HTML
 addElementToList(selectedOption,amplitude,frequency){
 
     console.log("addElementToList start ")
@@ -98,10 +99,22 @@ addElementToList(selectedOption,amplitude,frequency){
 
     console.log("addElementToList end " + element.selectedOption + element.amplitude)
 }
+
+  //________________________________________________________________________________
+
+       addElementToListHandler() {
+          const selectedOption = document.querySelector('.composerSelect').value;
+          const amplitude = document.querySelector('.amplitudeComposerInput').value;
+          const frequency = document.querySelector('.frequencyComposerInput').value;
+         console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
+          this.addElementToList(selectedOption, amplitude, frequency);
+      };
+
+
   //________________________________________________________________________________
 //to nie dziala
   addCloseButtons() {
-    const items = this.signalsList.getElementsByTagName('LI');
+    const items = this.view.signalsList.getElementsByTagName('LI');
     for (let i = 0; i < items.length; i++) {
       const span = document.createElement('SPAN');
       const txt = document.createTextNode('\u00D7');

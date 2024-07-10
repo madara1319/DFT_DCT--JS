@@ -251,28 +251,21 @@ class View {
     
   
 
-       const addElementToListHandler=()=> {
-          const selectedOption = document.querySelector('.composerSelect').value;
-          const amplitude = document.querySelector('.amplitudeComposerInput').value;
-          const frequency = document.querySelector('.frequencyComposerInput').value;
-         console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
-          this.controller.addElementToList(selectedOption, amplitude, frequency);
-      };
 
-      document.querySelector('.composerAddToList').addEventListener('click', addElementToListHandler.bind(this))
+      document.querySelector('.composerAddToList').addEventListener('click', this.controller.addElementToListHandler)
 
       document
         .querySelector('.amplitudeComposerInput')
         .addEventListener('keydown', (event) => {
           if(event.key==='Enter'){
-            addElementToListHandler.bind(this)();
+            this.controller.addElementToListHandler();
           }
         })
       document
         .querySelector('.frequencyComposerInput')
         .addEventListener('keydown', (event) => {
           if(event.key==='Enter'){
-            addElementToListHandler.bind(this)();
+            this.controller.addElementToListHandler();
           }
         })
       document
@@ -287,6 +280,7 @@ class View {
   //________________________________________________________________________________
   //nowa metoda przerobka z addElementToList()
   //tu cos nie tak
+//dodaj punkt listy HTML
   addElementToListView(element) {
     const li = document.createElement('li')
     li.className = 'signalElement'
