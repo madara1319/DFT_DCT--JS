@@ -242,45 +242,41 @@ class View {
           },
           { once: true },
         )
-      });
+      })
 
-
-
-
-
-    
-  
-
-
-      document.querySelector('.composerAddToList').addEventListener('click', this.controller.addElementToListHandler)
+      document
+        .querySelector('.composerAddToList')
+        .addEventListener('click', () =>
+          this.controller.addElementToListHandler(),
+        )
 
       document
         .querySelector('.amplitudeComposerInput')
         .addEventListener('keydown', (event) => {
-          if(event.key==='Enter'){
-            this.controller.addElementToListHandler();
+          if (event.key === 'Enter') {
+            this.controller.addElementToListHandler()
           }
         })
       document
         .querySelector('.frequencyComposerInput')
         .addEventListener('keydown', (event) => {
-          if(event.key==='Enter'){
-            this.controller.addElementToListHandler();
+          if (event.key === 'Enter') {
+            this.controller.addElementToListHandler()
           }
         })
       document
         .querySelector('.closeFloatingDiv')
         .addEventListener('click', () => {
           floatingDiv.remove()
-        });
-      
-     // this.controller.addCloseEventListeners()
-}
-}
+        })
+
+      // this.controller.addCloseEventListeners()
+    }
+  }
   //________________________________________________________________________________
   //nowa metoda przerobka z addElementToList()
   //tu cos nie tak
-//dodaj punkt listy HTML
+  //dodaj punkt listy HTML
   addElementToListView(element) {
     const li = document.createElement('li')
     li.className = 'signalElement'
@@ -289,8 +285,8 @@ class View {
     this.list.appendChild(li)
     console.log('addElementToListView i textConent ' + li.textContent)
 
-    // this.controller.addCloseButtons()
-     // this.controller.addCloseEventListeners()
+    this.controller.addCloseButton(li)
+    this.controller.addCloseEventListeners(li)
   }
 
   getSignalListElements() {

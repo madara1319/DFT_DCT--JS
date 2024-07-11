@@ -1,142 +1,194 @@
-
-import { SignalGenerator } from './SignalGenerator.js';
+import { SignalGenerator } from './SignalGenerator.js'
 //import { ChartDrawer } from './ChartDrawer.js';
-import {View} from './View.js';
+import { View } from './View.js'
 
-class Controller{
-  constructor(view){
+class Controller {
+  constructor(view) {
     console.log('odpalam konstriktor kontrolera')
-    this.view=view;
-    this.view.setController(this);
+    this.view = view
+    this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
 
-    this.view.initialize();
+    this.view.initialize()
     console.log('przeszelm inicjalizacje')
   }
 
-  updateChart(selectedOption, amplitudeArray=[1], frequencyArray=[10],customData=[]){
-    console.log("updateChart start");
-    const {labels,data}=this.calculateInput(selectedOption,amplitudeArray,frequencyArray, customData);
-   this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line'); 
+  updateChart(
+    selectedOption,
+    amplitudeArray = [1],
+    frequencyArray = [10],
+    customData = [],
+  ) {
+    console.log('updateChart start')
+    const { labels, data } = this.calculateInput(
+      selectedOption,
+      amplitudeArray,
+      frequencyArray,
+      customData,
+    )
+    this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line')
 
-    console.log("updateChart end");
+    console.log('updateChart end')
   }
 
-//________________________________________________________________________________
+  //________________________________________________________________________________
   //funckja do obliczania sygnalu
-  calculateInput(optionValue, amplitudeArray = [1], frequencyArray = [10], customData = []) {
-    let labels = [];
-    let data = [];
+  calculateInput(
+    optionValue,
+    amplitudeArray = [1],
+    frequencyArray = [10],
+    customData = [],
+  ) {
+    let labels = []
+    let data = []
 
     if (customData.length > 0) {
-      labels = Array.from({ length: customData.length }, (_, i) => i.toString());
-      data = customData;
+      labels = Array.from({ length: customData.length }, (_, i) => i.toString())
+      data = customData
     } else {
       switch (optionValue) {
         case 'Sine function':
-          ({ labels, data } = this.generateSignal(SignalGenerator.generateSineWave, amplitudeArray, frequencyArray));
-          break;
+          ;({ labels, data } = this.generateSignal(
+            SignalGenerator.generateSineWave,
+            amplitudeArray,
+            frequencyArray,
+          ))
+          break
         case 'Square function':
-          ({ labels, data } = this.generateSignal(SignalGenerator.generateSquareWave, amplitudeArray, frequencyArray));
-          break;
+          ;({ labels, data } = this.generateSignal(
+            SignalGenerator.generateSquareWave,
+            amplitudeArray,
+            frequencyArray,
+          ))
+          break
         case 'Triangle function':
-          ({ labels, data } = this.generateSignal(SignalGenerator.generateTriangleWave, amplitudeArray, frequencyArray));
-          break;
+          ;({ labels, data } = this.generateSignal(
+            SignalGenerator.generateTriangleWave,
+            amplitudeArray,
+            frequencyArray,
+          ))
+          break
         default:
-          labels = Array.from({ length: customData.length }, (_, i) => i.toString());
-          data = customData;
-          break;
+          labels = Array.from({ length: customData.length }, (_, i) =>
+            i.toString(),
+          )
+          data = customData
+          break
       }
     }
     //console.log(data);
-    return { labels, data };
+    return { labels, data }
   }
-//________________________________________________________________________________
-  //funckja do poprawy 
-generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
-    const labels = [];
-    const data = [];
-    const sampleRate = 100; // 100 samples per second
-    const duration = 1; // 1 second
-    const length = sampleRate * duration;
-    console.log("generateSignal start ")
+  //________________________________________________________________________________
+  //funckja do poprawy
+  generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
+    const labels = []
+    const data = []
+    const sampleRate = 100 // 100 samples per second
+    const duration = 1 // 1 second
+    const length = sampleRate * duration
+    console.log('generateSignal start ')
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
-        return generatorFunction(frequencyArray[index], amplitude, sampleRate, length);
-    });
+      return generatorFunction(
+        frequencyArray[index],
+        amplitude,
+        sampleRate,
+        length,
+      )
+    })
 
     // Sum the values at each time point
     for (let i = 0; i < length; i++) {
-        const t = Number((i / sampleRate).toFixed(3));
-        let value = 0;
-        waveMapArray.forEach(waveMap => {
-            if (waveMap.has(t)) {
-                value += waveMap.get(t);
-              //console.log(value);
-            }
-        });
-        labels.push(t.toFixed(3));
-        data.push(value);
+      const t = Number((i / sampleRate).toFixed(3))
+      let value = 0
+      waveMapArray.forEach((waveMap) => {
+        if (waveMap.has(t)) {
+          value += waveMap.get(t)
+          //console.log(value);
+        }
+      })
+      labels.push(t.toFixed(3))
+      data.push(value)
       //console.log(data);
     }
 
-    console.log("generateSignal end ")
-    return { labels, data };
-}
+    console.log('generateSignal end ')
+    return { labels, data }
+  }
 
-//________________________________________________________________________________
+  //________________________________________________________________________________
   //do weryfikacji
-//przekazuje parametry do metody view ktora dodaje punkt do listy HTML
-addElementToList(selectedOption,amplitude,frequency){
+  //przekazuje parametry do metody view ktora dodaje punkt do listy HTML
+  addElementToList(selectedOption, amplitude, frequency) {
+    console.log('addElementToList start ')
+    const element = {
+      selectedOption,
+      amplitude: parseFloat(amplitude),
+      frequency: parseFloat(frequency),
+    }
+    this.view.addElementToListView(element)
 
-    console.log("addElementToList start ")
-  const element={
-    selectedOption,
-    amplitude:parseFloat(amplitude),
-    frequency:parseFloat(frequency),
-  };
-  this.view.addElementToListView(element);
-
-    console.log("addElementToList end " + element.selectedOption + element.amplitude)
-}
-
-  //________________________________________________________________________________
-
-       addElementToListHandler() {
-          const selectedOption = document.querySelector('.composerSelect').value;
-          const amplitude = document.querySelector('.amplitudeComposerInput').value;
-          const frequency = document.querySelector('.frequencyComposerInput').value;
-         console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
-          this.addElementToList(selectedOption, amplitude, frequency);
-      };
-
+    console.log(
+      'addElementToList end ' + element.selectedOption + element.amplitude,
+    )
+  }
 
   //________________________________________________________________________________
-//to nie dziala
+
+  addElementToListHandler() {
+    const selectedOption = document.querySelector('.composerSelect').value
+    const amplitude = document.querySelector('.amplitudeComposerInput').value
+    const frequency = document.querySelector('.frequencyComposerInput').value
+    console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
+    this.addElementToList(selectedOption, amplitude, frequency)
+  }
+
+  //________________________________________________________________________________
+  //to nie dziala
   addCloseButtons() {
-    const items = this.view.signalsList.getElementsByTagName('LI');
+    const items = this.view.getSignalListElements()
     for (let i = 0; i < items.length; i++) {
-      const span = document.createElement('SPAN');
-      const txt = document.createTextNode('\u00D7');
-      span.appendChild(txt);
-      items[i].appendChild(span);
+      const span = document.createElement('SPAN')
+      const txt = document.createTextNode('\u00D7')
+      span.appendChild(txt)
+      items[i].appendChild(span)
     }
   }
 
   //________________________________________________________________________________
-addCloseEventListeners() {
-  if (!this.closeEventListenersAdded) {
-    this.signalsList.addEventListener('click', (event) => {
-      if (event.target.classList.contains('close')) {
-        const div = event.target.parentElement;
-        div.style.display = 'none';
-      }
-    });
-    this.closeEventListenersAdded = true;
+  addCloseButton(item) {
+    if (!item.querySelector('.close')) {
+      const span = document.createElement('SPAN')
+      const txt = document.createTextNode('\u00D7')
+      span.className = 'close'
+      span.appendChild(txt)
+      item.appendChild(span)
+    }
+  }
+  //________________________________________________________________________________
+  //addCloseEventListeners() {
+  //  if (!this.closeEventListenersAdded) {
+  //    const elements=this.view.getSignalListElements();
+  //    for(let i=0; i<elements.length; i++){
+  //    elements[i].addEventListener('click', (event) => {
+  //      if (event.target.classList.contains('close')) {
+  //        const div = event.target.parentElement;
+  //        div.style.display = 'none';
+  //      }
+  //    });
+  //    }
+  //    this.closeEventListenersAdded = true;
+  //  }
+  //}
+
+  //________________________________________________________________________________
+  addCloseEventListeners(item) {
+    item.querySelector('.close').addEventListener('click', (event) => {
+      const div = event.target.parentElement
+      div.style.display = 'none'
+    })
   }
 }
 
-
-}
-
-export{Controller};
+export { Controller }
