@@ -86,7 +86,7 @@ class View {
     document
       .querySelector('.generateCombinedSignalButton')
       .addEventListener('click', () => {
-        this.controller.generateSignal()
+        this.controller.generateCombinedSignal()
       })
 
     //jak strona sie zaladuje odpal funkcje setupCharts

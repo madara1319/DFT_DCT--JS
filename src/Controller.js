@@ -82,12 +82,15 @@ class Controller {
   //________________________________________________________________________________
   //funckja do poprawy
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
+
     const labels = []
     const data = []
     const sampleRate = 100 // 100 samples per second
     const duration = 1 // 1 second
     const length = sampleRate * duration
     console.log('generateSignal start ')
+
+    console.log(` generatorFunction ${generatorFunction}, amplitudeArray ${amplitudeArray}, frequencyArray ${frequencyArray} `)
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
       return generatorFunction(
@@ -166,6 +169,55 @@ class Controller {
       item.appendChild(span)
     }
   }
+
+  //________________________________________________________________________________
+generateCombinedSignal() {
+  const signals = Array.from(this.view.list.querySelectorAll('.signalElement')).map((li) => {
+    const parts = li.textContent.split(' - Amplitude: ');
+    const selectedOption = parts[0];
+    const [amplitude, frequency] = parts[1].split(', Frequency: ').map(parseFloat);
+    return {
+      selectedOption,
+      amplitude,
+      frequency,
+    };
+  });
+
+  const sampleRate = 100; // 100 samples per second
+  const duration = 1; // 1 second
+  const length = sampleRate * duration;
+
+  let combinedWave = new Map();
+  signals.forEach((signal) => {
+    let wave;
+    switch (signal.selectedOption) {
+      case 'Sine function':
+        wave = SignalGenerator.generateSineWave(signal.frequency, signal.amplitude, sampleRate, length);
+        break;
+      case 'Square function':
+        wave = SignalGenerator.generateSquareWave(signal.frequency, signal.amplitude, sampleRate, length);
+        break;
+      case 'Triangle function':
+        wave = SignalGenerator.generateTriangleWave(signal.frequency, signal.amplitude, sampleRate, length);
+        break;
+      default:
+        return;
+    }
+    wave.forEach((value, key) => {
+      if (!combinedWave.has(key)) {
+        combinedWave.set(key, 0);
+      }
+      combinedWave.set(key, combinedWave.get(key) + value);
+    });
+  });
+
+  const labels = Array.from(combinedWave.keys());
+  const data = Array.from(combinedWave.values());
+
+  this.view.drawChart(labels, data, 'line');
+}
+
+
   //________________________________________________________________________________
   //addCloseEventListeners() {
   //  if (!this.closeEventListenersAdded) {
@@ -186,7 +238,8 @@ class Controller {
   addCloseEventListeners(item) {
     item.querySelector('.close').addEventListener('click', (event) => {
       const div = event.target.parentElement
-      div.style.display = 'none'
+      //div.style.display = 'none'
+      div.remove()
     })
   }
 }
