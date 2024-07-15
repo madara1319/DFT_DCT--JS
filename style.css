@@ -1,167 +1,298 @@
-main, body{
-  background-color: aquamarine;
-  text-align: center;
-  margin-top: 5vh;
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-}
-a,ul,ol,li{
-  list-style-type:none;
-  text-decoration:none;
+/* Global Styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
 }
 
-.selectionButtons{
-  display:flex;
-  flex-direction:row;
-  justify-content:space-around;
-  text-align:center;
-  gap:15px;
-  
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
+
+.parentDiv {
+  display: none; /* Hide unused elements */
+}
+
+/* Main container */
+.mainbox {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Section container */
+.mainsection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Headings */
+.description {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.Selection, .Probes {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+.selectionButtons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.selectButtons {
+  background-color: #15d77d;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.selectButtons:hover {
+  background-color: #12c06d;
+}
+
+.selectButtons:active {
+  background-color: #0fa65d;
+}
+
+.generateCombinedSignalButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.generateCombinedSignalButton:hover {
+  background-color: #0069d9;
+}
+
+.generateCombinedSignalButton:active {
+  background-color: #0056b3;
+}
+
+/* Options and Sliders */
+.options, .composer, .entering {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sliderContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #04AA6d;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.textArea {
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.composerBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.composerAddButton {
+  background-color: #15d77d;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.composerAddButton:hover {
+  background-color: #12c06d;
+}
+
+.composerList {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.signalListElement {
+  background: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Charts */
+.boxofboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+canvas {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  max-height: 400px;
+}
+.chartCloseButton {
+  position: absolute;
+  top: 10px; /* Adjust as necessary */
+  right: 10px; /* Adjust as necessary */
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.chartCloseButton:hover {
+  background-color: darkred;
+}
+
+.chartCloseButton:active {
+  background-color: maroon;
+}
+
+#sampleChart{
+  width:100%;
+}
+
+.chartContainer {
+  position: relative; /* Umożliwia absolutne pozycjonowanie przycisku wewnątrz kontenera */
+  display: block;
+  width: 100%; /* Szerokość kontenera */
+  max-width: 600px; /* Maksymalna szerokość kontenera, dostosuj w razie potrzeby */
+  margin: 0 auto; /* Wycentrowanie kontenera */
+  padding-top: 50px; /* Dodatkowa przestrzeń u góry na przycisk zamykający */
+}
+/* Floating Div */
+.showDiv {
+  position: fixed;
+  width: 350px;
+  height: 225px;
+  background-color: lightblue;
+  border: 1px solid #000;
+  display: none;
+  cursor: move;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.closeFloatingDiv {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#canvas{
+  width:100%;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainbox {
+    padding: 15px;
+  }
+
+  .selectButtons, .generateCombinedSignalButton, .composerAddButton {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+
 .open{
   display:flex;
 }
 .hidden{
   display:none;
-}
-.selectButtons{
-  
-  display: flex;
-  flex-direction: column;
-  background-color: #15d77d;
-  width: 200px;
-  height: 60px;
-  text-align:center;
-  border-radius: 30px;
-  justify-content: center;
-  align-content: center;
-  align-self: center;
-  align-items:center;
-  /* w3schools  */
-  /* padding: 5px 5px; */
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  color: #043b06;
-  /* background-color: #04aa6d; */
-  border: none;
-  /* border-radius: 15px; */
-  box-shadow: 3px 3px #999;
-}
-.selectButtons:hover{
-  background-color:#3e8e41;
-}
-
-.selectButtons:active{
-  background-color:#3e8e41;
-  box-shadow:3px 3px #666;
-  transform:translateY(4px);
-}
-
-.boxofboxes{
-}
-
-#sampleChart{
-  width:400px;
-  height:400px;
-}
-#transformChart{
-}
-#reverseTransformChart{
-}
-
-
-.entering, .options{
-  padding:20px;
-}
-
-.sliderContainer{
-  width:100%;
-}
-
-.slider{
-  -webkit-appearance:none;
-  appearance:none;
-  width:100%;
-  height:25px;
-  background:#d3d3d3;
-  outline:none;
-  opacity:0.7;
-  -webkit-transition:.2s;
-  transition:opacity .2s;
-
-}
-
-.slider:hover{
-  opacity:1;
-}
-
-.slider::-webkit-slider-thumb{
-  -webkit-appearance:none;
-  appearance:none;
-  width:25px;
-  height:25px;
-  background:#04AA6d;
-  cursor:pointer;
-}
-
-.showDiv{
-  position:fixed;
-  width:350px;
-  height:225px;
-  background-color:lightblue;
-  border:1px solid #000;
-  display:none;
-  cursor:move;
-  z-index:1000;
-  top:50%;
-  left:50%;
-  /*transform:translate(50%,50%)*/
-}
-
-.composerBox{
-  display:flex;
-}
-
-.composerInput{
-  margin-top:50px;
-}
-.composerAddButton{
-  margin:30px; 
-  background-color:lightblue;
-  border:1px solid #000;
-}
-
-.composerFloatingDiv{
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-
-.closeFloatingDiv{
-  position:absolute;
-  top:5px;
-  right:5px;
-  align-items:center;
-}
-.composerInputInsideDiv{
-  display:flex;
-  flex-wrap:wrap;
-  flex-direction:row;
-  align-items:center;
-  justify-content:flex-end;
-  margin-right:50px;
-  height:150px;
-}
-
-.chartCloseButton{
-
-  position:absolute;
-  top:350px;
-  right:350px;
-  width:50px;
-  height:50px;
 }

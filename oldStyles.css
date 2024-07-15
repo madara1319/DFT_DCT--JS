@@ -1,0 +1,168 @@
+
+main, body{
+  background-color: aquamarine;
+  text-align: center;
+  margin-top: 5vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+}
+a,ul,ol,li{
+  list-style-type:none;
+  text-decoration:none;
+}
+
+.selectionButtons{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-around;
+  text-align:center;
+  gap:15px;
+  
+}
+.open{
+  display:flex;
+}
+.hidden{
+  display:none;
+}
+.selectButtons{
+  
+  display: flex;
+  flex-direction: column;
+  background-color: #15d77d;
+  width: 200px;
+  height: 60px;
+  text-align:center;
+  border-radius: 30px;
+  justify-content: center;
+  align-content: center;
+  align-self: center;
+  align-items:center;
+  /* w3schools  */
+  /* padding: 5px 5px; */
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  color: #043b06;
+  /* background-color: #04aa6d; */
+  border: none;
+  /* border-radius: 15px; */
+  box-shadow: 3px 3px #999;
+}
+.selectButtons:hover{
+  background-color:#3e8e41;
+}
+
+.selectButtons:active{
+  background-color:#3e8e41;
+  box-shadow:3px 3px #666;
+  transform:translateY(4px);
+}
+
+.boxofboxes{
+}
+
+#sampleChart{
+  width:400px;
+  height:400px;
+}
+#transformChart{
+}
+#reverseTransformChart{
+}
+
+
+.entering, .options{
+  padding:20px;
+}
+
+.sliderContainer{
+  width:100%;
+}
+
+.slider{
+  -webkit-appearance:none;
+  appearance:none;
+  width:100%;
+  height:25px;
+  background:#d3d3d3;
+  outline:none;
+  opacity:0.7;
+  -webkit-transition:.2s;
+  transition:opacity .2s;
+
+}
+
+.slider:hover{
+  opacity:1;
+}
+
+.slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  appearance:none;
+  width:25px;
+  height:25px;
+  background:#04AA6d;
+  cursor:pointer;
+}
+
+.showDiv{
+  position:fixed;
+  width:350px;
+  height:225px;
+  background-color:lightblue;
+  border:1px solid #000;
+  display:none;
+  cursor:move;
+  z-index:1000;
+  top:50%;
+  left:50%;
+  /*transform:translate(50%,50%)*/
+}
+
+.composerBox{
+  display:flex;
+}
+
+.composerInput{
+  margin-top:50px;
+}
+.composerAddButton{
+  margin:30px; 
+  background-color:lightblue;
+  border:1px solid #000;
+}
+
+.composerFloatingDiv{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.closeFloatingDiv{
+  position:absolute;
+  top:5px;
+  right:5px;
+  align-items:center;
+}
+.composerInputInsideDiv{
+  display:flex;
+  flex-wrap:wrap;
+  flex-direction:row;
+  align-items:center;
+  justify-content:flex-end;
+  margin-right:50px;
+  height:150px;
+}
+
+.chartCloseButton{
+
+  position:absolute;
+  top:350px;
+  right:350px;
+  width:50px;
+  height:50px;
+}
