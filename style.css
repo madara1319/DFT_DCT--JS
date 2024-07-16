@@ -229,6 +229,11 @@ canvas {
   width:100%;
 }
 
+.chartjs-render-monitor{
+
+  width:100%;
+}
+
 .chartContainer {
   position: relative; /* Umożliwia absolutne pozycjonowanie przycisku wewnątrz kontenera */
   display: block;
@@ -249,7 +254,7 @@ canvas {
   z-index: 1000;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /*transform: translate(-50%, -50%);*/
   padding: 20px;
   box-sizing: border-box;
 }
