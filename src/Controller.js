@@ -27,7 +27,7 @@ class Controller {
       customData,
     )
     this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line')
-
+    //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
   }
 

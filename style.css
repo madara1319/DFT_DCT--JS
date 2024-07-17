@@ -194,9 +194,9 @@ main {
 
 canvas {
   width: 100%;
-  max-width: 400px;
+ /* max-width: 400px;*/
   height: auto;
-  max-height: 400px;
+ /* max-height: 400px;*/
 }
 .chartCloseButton {
   position: absolute;
@@ -226,14 +226,18 @@ canvas {
 }
 
 #sampleChart{
-  width:100%;
+  width:100% !important;
 }
 
 .chartjs-render-monitor{
 
-  width:100%;
+  width:100% !important;
 }
 
+.chartjs-size-monitor{
+
+  width:100% !important;
+}
 .chartContainer {
   position: relative; /* Umożliwia absolutne pozycjonowanie przycisku wewnątrz kontenera */
   display: block;
