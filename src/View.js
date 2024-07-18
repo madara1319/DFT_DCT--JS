@@ -200,7 +200,21 @@ class View {
     }
   }
   //________________________________________________________________________________
-    showTransformationButtons(){}
+    showTransformationButtons(){
+      let parentDiv=document.querySelector('.boxofboxes--js')
+      let transformationButtonsDiv=document.querySelector('.transformationButtonsDiv')
+      if (!transformationButtonsDiv){
+        transformationButtonsDiv=document.createElement('div')
+        transformationButtonsDiv.className='transformationButtonsDiv'
+        transformationButtonsDiv.innerHTML=`
+        <div class="transformationButtonsBox">
+        <button>Do DFT</button>
+        <button>Do DCT</button>
+        </div>
+        `
+        parentDiv.appendChild(transformationButtonsDiv);
+      }
+    }
 
   //________________________________________________________________________________
     showModificationButtons(){}
