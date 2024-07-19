@@ -208,8 +208,8 @@ class View {
         transformationButtonsDiv.className='transformationButtonsDiv'
         transformationButtonsDiv.innerHTML=`
         <div class="transformationButtonsBox">
-        <button>Do DFT</button>
-        <button>Do DCT</button>
+        <button class="selectButtons">Do DFT</button>
+        <button class="selectButtons">Do DCT</button>
         </div>
         `
         parentDiv.appendChild(transformationButtonsDiv);
