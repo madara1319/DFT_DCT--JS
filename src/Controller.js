@@ -11,6 +11,10 @@ class Controller {
 
     this.view.initialize()
     console.log('przeszelm inicjalizacje')
+
+    //???
+    this.view.setupCharts()
+    this.view.showTransformationButtons()
   }
 
   updateChart(
@@ -27,7 +31,7 @@ class Controller {
       customData,
     )
     this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line')
-    this.view.showTransformationButtons();
+    this.view.showTransformationButtons()
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
   }
@@ -83,7 +87,6 @@ class Controller {
   //________________________________________________________________________________
   //funckja do poprawy
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
-
     const labels = []
     const data = []
     const sampleRate = 100 // 100 samples per second
@@ -91,7 +94,9 @@ class Controller {
     const length = sampleRate * duration
     console.log('generateSignal start ')
 
-    console.log(` generatorFunction ${generatorFunction}, amplitudeArray ${amplitudeArray}, frequencyArray ${frequencyArray} `)
+    console.log(
+      ` generatorFunction ${generatorFunction}, amplitudeArray ${amplitudeArray}, frequencyArray ${frequencyArray} `,
+    )
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
       return generatorFunction(
@@ -172,52 +177,70 @@ class Controller {
   }
 
   //________________________________________________________________________________
-generateCombinedSignal() {
-  const signals = Array.from(this.view.list.querySelectorAll('.signalElement')).map((li) => {
-    const parts = li.textContent.split(' - Amplitude: ');
-    const selectedOption = parts[0];
-    const [amplitude, frequency] = parts[1].split(', Frequency: ').map(parseFloat);
-    return {
-      selectedOption,
-      amplitude,
-      frequency,
-    };
-  });
-
-  const sampleRate = 100; // 100 samples per second
-  const duration = 1; // 1 second
-  const length = sampleRate * duration;
-
-  let combinedWave = new Map();
-  signals.forEach((signal) => {
-    let wave;
-    switch (signal.selectedOption) {
-      case 'Sine function':
-        wave = SignalGenerator.generateSineWave(signal.frequency, signal.amplitude, sampleRate, length);
-        break;
-      case 'Square function':
-        wave = SignalGenerator.generateSquareWave(signal.frequency, signal.amplitude, sampleRate, length);
-        break;
-      case 'Triangle function':
-        wave = SignalGenerator.generateTriangleWave(signal.frequency, signal.amplitude, sampleRate, length);
-        break;
-      default:
-        return;
-    }
-    wave.forEach((value, key) => {
-      if (!combinedWave.has(key)) {
-        combinedWave.set(key, 0);
+  generateCombinedSignal() {
+    const signals = Array.from(
+      this.view.list.querySelectorAll('.signalElement'),
+    ).map((li) => {
+      const parts = li.textContent.split(' - Amplitude: ')
+      const selectedOption = parts[0]
+      const [amplitude, frequency] = parts[1]
+        .split(', Frequency: ')
+        .map(parseFloat)
+      return {
+        selectedOption,
+        amplitude,
+        frequency,
       }
-      combinedWave.set(key, combinedWave.get(key) + value);
-    });
-  });
+    })
 
-  const labels = Array.from(combinedWave.keys());
-  const data = Array.from(combinedWave.values());
+    const sampleRate = 100 // 100 samples per second
+    const duration = 1 // 1 second
+    const length = sampleRate * duration
 
-  this.view.drawChart(labels, data, 'line');
-}
+    let combinedWave = new Map()
+    signals.forEach((signal) => {
+      let wave
+      switch (signal.selectedOption) {
+        case 'Sine function':
+          wave = SignalGenerator.generateSineWave(
+            signal.frequency,
+            signal.amplitude,
+            sampleRate,
+            length,
+          )
+          break
+        case 'Square function':
+          wave = SignalGenerator.generateSquareWave(
+            signal.frequency,
+            signal.amplitude,
+            sampleRate,
+            length,
+          )
+          break
+        case 'Triangle function':
+          wave = SignalGenerator.generateTriangleWave(
+            signal.frequency,
+            signal.amplitude,
+            sampleRate,
+            length,
+          )
+          break
+        default:
+          return
+      }
+      wave.forEach((value, key) => {
+        if (!combinedWave.has(key)) {
+          combinedWave.set(key, 0)
+        }
+        combinedWave.set(key, combinedWave.get(key) + value)
+      })
+    })
 
+    const labels = Array.from(combinedWave.keys())
+    const data = Array.from(combinedWave.values())
+
+    this.view.drawChart(labels, data, 'line')
+  }
 
   //________________________________________________________________________________
   //addCloseEventListeners() {
@@ -242,20 +265,43 @@ generateCombinedSignal() {
       //div.style.display = 'none'
       div.remove()
     })
+Transformation
   }
-  handleDFT(){
-    const samples=this.view.sampleChart.data.datasets[0].data;
-    const dft=new DFT(samples);
-    const result=dft.transform();
-  this.view.drawChart(Array.from({ length: result.length }, (_, i) => i.toString()), result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)), 'line');
-  }
+    handleDFT() {
+        const sampleChart = this.view.sampleChart;
+        if (sampleChart && sampleChart.data && sampleChart.data.datasets) {
+            const samples = sampleChart.data.datasets[0].data;
+            if (!samples || samples.length === 0) {
+                console.error("No data available for DFT transformation.");
+                return;
+            }
+            const dft = new DFT(samples);
+            const result = dft.transform();
+            this.view.drawChart(Array.from({ length: result.length }, (_, i) => i.toString()), result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)), 'line');
+        } else {
+            console.error("Sample chart is not properly initialized.");
+        }
+    }
+//  handleDFT() {
+//    const samples = this.view.sampleChart.data.datasets[0].data
+//    const dft = new DFT(samples)
+//    const result = dft.transform()
+//    this.view.drawChart(
+//      Array.from({ length: result.length }, (_, i) => i.toString()),
+//      result.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
+//      'line',
+//    )
+//  }
 
-
-  handleDCT(){
-    const samples=this.view.sampleChart.data.datasets[0].data;
-    const dct=new DCT(samples);
-    const result=dct.transform();
-this.view.drawChart(Array.from({ length: result.length }, (_, i) => i.toString()), result, 'line');
+  handleDCT() {
+    const samples = this.view.sampleChart.data.datasets[0].data
+    const dct = new DCT(samples)
+    const result = dct.transform()
+    this.view.drawChart(
+      Array.from({ length: result.length }, (_, i) => i.toString()),
+      result,
+      'line',
+    )
   }
 }
 export { Controller }

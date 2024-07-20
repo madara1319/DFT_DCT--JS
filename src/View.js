@@ -215,8 +215,20 @@ class View {
         parentDiv.appendChild(transformationButtonsDiv);
       }
 
-      this.addDFTButtonListener(()=>this.controller.handleDFT());
-      this.addDCTButtonListener(()=>this.controller.handleDCT());
+    //  this.addDFTButtonListener(()=>this.controller.handleDFT());
+    //  this.addDCTButtonListener(()=>this.controller.handleDCT());
+
+    const dftButton = transformationButtonsDiv.querySelector('button:nth-child(1)');
+    const dctButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
+
+    dftButton.addEventListener('click', () => {
+        console.log('Sample chart when DFT button is clicked:', this.sampleChart);
+        this.controller.handleDFT();
+    });
+    dctButton.addEventListener('click', () => {
+        console.log('Sample chart when DCT button is clicked:', this.sampleChart);
+        this.controller.handleDCT();
+    });
     }
 
   //________________________________________________________________________________
