@@ -214,8 +214,22 @@ class View {
         `
         parentDiv.appendChild(transformationButtonsDiv);
       }
+
+      this.addDFTButtonListener(()=>this.controller.handleDFT());
+      this.addDCTButtonListener(()=>this.controller.handleDCT());
     }
 
+  //________________________________________________________________________________
+  addDFTButtonListener(handler){
+    const dftButton=document.querySelector('.transformationButtonsDiv .selectButtons:nth-child(1)');
+    dftButton.addEventListener('click',handler);
+  }
+
+  //________________________________________________________________________________
+  addDCTButtonListener(handler){
+    const dctButton=document.querySelector('.transformationButtonsDiv .selectButtons:nth-child(2)');
+    dctButton.addEventListener('click',handler);
+  }
   //________________________________________________________________________________
     showModificationButtons(){}
 

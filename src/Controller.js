@@ -243,6 +243,19 @@ generateCombinedSignal() {
       div.remove()
     })
   }
-}
+  handleDFT(){
+    const samples=this.view.sampleChart.data.datasets[0].data;
+    const dft=new DFT(samples);
+    const result=dft.transform();
+  this.view.drawChart(Array.from({ length: result.length }, (_, i) => i.toString()), result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)), 'line');
+  }
 
+
+  handleDCT(){
+    const samples=this.view.sampleChart.data.datasets[0].data;
+    const dct=new DCT(samples);
+    const result=dct.transform();
+this.view.drawChart(Array.from({ length: result.length }, (_, i) => i.toString()), result, 'line');
+  }
+}
 export { Controller }
