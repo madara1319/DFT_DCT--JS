@@ -1,3 +1,4 @@
+import {Transformation} from './Transformation.js'
 class DFT extends Transformation{
   constructor(probes){
     //access properties on an object literal or class's [[Protype]]
@@ -20,3 +21,5 @@ class DFT extends Transformation{
     return X;
   }
 }
+
+export {DFT}

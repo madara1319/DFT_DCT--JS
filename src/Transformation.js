@@ -12,3 +12,4 @@ class Transformation{
     throw new Error('Method "transform" must be be implemented')
   }
 }
+export {Transformation}

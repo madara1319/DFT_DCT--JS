@@ -1,3 +1,4 @@
+import {Transformation} from './Transformation.js'
 class DCT extends Transformation{
   constructor(probes){
     super(probes);
@@ -18,3 +19,4 @@ class DCT extends Transformation{
     return X;
   }
 }
+export {DCT}

@@ -1,20 +1,25 @@
 import { SignalGenerator } from './SignalGenerator.js'
 //import { ChartDrawer } from './ChartDrawer.js';
 import { View } from './View.js'
+import {Model} from './Model.js'
+import {DFT} from './DFT.js'
+import {DCT} from './DCT.js'
 
 class Controller {
-  constructor(view) {
+  constructor(view,model) {
     console.log('odpalam konstriktor kontrolera')
     this.view = view
+    this.model=model
     this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
 
     this.view.initialize()
     console.log('przeszelm inicjalizacje')
 
-    //???
+    //tbc_________________________
     this.view.setupCharts()
     this.view.showTransformationButtons()
+    //tbc___________________
   }
 
   updateChart(
@@ -30,8 +35,9 @@ class Controller {
       frequencyArray,
       customData,
     )
+    this.model.saveSamples(data);
     this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line')
-    this.view.showTransformationButtons()
+    this.view.showTransformationButtons();
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
   }
@@ -81,7 +87,7 @@ class Controller {
           break
       }
     }
-    //console.log(data);
+  console.log('Calculated input data:', data);
     return { labels, data }
   }
   //________________________________________________________________________________
@@ -265,43 +271,46 @@ class Controller {
       //div.style.display = 'none'
       div.remove()
     })
-Transformation
   }
     handleDFT() {
-        const sampleChart = this.view.sampleChart;
-        if (sampleChart && sampleChart.data && sampleChart.data.datasets) {
-            const samples = sampleChart.data.datasets[0].data;
-            if (!samples || samples.length === 0) {
-                console.error("No data available for DFT transformation.");
-                return;
-            }
-            const dft = new DFT(samples);
-            const result = dft.transform();
-            this.view.drawChart(Array.from({ length: result.length }, (_, i) => i.toString()), result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)), 'line');
-        } else {
-            console.error("Sample chart is not properly initialized.");
-        }
-    }
-//  handleDFT() {
-//    const samples = this.view.sampleChart.data.datasets[0].data
-//    const dft = new DFT(samples)
-//    const result = dft.transform()
-//    this.view.drawChart(
-//      Array.from({ length: result.length }, (_, i) => i.toString()),
-//      result.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
-//      'line',
-//    )
-//  }
+        const samples = this.model.samples;
+        console.log('Samples for DFT:', samples);
 
-  handleDCT() {
-    const samples = this.view.sampleChart.data.datasets[0].data
-    const dct = new DCT(samples)
-    const result = dct.transform()
-    this.view.drawChart(
-      Array.from({ length: result.length }, (_, i) => i.toString()),
-      result,
-      'line',
-    )
-  }
+        if (!samples || samples.length === 0) {
+            console.error("No data available for DFT transformation.");
+            return;
+        }
+
+        const dft = new DFT(samples);
+        const result = dft.transform();
+        this.model.saveDFT(result);
+
+        this.view.drawChart(
+            Array.from({ length: result.length }, (_, i) => i.toString()),
+            result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)),
+            'line'
+        );
+    }
+
+
+    handleDCT() {
+        const samples = this.model.samples;
+        console.log('Samples for DCT:', samples);
+
+        if (!samples || samples.length === 0) {
+            console.error("No data available for DCT transformation.");
+            return;
+        }
+
+        const dct = new DCT(samples);
+        const result = dct.transform();
+        this.model.saveDCT(result);
+
+        this.view.drawChart(
+            Array.from({ length: result.length }, (_, i) => i.toString()),
+            result,
+            'line'
+        );
+    }
 }
 export { Controller }

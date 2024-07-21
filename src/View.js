@@ -5,6 +5,10 @@ import { ChartDrawer } from './ChartDrawer.js'
 
 class View {
   constructor() {
+    //tbc_____________________________
+
+    this.sampleChart=null;
+    //tbc_____________________________
     console.log('odpalam konstruktor view')
     //przyciski wyboru tryby wprowadzania danych
     this.baseFuncButton = document.querySelector('.showSelection')
