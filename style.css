@@ -154,8 +154,8 @@ main {
 }
 
 .composerAddButton {
-  background-color: #15d77d;
-  color: #fff;
+  color: #fff;  
+  background-color:#15d77d; 
   padding: 10px 20px;
   border-radius: 30px;
   font-size: 16px;
@@ -166,6 +166,26 @@ main {
 
 .composerAddButton:hover {
   background-color: #12c06d;
+}
+
+/* Buttons */
+.composerSaveButton, .composerLoadButton {
+  background-color: #e65c00; 
+  color: #fff; /* White text color */
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.composerSaveButton:hover, .composerLoadButton:hover {
+background-color: #cc5200;
+}
+
+.composerSaveButton:active, .composerLoadButton:active {
+background-color: #cc5200;
 }
 
 .composerList {

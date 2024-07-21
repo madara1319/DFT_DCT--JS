@@ -17,8 +17,8 @@ class Controller {
     console.log('przeszelm inicjalizacje')
 
     //tbc_________________________
-    this.view.setupCharts()
-    this.view.showTransformationButtons()
+ //   this.view.setupCharts()
+ //   this.view.showTransformationButtons()
     //tbc___________________
   }
 
@@ -245,24 +245,12 @@ class Controller {
     const labels = Array.from(combinedWave.keys())
     const data = Array.from(combinedWave.values())
 
+    this.model.saveSamples(data);
     this.view.drawChart('sampleChart',labels, data, 'line')
+
+    this.view.showTransformationButtons();
   }
 
-  //________________________________________________________________________________
-  //addCloseEventListeners() {
-  //  if (!this.closeEventListenersAdded) {
-  //    const elements=this.view.getSignalListElements();
-  //    for(let i=0; i<elements.length; i++){
-  //    elements[i].addEventListener('click', (event) => {
-  //      if (event.target.classList.contains('close')) {
-  //        const div = event.target.parentElement;
-  //        div.style.display = 'none';
-  //      }
-  //    });
-  //    }
-  //    this.closeEventListenersAdded = true;
-  //  }
-  //}
 
   //________________________________________________________________________________
   addCloseEventListeners(item) {
