@@ -36,7 +36,7 @@ class Controller {
       customData,
     )
     this.model.saveSamples(data);
-    this.view.drawChart(labels, data, customData.length > 0 ? 'bar' : 'line')
+    this.view.drawChart('sampleChart',labels, data, customData.length > 0 ? 'bar' : 'line')
     this.view.showTransformationButtons();
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
@@ -245,7 +245,7 @@ class Controller {
     const labels = Array.from(combinedWave.keys())
     const data = Array.from(combinedWave.values())
 
-    this.view.drawChart(labels, data, 'line')
+    this.view.drawChart('sampleChart',labels, data, 'line')
   }
 
   //________________________________________________________________________________
@@ -286,6 +286,7 @@ class Controller {
         this.model.saveDFT(result);
 
         this.view.drawChart(
+          'transformChart',
             Array.from({ length: result.length }, (_, i) => i.toString()),
             result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)),
             'line'
@@ -307,6 +308,7 @@ class Controller {
         this.model.saveDCT(result);
 
         this.view.drawChart(
+          'transformChart',
             Array.from({ length: result.length }, (_, i) => i.toString()),
             result,
             'line'

@@ -349,8 +349,8 @@ class View {
     return document.getElementsByClassName('close')
   }
 
-  drawChart(labels, data, type) {
-    ChartDrawer.drawChart(labels, data, type)
+  drawChart(chartId,labels, data, type) {
+    ChartDrawer.drawChart(chartId,labels, data, type)
   }
 
   //________________________________________________________________________________

@@ -208,10 +208,11 @@ canvas {
   color: #fff;
   border: none;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+ /* display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
   cursor: pointer;
+  z-index:1000;
   font-size: 16px;
   line-height: 16px;
   transition: background-color 0.3s ease;
@@ -240,11 +241,14 @@ canvas {
 }
 .chartContainer {
   position: relative; /* Umożliwia absolutne pozycjonowanie przycisku wewnątrz kontenera */
-  display: block;
+  display: inline-block;
   width: 100%; /* Szerokość kontenera */
   max-width: 600px; /* Maksymalna szerokość kontenera, dostosuj w razie potrzeby */
   margin: 0 auto; /* Wycentrowanie kontenera */
   padding-top: 50px; /* Dodatkowa przestrzeń u góry na przycisk zamykający */
+
+  margin-bottom: 20px; /* Space between charts */
+
 }
 /* Floating Div */
 .showDiv {

@@ -53,14 +53,18 @@
               <textarea method="post" action="#" class="textArea" autofocus></textarea>
             </div>
             <div class="boxofboxes boxofboxes--js">
-              <div class="chartContainer">
+              <div class="chartContainer" id="sampleChartContainer">
                <canvas id="sampleChart"></canvas> 
+              <button class="chartCloseButton" data-chart-id="sampleChart" style="display: none";>&times;</button> 
               </div>
-              <div>
+              <div class="chartContainer" id="transformChartContainer">
                 <canvas id="transformChart"></canvas>
+                <button class="chartCloseButton" data-chart-id="transformChart" style="display: none";>&times;</button>
               </div>
               <div>
-                <canvas id="reverseTransformChart"></canvas>
+                <!--  <canvas  id="reverseTransformChart"></canvas>
+                <button class="chartCloseButton" data-chart-id="reverseTransformChart">&times;</button>
+-->
               </div>
             </div>
             <!--

@@ -1,30 +1,55 @@
 //klasa do korzystania w View
 class ChartDrawer {
-  static drawChart(labels, data, type) {
-    //nie wiem czy one na siebie nie nachodza
-    if (this.sampleChart) {
-      this.sampleChart.destroy()
+//  static charts={};
+//  static drawChart(chartId, labels, data, type) {
+//
+//    if (this.charts[chartId]) {
+//      this.charts[chartId].destroy();
+//      this.charts[chartId]=null;
+//    }
+//    let existingChartCloseButton = document.querySelector(`.chartCloseButton[data-chart-id="${chartId}"]`)
+//    if (existingChartCloseButton) {
+//      existingChartCloseButton.remove()
+//    }
+//    let chartCloseButton = document.createElement('button')
+//    chartCloseButton.className = `chartCloseButton`
+//    chartCloseButton.textContent = '\u00D7'
+//    chartCloseButton.dataset.chartId=chartId;
+//    chartCloseButton.onclick = () => {
+//      if (this.charts[chartId]) {
+//        this.charts[chartId].destroy()
+//        this.charts[chartId].null
+//      }
+//      chartCloseButton.remove()
+//    }
+//    //document.body.appendChild(chartCloseButton);
+//    document.querySelector('.boxofboxes--js').appendChild(chartCloseButton)
+  static charts = {};
+
+  static drawChart(chartId, labels, data, type) {
+    // Destroy existing chart if it exists
+    if (this.charts[chartId]) {
+      this.charts[chartId].destroy();
+      this.charts[chartId] = null;
     }
 
-    let existingChartCloseButton = document.querySelector('.chartCloseButton')
-    if (existingChartCloseButton) {
-      existingChartCloseButton.remove()
-    }
+    // Find the container and close button
+    const chartContainer = document.getElementById(`${chartId}Container`);
+    const chartCloseButton = chartContainer.querySelector('.chartCloseButton');
 
-    let chartCloseButton = document.createElement('button')
-    chartCloseButton.className = 'chartCloseButton'
-    chartCloseButton.textContent = '\u00D7'
+    // Ensure the close button exists and is visible
+    chartCloseButton.style.display = 'block';
     chartCloseButton.onclick = () => {
-      if (this.sampleChart) {
-        this.sampleChart.destroy()
-        this.sampleChart.null
+      if (this.charts[chartId]) {
+        this.charts[chartId].destroy();
+        this.charts[chartId] = null;
       }
-      chartCloseButton.remove()
-    }
-    //document.body.appendChild(chartCloseButton);
-    document.querySelector('.boxofboxes--js').appendChild(chartCloseButton)
-    this.sampleChart = new Chart(
-      document.getElementById('sampleChart').getContext('2d'),
+      chartCloseButton.style.display = 'none';
+    };
+
+    //this.sampleChart = new Chart(
+    this.charts[chartId] = new Chart(
+      document.getElementById(chartId).getContext('2d'),
       {
         //type: data.length > 0 ? 'bar' : 'line',
         type: type,
