@@ -240,8 +240,8 @@ class Controller {
         }
         combinedWave.set(key, combinedWave.get(key) + value)
       })
-    })
 
+    })
     const labels = Array.from(combinedWave.keys())
     const data = Array.from(combinedWave.values())
 
@@ -260,6 +260,9 @@ class Controller {
       div.remove()
     })
   }
+
+
+  //________________________________________________________________________________
     handleDFT() {
         const samples = this.model.samples;
         console.log('Samples for DFT:', samples);
@@ -302,5 +305,40 @@ class Controller {
             'line'
         );
     }
+
+
+  //________________________________________________________________________________
+  saveSignals(){
+    const signals=Array.from(this.view.list.querySelectorAll('.signalElement')).map(li=>{
+      const parts=li.textContent.split(' - Amplitude: ');
+      const selectedOption=parts[0];
+      const [amplitude,frequency]=parts[1].split(', Frequency: ').map(parseFloat);
+      return {selectedOption, amplitude, frequency};
+  });
+    this.model.saveSignalsToLocalStorage(signals);
+  }
+  loadSignals(){
+    const signals=this.model.loadSignalsFromLocalStorage();
+    signals.forEach(signal=>{
+      this.view.addElementToListView(signal);
+    });
+  }
+
+
+
+
+  //________________________________________________________________________________
+  saveSamples() {
+    const samples = this.view.textArea.value.split('\n').filter(sample => sample.trim() !== '');
+    this.model.saveSamplesToLocalStorage(samples);
+  }
+
+  loadSamples() {
+    const samples = this.model.loadSamplesFromLocalStorage();
+    this.view.textArea.value = samples.join('\n');
+  }
+
+
+  //________________________________________________________________________________
 }
 export { Controller }

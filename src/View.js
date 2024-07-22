@@ -32,6 +32,9 @@ class View {
     //przeniesienie z signalComposer
     this.list = document.querySelector('.composerList')
 
+    this.saveButton=document.querySelector('.saveButton');
+    this.loadButton=document.querySelector('.loadButton');
+
     //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
     //wywolanie w konstrutorze controllera
     // this.initialize()
@@ -93,6 +96,16 @@ class View {
         this.controller.generateCombinedSignal()
       })
 
+    this.saveButton.addEventListener('click',()=>{
+      this.controller.saveSignals();
+
+      this.controller.saveSamples();
+    })
+
+    this.loadButton.addEventListener('click',()=>{
+      this.controller.loadSignals();
+      this.controller.loadSamples();
+    })
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
     console.log('wewnetrzna initializacja')
@@ -206,6 +219,7 @@ class View {
   //________________________________________________________________________________
     showTransformationButtons(){
       let parentDiv=document.querySelector('.boxofboxes--js')
+      let transformChartContainer=document.querySelector('#transformChartContainer');
       let transformationButtonsDiv=document.querySelector('.transformationButtonsDiv')
       if (!transformationButtonsDiv){
         transformationButtonsDiv=document.createElement('div')
@@ -216,7 +230,7 @@ class View {
         <button class="selectButtons">Do DCT</button>
         </div>
         `
-        parentDiv.appendChild(transformationButtonsDiv);
+        parentDiv.insertBefore(transformationButtonsDiv,transformChartContainer);
       }
 
     //  this.addDFTButtonListener(()=>this.controller.handleDFT());
@@ -247,6 +261,7 @@ class View {
     dctButton.addEventListener('click',handler);
   }
   //________________________________________________________________________________
+
     showModificationButtons(){}
 
   //________________________________________________________________________________

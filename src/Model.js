@@ -3,7 +3,8 @@ class Model{
     this.samples=JSON.parse(localStorage.getItem('samples')) || [];
     this.dftResults=JSON.parse(localStorage.getItem('dftResults')) || [];
     this.dctResults=JSON.parse(localStorage.getItem('dctResults')) || [];
-//    this.samplesKey='samples';
+    this.savedSignalsKey='savedSignals';
+    this.savedSamplesKey='savedSamples';
 //    this.dftKey='dft';
 //    this.dctKey='dct';
 //    this.loadSamples();
@@ -23,6 +24,7 @@ class Model{
     localStorage.setItem('dctResults', JSON.stringify(dctResults));
   }
 
+
   getSamples() {
     return this.samples;
   }
@@ -34,6 +36,23 @@ class Model{
   getDCTResults() {
     return this.dctResults;
   }
+  saveSignalsToLocalStorage(signals){
+    localStorage.setItem(this.savedSignalsKey, JSON.stringify(signals));
+  }
+  loadSignalsFromLocalStorage(){
+    const signals=localStorage.getItem(this.savedSignalsKey);
+    return signals ? JSON.parse(signals) : [];
+  }
+
+  saveSamplesToLocalStorage(samples) {
+    localStorage.setItem(this.savedSamplesKey, JSON.stringify(samples));
+  }
+
+  loadSamplesFromLocalStorage() {
+    const samples = localStorage.getItem(this.savedSamplesKey);
+    return samples ? JSON.parse(samples) : [];
+  }
+
 }
 
 export { Model };
