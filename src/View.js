@@ -101,7 +101,7 @@ class View {
 
       this.controller.saveSamples();
     })
-
+//this needs to be fixed
     this.loadButton.addEventListener('click',()=>{
       this.controller.loadSignals();
       this.controller.loadSamples();
@@ -261,10 +261,11 @@ class View {
     dctButton.addEventListener('click',handler);
   }
   //________________________________________________________________________________
-
+//to be done
     showModificationButtons(){}
 
   //________________________________________________________________________________
+  //to be done
     showInverseTransformationButtons(){}
 
   //________________________________________________________________________________
