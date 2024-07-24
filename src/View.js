@@ -270,8 +270,37 @@ class View {
   }
   //________________________________________________________________________________
 //to be done
-    showModificationButtons(){}
+    showModificationButtons(){
+      let parentDiv=document.querySelector('.boxofboxes--js')
+      let transformChartContainer=document.querySelector('#transformChartContainer');
+      let modificationsButtonsDiv=document.querySelector('.modificationsButtonsDiv')
+      if (!transformationButtonsDiv){
+        transformationButtonsDiv=document.createElement('div')
+        transformationButtonsDiv.className='modificationsButtonsDiv'
+        transformationButtonsDiv.innerHTML=`
+        <div class="modificationsButtonsBox">
+        <button class="selectButtons">Time Shift</button>
+        <button class="selectButtons">Amplitude Scale</button>
+        <button class="selectButtons">Rotate</button>
+        </div>
+        `
+        parentDiv.insertBefore(transformationButtonsDiv,transformChartContainer);
 
+    const timeShiftButton = transformationButtonsDiv.querySelector('button:nth-child(1)');
+    const amplitudeScaleButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
+    const rotateButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
+
+    dftButton.addEventListener('click', () => {
+        console.log('Sample chart when DFT button is clicked:', this.sampleChart);
+        this.controller.handleDFT();
+    });
+    dctButton.addEventListener('click', () => {
+        console.log('Sample chart when DCT button is clicked:', this.sampleChart);
+        this.controller.handleDCT();
+    });
+
+    }
+    }
   //________________________________________________________________________________
   //to be done
     showInverseTransformationButtons(){}
