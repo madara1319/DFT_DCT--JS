@@ -319,6 +319,7 @@ class Controller {
   }
   loadSignals(){
     const signals=this.model.loadSignalsFromLocalStorage();
+    this.view.clearSignalList();
     signals.forEach(signal=>{
       this.view.addElementToListView(signal);
     });

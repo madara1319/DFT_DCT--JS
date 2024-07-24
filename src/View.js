@@ -32,9 +32,13 @@ class View {
     //przeniesienie z signalComposer
     this.list = document.querySelector('.composerList')
 
-    this.saveButton=document.querySelector('.saveButton');
-    this.loadButton=document.querySelector('.loadButton');
+    this.textArea=document.querySelector('.textArea');
 
+    this.composerSaveButton=document.querySelector('.composerSaveButton');
+    this.composerLoadButton=document.querySelector('.composerLoadButton');
+
+    this.enteringSaveButton=document.querySelector('.enteringSaveButton');
+    this.enteringLoadButton=document.querySelector('.enteringLoadButton');
     //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
     //wywolanie w konstrutorze controllera
     // this.initialize()
@@ -96,15 +100,19 @@ class View {
         this.controller.generateCombinedSignal()
       })
 
-    this.saveButton.addEventListener('click',()=>{
-      this.controller.saveSignals();
+    this.enteringSaveButton.addEventListener('click',()=>{
 
       this.controller.saveSamples();
     })
-//this needs to be fixed
-    this.loadButton.addEventListener('click',()=>{
-      this.controller.loadSignals();
+    this.enteringLoadButton.addEventListener('click',()=>{
       this.controller.loadSamples();
+    })
+
+    this.composerSaveButton.addEventListener('click',()=>{
+      this.controller.saveSignals();
+    })
+    this.composerLoadButton.addEventListener('click',()=>{
+      this.controller.loadSignals();
     })
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
@@ -368,6 +376,15 @@ class View {
   drawChart(chartId,labels, data, type) {
     ChartDrawer.drawChart(chartId,labels, data, type)
   }
+
+
+  //________________________________________________________________________________
+  clearSignalList(){
+    while(this.list.firstChild){
+      this.list.removeChild(this.list.firstChild)
+    }
+  }
+
 
   //________________________________________________________________________________
   removeInitialElement() {

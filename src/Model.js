@@ -44,6 +44,7 @@ class Model{
     return signals ? JSON.parse(signals) : [];
   }
 
+
   saveSamplesToLocalStorage(samples) {
     localStorage.setItem(this.savedSamplesKey, JSON.stringify(samples));
   }
