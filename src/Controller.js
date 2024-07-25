@@ -307,7 +307,22 @@ class Controller {
         );
     }
 
+  //________________________________________________________________________________
+    handleTimeShift(){
+      console.log('timeShift')
+    }  
 
+    handleAmplitudeScaling(){
+      console.log('amp scale')
+    }  
+
+    handleRotation(){
+      console.log('rotate')
+    }  
+
+    handleReverseTransform(){
+      console.log('reverseTransform')
+    }  
   //________________________________________________________________________________
   saveSignals(){
     const signals=Array.from(this.view.list.querySelectorAll('.signalElement')).map(li=>{

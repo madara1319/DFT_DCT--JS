@@ -287,10 +287,10 @@ class View {
         `
         parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
 }
-    const timeShiftButton = transformationButtonsDiv.querySelector('button:nth-child(1)');
-    const amplitudeScaleButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
-    const rotateButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
-    const reverseTransform = transformationButtonsDiv.querySelector('button:nth-child(2)');
+    const timeShiftButton = modificationsButtonsDiv.querySelector('button:nth-child(1)');
+    const amplitudeScaleButton = modificationsButtonsDiv.querySelector('button:nth-child(2)');
+    const rotateButton = modificationsButtonsDiv.querySelector('button:nth-child(2)');
+    const reverseTransform = modificationsButtonsDiv.querySelector('button:nth-child(2)');
 
     timeShiftButton.addEventListener('click', () => {
         console.log('timeShiftButton button is clicked:', this.reverseTransformChart);

@@ -1,29 +1,5 @@
 //klasa do korzystania w View
 class ChartDrawer {
-//  static charts={};
-//  static drawChart(chartId, labels, data, type) {
-//
-//    if (this.charts[chartId]) {
-//      this.charts[chartId].destroy();
-//      this.charts[chartId]=null;
-//    }
-//    let existingChartCloseButton = document.querySelector(`.chartCloseButton[data-chart-id="${chartId}"]`)
-//    if (existingChartCloseButton) {
-//      existingChartCloseButton.remove()
-//    }
-//    let chartCloseButton = document.createElement('button')
-//    chartCloseButton.className = `chartCloseButton`
-//    chartCloseButton.textContent = '\u00D7'
-//    chartCloseButton.dataset.chartId=chartId;
-//    chartCloseButton.onclick = () => {
-//      if (this.charts[chartId]) {
-//        this.charts[chartId].destroy()
-//        this.charts[chartId].null
-//      }
-//      chartCloseButton.remove()
-//    }
-//    //document.body.appendChild(chartCloseButton);
-//    document.querySelector('.boxofboxes--js').appendChild(chartCloseButton)
   static charts = {};
 
   static drawChart(chartId, labels, data, type) {
