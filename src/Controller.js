@@ -38,6 +38,7 @@ class Controller {
     this.model.saveSamples(data);
     this.view.drawChart('sampleChart',labels, data, customData.length > 0 ? 'bar' : 'line')
     this.view.showTransformationButtons();
+    this.view.showModificationButtons();
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
   }

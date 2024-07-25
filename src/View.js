@@ -272,34 +272,44 @@ class View {
 //to be done
     showModificationButtons(){
       let parentDiv=document.querySelector('.boxofboxes--js')
-      let transformChartContainer=document.querySelector('#transformChartContainer');
+      let reverseChartContainer=document.querySelector('#reverseChartContainer');
       let modificationsButtonsDiv=document.querySelector('.modificationsButtonsDiv')
-      if (!transformationButtonsDiv){
-        transformationButtonsDiv=document.createElement('div')
-        transformationButtonsDiv.className='modificationsButtonsDiv'
-        transformationButtonsDiv.innerHTML=`
+      if (!modificationsButtonsDiv){
+        modificationsButtonsDiv=document.createElement('div')
+        modificationsButtonsDiv.className='modificationsButtonsDiv'
+        modificationsButtonsDiv.innerHTML=`
         <div class="modificationsButtonsBox">
         <button class="selectButtons">Time Shift</button>
         <button class="selectButtons">Amplitude Scale</button>
         <button class="selectButtons">Rotate</button>
+        <button class="reverseTransform">Reverse Transform</button>
         </div>
         `
-        parentDiv.insertBefore(transformationButtonsDiv,transformChartContainer);
-
+        parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
+}
     const timeShiftButton = transformationButtonsDiv.querySelector('button:nth-child(1)');
     const amplitudeScaleButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
     const rotateButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
+    const reverseTransform = transformationButtonsDiv.querySelector('button:nth-child(2)');
 
-    dftButton.addEventListener('click', () => {
-        console.log('Sample chart when DFT button is clicked:', this.sampleChart);
-        this.controller.handleDFT();
-    });
-    dctButton.addEventListener('click', () => {
-        console.log('Sample chart when DCT button is clicked:', this.sampleChart);
-        this.controller.handleDCT();
+    timeShiftButton.addEventListener('click', () => {
+        console.log('timeShiftButton button is clicked:', this.reverseTransformChart);
+        this.controller.handleTimeShift();
     });
 
-    }
+    amplitudeScaleButton.addEventListener('click', () => {
+        console.log('timeShiftButton button is clicked:', this.reverseTransformChart);
+        this.controller.handleAmplitudeScaling();
+    });
+    rotateButton.addEventListener('click', () => {
+        console.log('rotateButton button is clicked:', this.reverseTransformChart);
+        this.controller.handleRotation();
+    });
+    reverseTransform.addEventListener('click', () => {
+        console.log('reverseTransform button is clicked:', this.reverseTransformChart);
+        this.controller.handleReverseTransform();
+    });
+    
     }
   //________________________________________________________________________________
   //to be done
