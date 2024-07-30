@@ -272,6 +272,8 @@ class View {
 //to be done
     showModificationButtons(){
       let parentDiv=document.querySelector('.boxofboxes--js')
+
+      let transformChartContainer=document.querySelector('#transformChartContainer');
       let reverseChartContainer=document.querySelector('#reverseChartContainer');
       let modificationsButtonsDiv=document.querySelector('.modificationsButtonsDiv')
       if (!modificationsButtonsDiv){
@@ -282,15 +284,15 @@ class View {
         <button class="selectButtons">Time Shift</button>
         <button class="selectButtons">Amplitude Scale</button>
         <button class="selectButtons">Rotate</button>
-        <button class="reverseTransform">Reverse Transform</button>
         </div>
         `
-        parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
+
+        parentDiv.insertBefore(modificationsButtonsDiv,transformChartContainer);
+        //parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
 }
     const timeShiftButton = modificationsButtonsDiv.querySelector('button:nth-child(1)');
     const amplitudeScaleButton = modificationsButtonsDiv.querySelector('button:nth-child(2)');
     const rotateButton = modificationsButtonsDiv.querySelector('button:nth-child(2)');
-    const reverseTransform = modificationsButtonsDiv.querySelector('button:nth-child(2)');
 
     timeShiftButton.addEventListener('click', () => {
         console.log('timeShiftButton button is clicked:', this.reverseTransformChart);
@@ -305,15 +307,35 @@ class View {
         console.log('rotateButton button is clicked:', this.reverseTransformChart);
         this.controller.handleRotation();
     });
-    reverseTransform.addEventListener('click', () => {
-        console.log('reverseTransform button is clicked:', this.reverseTransformChart);
-        this.controller.handleReverseTransform();
-    });
     
     }
   //________________________________________________________________________________
   //to be done
-    showInverseTransformationButtons(){}
+    showReverseTransformationButton(){
+
+      let parentDiv=document.querySelector('.boxofboxes--js')
+
+      let transformChartContainer=document.querySelector('#transformChartContainer');
+      let reverseChartContainer=document.querySelector('#reverseChartContainer');
+      let reverseTransformButtonDiv=document.querySelector('.reverseTransformButtonDiv')
+      if (!reverseTransformButtonDiv){
+        reverseTransformButtonDiv=document.createElement('div')
+        reverseTransformButtonDiv.className='reverseTransformButtonBox'
+        reverseTransformButtonDiv.innerHTML=`
+        <div class="reverseTransformButtonBox">
+        <button class="selectButtons reverseTransform">Reverse Transform</button>
+        </div>
+        `
+
+       parentDiv.appendChild(reverseTransformButtonDiv,transformChartContainer);
+}
+    const reverseTransform = reverseTransformButtonDiv.querySelector('button:nth-child(1)');
+
+    reverseTransform.addEventListener('click', () => {
+        console.log('reverseTransform button is clicked:', this.reverseTransformChart);
+        this.controller.handleReverseTransform();
+    });
+    }
 
   //________________________________________________________________________________
   showFloatingDiv() {

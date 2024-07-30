@@ -38,7 +38,7 @@ class Controller {
     this.model.saveSamples(data);
     this.view.drawChart('sampleChart',labels, data, customData.length > 0 ? 'bar' : 'line')
     this.view.showTransformationButtons();
-    this.view.showModificationButtons();
+   // this.view.showModificationButtons();
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
   }
@@ -250,6 +250,7 @@ class Controller {
     this.view.drawChart('sampleChart',labels, data, 'line')
 
     this.view.showTransformationButtons();
+
   }
 
 
@@ -283,6 +284,9 @@ class Controller {
             result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)),
             'line'
         );
+      this.view.showModificationButtons();
+
+      this.view.showReverseTransformationButton();
     }
 
 
@@ -305,6 +309,10 @@ class Controller {
             result,
             'line'
         );
+
+      this.view.showModificationButtons();
+      this.view.showReverseTransformationButton();
+    
     }
 
   //________________________________________________________________________________
