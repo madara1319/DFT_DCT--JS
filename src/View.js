@@ -312,7 +312,7 @@ class View {
   //________________________________________________________________________________
   //to be done
     showReverseTransformationButton(){
-
+//gotta fixing adding buttons while there are existing ones
       let parentDiv=document.querySelector('.boxofboxes--js')
 
       let transformChartContainer=document.querySelector('#transformChartContainer');
@@ -320,7 +320,7 @@ class View {
       let reverseTransformButtonDiv=document.querySelector('.reverseTransformButtonDiv')
       if (!reverseTransformButtonDiv){
         reverseTransformButtonDiv=document.createElement('div')
-        reverseTransformButtonDiv.className='reverseTransformButtonBox'
+        reverseTransformButtonDiv.className='reverseTransformButtonDiv'
         reverseTransformButtonDiv.innerHTML=`
         <div class="reverseTransformButtonBox">
         <button class="selectButtons reverseTransform">Reverse Transform</button>
