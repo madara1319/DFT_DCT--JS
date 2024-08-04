@@ -317,18 +317,22 @@ class Controller {
 
   //________________________________________________________________________________
     handleTimeShift(){
+      //show input
       console.log('timeShift')
     }  
 
     handleAmplitudeScaling(){
+      //show slider
       console.log('amp scale')
     }  
 
     handleRotation(){
+      //action button
       console.log('rotate')
     }  
 
     handleReverseTransform(){
+      //handle both reverseTransformations
       console.log('reverseTransform')
     }  
   //________________________________________________________________________________
