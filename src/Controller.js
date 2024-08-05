@@ -1,15 +1,15 @@
 import { SignalGenerator } from './SignalGenerator.js'
 //import { ChartDrawer } from './ChartDrawer.js';
 import { View } from './View.js'
-import {Model} from './Model.js'
-import {DFT} from './DFT.js'
-import {DCT} from './DCT.js'
+import { Model } from './Model.js'
+import { DFT } from './DFT.js'
+import { DCT } from './DCT.js'
 
 class Controller {
-  constructor(view,model) {
+  constructor(view, model) {
     console.log('odpalam konstriktor kontrolera')
     this.view = view
-    this.model=model
+    this.model = model
     this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
 
@@ -17,8 +17,8 @@ class Controller {
     console.log('przeszelm inicjalizacje')
 
     //tbc_________________________
- //   this.view.setupCharts()
- //   this.view.showTransformationButtons()
+    //   this.view.setupCharts()
+    //   this.view.showTransformationButtons()
     //tbc___________________
   }
 
@@ -35,10 +35,15 @@ class Controller {
       frequencyArray,
       customData,
     )
-    this.model.saveSamples(data);
-    this.view.drawChart('sampleChart',labels, data, customData.length > 0 ? 'bar' : 'line')
-    this.view.showTransformationButtons();
-   // this.view.showModificationButtons();
+    this.model.saveSamples(data)
+    this.view.drawChart(
+      'sampleChart',
+      labels,
+      data,
+      customData.length > 0 ? 'bar' : 'line',
+    )
+    this.view.showTransformationButtons()
+    // this.view.showModificationButtons();
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
     console.log('updateChart end')
   }
@@ -88,7 +93,7 @@ class Controller {
           break
       }
     }
-  console.log('Calculated input data:', data);
+    console.log('Calculated input data:', data)
     return { labels, data }
   }
   //________________________________________________________________________________
@@ -241,18 +246,15 @@ class Controller {
         }
         combinedWave.set(key, combinedWave.get(key) + value)
       })
-
     })
     const labels = Array.from(combinedWave.keys())
     const data = Array.from(combinedWave.values())
 
-    this.model.saveSamples(data);
-    this.view.drawChart('sampleChart',labels, data, 'line')
+    this.model.saveSamples(data)
+    this.view.drawChart('sampleChart', labels, data, 'line')
 
-    this.view.showTransformationButtons();
-
+    this.view.showTransformationButtons()
   }
-
 
   //________________________________________________________________________________
   addCloseEventListeners(item) {
@@ -263,110 +265,127 @@ class Controller {
     })
   }
 
-
   //________________________________________________________________________________
-    handleDFT() {
-        const samples = this.model.samples;
-        console.log('Samples for DFT:', samples);
+  handleDFT() {
+    const samples = this.model.samples
+    console.log('Samples for DFT:', samples)
 
-        if (!samples || samples.length === 0) {
-            console.error("No data available for DFT transformation.");
-            return;
-        }
-
-        const dft = new DFT(samples);
-        const result = dft.transform();
-        this.model.saveDFT(result);
-
-        this.view.drawChart(
-          'transformChart',
-            Array.from({ length: result.length }, (_, i) => i.toString()),
-            result.map(r => Math.sqrt(r.real ** 2 + r.imag ** 2)),
-            'line'
-        );
-      this.view.showModificationButtons();
-
-      this.view.showReverseTransformationButton();
+    if (!samples || samples.length === 0) {
+      console.error('No data available for DFT transformation.')
+      return
     }
 
+    const dft = new DFT(samples)
+    const result = dft.transform()
+    this.model.saveDFT(result)
 
-    handleDCT() {
-        const samples = this.model.samples;
-        console.log('Samples for DCT:', samples);
+    this.view.drawChart(
+      'transformChart',
+      Array.from({ length: result.length }, (_, i) => i.toString()),
+      result.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
+      'line',
+    )
+    this.view.showModificationButtons()
 
-        if (!samples || samples.length === 0) {
-            console.error("No data available for DCT transformation.");
-            return;
-        }
+    this.view.showReverseTransformationButton()
+  }
 
-        const dct = new DCT(samples);
-        const result = dct.transform();
-        this.model.saveDCT(result);
+  handleDCT() {
+    const samples = this.model.samples
+    console.log('Samples for DCT:', samples)
 
-        this.view.drawChart(
-          'transformChart',
-            Array.from({ length: result.length }, (_, i) => i.toString()),
-            result,
-            'line'
-        );
-
-      this.view.showModificationButtons();
-      this.view.showReverseTransformationButton();
-    
+    if (!samples || samples.length === 0) {
+      console.error('No data available for DCT transformation.')
+      return
     }
 
-  //________________________________________________________________________________
-    handleTimeShift(){
-      //show input
-      console.log('timeShift')
-    }  
+    const dct = new DCT(samples)
+    const result = dct.transform()
+    this.model.saveDCT(result)
 
-    handleAmplitudeScaling(){
-      //show slider
-      console.log('amp scale')
-    }  
+    this.view.drawChart(
+      'transformChart',
+      Array.from({ length: result.length }, (_, i) => i.toString()),
+      result,
+      'line',
+    )
 
-    handleRotation(){
-      //action button
-      console.log('rotate')
-    }  
-
-    handleReverseTransform(){
-      //handle both reverseTransformations
-      console.log('reverseTransform')
-    }  
-  //________________________________________________________________________________
-  saveSignals(){
-    const signals=Array.from(this.view.list.querySelectorAll('.signalElement')).map(li=>{
-      const parts=li.textContent.split(' - Amplitude: ');
-      const selectedOption=parts[0];
-      const [amplitude,frequency]=parts[1].split(', Frequency: ').map(parseFloat);
-      return {selectedOption, amplitude, frequency};
-  });
-    this.model.saveSignalsToLocalStorage(signals);
-  }
-  loadSignals(){
-    const signals=this.model.loadSignalsFromLocalStorage();
-    this.view.clearSignalList();
-    signals.forEach(signal=>{
-      this.view.addElementToListView(signal);
-    });
+    this.view.showModificationButtons()
+    this.view.showReverseTransformationButton()
   }
 
+  //________________________________________________________________________________
+  handleTimeShift(timeShiftValue) {
+    const N = this.model.getSamplesCount()
+    const kArray = Array.from({ length: N }, (_, k) => k)
 
+    const originalDFT = this.model.getDFTResults()
+    const shiftedDFT = originalDFT.map((X_k, k) => {
+      const angle = (-2 * Math.PI * k * timeShiftValue) / N
+      return {
+        real: X_k.real * Math.cos(angle) - X_k.imag * Math.sin(angle),
+        imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
+      }
+    })
 
+    const magnitudeOriginal = originalDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const magnitudeShifted = shiftedDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+
+    this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)
+  }
+
+  handleAmplitudeScaling() {
+    //show slider
+    console.log('amp scale')
+  }
+
+  handleRotation() {
+    //action button
+    console.log('rotate')
+  }
+
+  handleReverseTransform() {
+    //handle both reverseTransformations
+    console.log('reverseTransform')
+  }
+  //________________________________________________________________________________
+  saveSignals() {
+    const signals = Array.from(
+      this.view.list.querySelectorAll('.signalElement'),
+    ).map((li) => {
+      const parts = li.textContent.split(' - Amplitude: ')
+      const selectedOption = parts[0]
+      const [amplitude, frequency] = parts[1]
+        .split(', Frequency: ')
+        .map(parseFloat)
+      return { selectedOption, amplitude, frequency }
+    })
+    this.model.saveSignalsToLocalStorage(signals)
+  }
+  loadSignals() {
+    const signals = this.model.loadSignalsFromLocalStorage()
+    this.view.clearSignalList()
+    signals.forEach((signal) => {
+      this.view.addElementToListView(signal)
+    })
+  }
 
   //________________________________________________________________________________
   saveSamples() {
-    const samples = this.view.textArea.value.split('\n').filter(sample => sample.trim() !== '');
-    this.model.saveSamplesToLocalStorage(samples);
+    const samples = this.view.textArea.value
+      .split('\n')
+      .filter((sample) => sample.trim() !== '')
+    this.model.saveSamplesToLocalStorage(samples)
   }
 
   loadSamples() {
-    const samples = this.model.loadSamplesFromLocalStorage();
-    this.view.textArea.value = samples.join('\n');
+    const samples = this.model.loadSamplesFromLocalStorage()
+    this.view.textArea.value = samples.join('\n')
   }
-
 
   //________________________________________________________________________________
 }

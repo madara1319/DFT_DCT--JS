@@ -7,7 +7,7 @@ class View {
   constructor() {
     //tbc_____________________________
 
-    this.sampleChart=null;
+    this.sampleChart = null
     //tbc_____________________________
     console.log('odpalam konstruktor view')
     //przyciski wyboru tryby wprowadzania danych
@@ -32,13 +32,13 @@ class View {
     //przeniesienie z signalComposer
     this.list = document.querySelector('.composerList')
 
-    this.textArea=document.querySelector('.textArea');
+    this.textArea = document.querySelector('.textArea')
 
-    this.composerSaveButton=document.querySelector('.composerSaveButton');
-    this.composerLoadButton=document.querySelector('.composerLoadButton');
+    this.composerSaveButton = document.querySelector('.composerSaveButton')
+    this.composerLoadButton = document.querySelector('.composerLoadButton')
 
-    this.enteringSaveButton=document.querySelector('.enteringSaveButton');
-    this.enteringLoadButton=document.querySelector('.enteringLoadButton');
+    this.enteringSaveButton = document.querySelector('.enteringSaveButton')
+    this.enteringLoadButton = document.querySelector('.enteringLoadButton')
     //uruchomienie eventListenerow do Toggle FloatingDiv i CombineSignals
     //wywolanie w konstrutorze controllera
     // this.initialize()
@@ -100,19 +100,18 @@ class View {
         this.controller.generateCombinedSignal()
       })
 
-    this.enteringSaveButton.addEventListener('click',()=>{
+    this.enteringSaveButton.addEventListener('click', () => {
+      this.controller.saveSamples()
+    })
+    this.enteringLoadButton.addEventListener('click', () => {
+      this.controller.loadSamples()
+    })
 
-      this.controller.saveSamples();
+    this.composerSaveButton.addEventListener('click', () => {
+      this.controller.saveSignals()
     })
-    this.enteringLoadButton.addEventListener('click',()=>{
-      this.controller.loadSamples();
-    })
-
-    this.composerSaveButton.addEventListener('click',()=>{
-      this.controller.saveSignals();
-    })
-    this.composerLoadButton.addEventListener('click',()=>{
-      this.controller.loadSignals();
+    this.composerLoadButton.addEventListener('click', () => {
+      this.controller.loadSignals()
     })
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
@@ -225,61 +224,77 @@ class View {
     }
   }
   //________________________________________________________________________________
-    showTransformationButtons(){
-      let parentDiv=document.querySelector('.boxofboxes--js')
-      let transformChartContainer=document.querySelector('#transformChartContainer');
-      let transformationButtonsDiv=document.querySelector('.transformationButtonsDiv')
-      if (!transformationButtonsDiv){
-        transformationButtonsDiv=document.createElement('div')
-        transformationButtonsDiv.className='transformationButtonsDiv'
-        transformationButtonsDiv.innerHTML=`
+  showTransformationButtons() {
+    let parentDiv = document.querySelector('.boxofboxes--js')
+    let transformChartContainer = document.querySelector(
+      '#transformChartContainer',
+    )
+    let transformationButtonsDiv = document.querySelector(
+      '.transformationButtonsDiv',
+    )
+    if (!transformationButtonsDiv) {
+      transformationButtonsDiv = document.createElement('div')
+      transformationButtonsDiv.className = 'transformationButtonsDiv'
+      transformationButtonsDiv.innerHTML = `
         <div class="transformationButtonsBox">
         <button class="selectButtons">Do DFT</button>
         <button class="selectButtons">Do DCT</button>
         </div>
         `
-        parentDiv.insertBefore(transformationButtonsDiv,transformChartContainer);
-      }
+      parentDiv.insertBefore(transformationButtonsDiv, transformChartContainer)
+    }
 
     //  this.addDFTButtonListener(()=>this.controller.handleDFT());
     //  this.addDCTButtonListener(()=>this.controller.handleDCT());
 
-    const dftButton = transformationButtonsDiv.querySelector('button:nth-child(1)');
-    const dctButton = transformationButtonsDiv.querySelector('button:nth-child(2)');
+    const dftButton = transformationButtonsDiv.querySelector(
+      'button:nth-child(1)',
+    )
+    const dctButton = transformationButtonsDiv.querySelector(
+      'button:nth-child(2)',
+    )
 
     dftButton.addEventListener('click', () => {
-        console.log('Sample chart when DFT button is clicked:', this.sampleChart);
-        this.controller.handleDFT();
-    });
+      console.log('Sample chart when DFT button is clicked:', this.sampleChart)
+      this.controller.handleDFT()
+    })
     dctButton.addEventListener('click', () => {
-        console.log('Sample chart when DCT button is clicked:', this.sampleChart);
-        this.controller.handleDCT();
-    });
-    }
-
-  //________________________________________________________________________________
-  addDFTButtonListener(handler){
-    const dftButton=document.querySelector('.transformationButtonsDiv .selectButtons:nth-child(1)');
-    dftButton.addEventListener('click',handler);
+      console.log('Sample chart when DCT button is clicked:', this.sampleChart)
+      this.controller.handleDCT()
+    })
   }
 
   //________________________________________________________________________________
-  addDCTButtonListener(handler){
-    const dctButton=document.querySelector('.transformationButtonsDiv .selectButtons:nth-child(2)');
-    dctButton.addEventListener('click',handler);
+  addDFTButtonListener(handler) {
+    const dftButton = document.querySelector(
+      '.transformationButtonsDiv .selectButtons:nth-child(1)',
+    )
+    dftButton.addEventListener('click', handler)
+  }
+
+  //________________________________________________________________________________
+  addDCTButtonListener(handler) {
+    const dctButton = document.querySelector(
+      '.transformationButtonsDiv .selectButtons:nth-child(2)',
+    )
+    dctButton.addEventListener('click', handler)
   }
   //________________________________________________________________________________
-//to be done
-    showModificationButtons(){
-      let parentDiv=document.querySelector('.boxofboxes--js')
+  //to be done
+  showModificationButtons() {
+    let parentDiv = document.querySelector('.boxofboxes--js')
 
-      let transformChartContainer=document.querySelector('#transformChartContainer');
-      let reverseChartContainer=document.querySelector('#reverseChartContainer');
-      let modificationsButtonsDiv=document.querySelector('.modificationsButtonsDiv')
-      if (!modificationsButtonsDiv){
-        modificationsButtonsDiv=document.createElement('div')
-        modificationsButtonsDiv.className='modificationsButtonsDiv'
-        modificationsButtonsDiv.innerHTML=`
+    let transformChartContainer = document.querySelector(
+      '#transformChartContainer',
+    )
+    let reverseChartContainer = document.querySelector('#reverseChartContainer')
+    let modificationsButtonsDiv = document.querySelector(
+      '.modificationsButtonsDiv',
+    )
+    if (!modificationsButtonsDiv) {
+      modificationsButtonsDiv = document.createElement('div')
+      modificationsButtonsDiv.className = 'modificationsButtonsDiv'
+      modificationsButtonsDiv.innerHTML = `
         <div class="modificationsButtonsBox">
         <button class="selectButtons">Time Shift</button>
         <button class="selectButtons">Amplitude Scale</button>
@@ -287,55 +302,113 @@ class View {
         </div>
         `
 
-        parentDiv.insertBefore(modificationsButtonsDiv,transformChartContainer);
-        //parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
-}
-    const timeShiftButton = modificationsButtonsDiv.querySelector('button:nth-child(1)');
-    const amplitudeScaleButton = modificationsButtonsDiv.querySelector('button:nth-child(2)');
-    const rotateButton = modificationsButtonsDiv.querySelector('button:nth-child(2)');
+      parentDiv.insertBefore(modificationsButtonsDiv, transformChartContainer)
+      //parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
+    }
+    const timeShiftButton = modificationsButtonsDiv.querySelector(
+      'button:nth-child(1)',
+    )
+    const amplitudeScaleButton = modificationsButtonsDiv.querySelector(
+      'button:nth-child(2)',
+    )
+    const rotateButton = modificationsButtonsDiv.querySelector(
+      'button:nth-child(2)',
+    )
 
     timeShiftButton.addEventListener('click', () => {
-        console.log('timeShiftButton button is clicked:', this.reverseTransformChart);
-        this.controller.handleTimeShift();
-    });
+      console.log(
+        'timeShiftButton button is clicked:',
+        this.reverseTransformChart,
+      )
+      const timeShiftInput = document.createElement('input')
+      timeShiftInput.type = 'number'
+      timeShiftInput.placeholder = 'Enter time shift value'
+      timeShiftInput.className = 'timeShiftInput'
+
+      timeShiftInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const shiftValue = parseFloat(timeShiftInput.value)
+          if (!isNaN(shiftValue)) {
+            this.controller.handleTimeShift(shiftValue)
+            timeShiftInput.remove()
+          }
+        }
+      })
+      modificationsButtonsDiv.appendChild(timeShiftInput)
+      timeShiftInput.focus()
+    })
 
     amplitudeScaleButton.addEventListener('click', () => {
-        console.log('timeShiftButton button is clicked:', this.reverseTransformChart);
-        this.controller.handleAmplitudeScaling();
-    });
+      console.log(
+        'timeShiftButton button is clicked:',
+        this.reverseTransformChart,
+      )
+      this.controller.handleAmplitudeScaling()
+    })
     rotateButton.addEventListener('click', () => {
-        console.log('rotateButton button is clicked:', this.reverseTransformChart);
-        this.controller.handleRotation();
-    });
-    
-    }
+      console.log('rotateButton button is clicked:', this.reverseTransformChart)
+      this.controller.handleRotation()
+    })
+  }
+  //________________________________________________________________________________
+  drawShiftedDFTChart(labels, originalData, shiftedData) {
+    ChartDrawer.drawMultipleDataChart(
+      'transformChart',
+      labels,
+      [
+        {
+          label: 'Original DFT',
+          data: originalData,
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+        },
+        {
+          label: 'Shifted DFT',
+          data: shiftedData,
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        },
+      ],
+      'line',
+    )
+  }
+
   //________________________________________________________________________________
   //to be done
-    showReverseTransformationButton(){
-//gotta fixing adding buttons while there are existing ones
-      let parentDiv=document.querySelector('.boxofboxes--js')
+  showReverseTransformationButton() {
+    //gotta fixing adding buttons while there are existing ones
+    let parentDiv = document.querySelector('.boxofboxes--js')
 
-      let transformChartContainer=document.querySelector('#transformChartContainer');
-      let reverseChartContainer=document.querySelector('#reverseChartContainer');
-      let reverseTransformButtonDiv=document.querySelector('.reverseTransformButtonDiv')
-      if (!reverseTransformButtonDiv){
-        reverseTransformButtonDiv=document.createElement('div')
-        reverseTransformButtonDiv.className='reverseTransformButtonDiv'
-        reverseTransformButtonDiv.innerHTML=`
+    let transformChartContainer = document.querySelector(
+      '#transformChartContainer',
+    )
+    let reverseChartContainer = document.querySelector('#reverseChartContainer')
+    let reverseTransformButtonDiv = document.querySelector(
+      '.reverseTransformButtonDiv',
+    )
+    if (!reverseTransformButtonDiv) {
+      reverseTransformButtonDiv = document.createElement('div')
+      reverseTransformButtonDiv.className = 'reverseTransformButtonDiv'
+      reverseTransformButtonDiv.innerHTML = `
         <div class="reverseTransformButtonBox">
         <button class="selectButtons reverseTransform">Reverse Transform</button>
         </div>
         `
 
-       parentDiv.appendChild(reverseTransformButtonDiv,transformChartContainer);
-}
-    const reverseTransform = reverseTransformButtonDiv.querySelector('button:nth-child(1)');
+      parentDiv.appendChild(reverseTransformButtonDiv, transformChartContainer)
+    }
+    const reverseTransform = reverseTransformButtonDiv.querySelector(
+      'button:nth-child(1)',
+    )
 
     reverseTransform.addEventListener('click', () => {
-        console.log('reverseTransform button is clicked:', this.reverseTransformChart);
-        this.controller.handleReverseTransform();
-    });
-    }
+      console.log(
+        'reverseTransform button is clicked:',
+        this.reverseTransformChart,
+      )
+      this.controller.handleReverseTransform()
+    })
+  }
 
   //________________________________________________________________________________
   showFloatingDiv() {
@@ -434,18 +507,16 @@ class View {
     return document.getElementsByClassName('close')
   }
 
-  drawChart(chartId,labels, data, type) {
-    ChartDrawer.drawChart(chartId,labels, data, type)
+  drawChart(chartId, labels, data, type) {
+    ChartDrawer.drawChart(chartId, labels, data, type)
   }
 
-
   //________________________________________________________________________________
-  clearSignalList(){
-    while(this.list.firstChild){
+  clearSignalList() {
+    while (this.list.firstChild) {
       this.list.removeChild(this.list.firstChild)
     }
   }
-
 
   //________________________________________________________________________________
   removeInitialElement() {
