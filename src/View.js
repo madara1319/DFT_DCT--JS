@@ -8,6 +8,8 @@ class View {
     //tbc_____________________________
 
     this.sampleChart = null
+    this.amplitudeChart=null
+    this.phaseChart=null
     //tbc_____________________________
     console.log('odpalam konstruktor view')
     //przyciski wyboru tryby wprowadzania danych
@@ -226,8 +228,8 @@ class View {
   //________________________________________________________________________________
   showTransformationButtons() {
     let parentDiv = document.querySelector('.boxofboxes--js')
-    let transformChartContainer = document.querySelector(
-      '#transformChartContainer',
+    let amplitudeChartContainer = document.querySelector(
+      '#amplitudeChartContainer',
     )
     let transformationButtonsDiv = document.querySelector(
       '.transformationButtonsDiv',
@@ -241,7 +243,7 @@ class View {
         <button class="selectButtons">Do DCT</button>
         </div>
         `
-      parentDiv.insertBefore(transformationButtonsDiv, transformChartContainer)
+      parentDiv.insertBefore(transformationButtonsDiv, amplitudeChartContainer)
     }
 
     //  this.addDFTButtonListener(()=>this.controller.handleDFT());
@@ -284,8 +286,8 @@ class View {
   showModificationButtons() {
     let parentDiv = document.querySelector('.boxofboxes--js')
 
-    let transformChartContainer = document.querySelector(
-      '#transformChartContainer',
+    let amplitudeChartContainer = document.querySelector(
+      '#amplitudeChartContainer',
     )
     let reverseChartContainer = document.querySelector('#reverseChartContainer')
     let modificationsButtonsDiv = document.querySelector(
@@ -302,7 +304,7 @@ class View {
         </div>
         `
 
-      parentDiv.insertBefore(modificationsButtonsDiv, transformChartContainer)
+      parentDiv.insertBefore(modificationsButtonsDiv, amplitudeChartContainer)
       //parentDiv.appendChild(modificationsButtonsDiv,reverseChartContainer);
     }
     const timeShiftButton = modificationsButtonsDiv.querySelector(
@@ -372,6 +374,24 @@ class View {
       'line',
     )
   }
+
+  //________________________________________________________________________________
+drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData) {
+  ChartDrawer.drawChart(
+    'amplitudeChart',
+    labels,
+    amplitudeData,
+    'line'
+  );
+
+  ChartDrawer.drawChart(
+    'phaseChart',
+    labels,
+    phaseData,
+    'line'
+  );
+}
+
 
   //________________________________________________________________________________
   //to be done

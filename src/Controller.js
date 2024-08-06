@@ -278,13 +278,23 @@ class Controller {
     const dft = new DFT(samples)
     const result = dft.transform()
     this.model.saveDFT(result)
+    console.log("result to " + result[1].real)
 
-    this.view.drawChart(
-      'transformChart',
-      Array.from({ length: result.length }, (_, i) => i.toString()),
-      result.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
-      'line',
-    )
+    const amplitude=dft.getAmplitude(result);
+    const phase=dft.getPhase(result);
+    const labels=Array.from({length:result.length},(_,i)=>i.toString());
+    console.log("amplitudy" + amplitude[1])
+
+    console.log("fazy" + phase)
+  this.view.drawAmplitudeAndPhaseChart(labels, amplitude,phase);
+  
+
+ //   this.view.drawChart(
+ //     'transformChart',
+ //     Array.from({ length: result.length }, (_, i) => i.toString()),
+ //     result.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
+ //     'line',
+ //   )
     this.view.showModificationButtons()
 
     this.view.showReverseTransformationButton()

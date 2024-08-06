@@ -275,6 +275,15 @@ canvas {
   margin-bottom: 20px; /* Space between charts */
 
 }
+
+.transformChartGrid{
+  display:grid;
+  width:100%;
+  grid-template-columns:repeat(1,minmax(0,1fr));
+  grid-template-rows:1fr;
+}
+
+
 /* Floating Div */
 .showDiv {
   position: fixed;

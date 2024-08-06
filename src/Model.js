@@ -32,11 +32,6 @@ class Model{
   getSamplesCount() {
     return this.samples.length;
   }
-//
-//  getDFT(){
-//    return this.dft
-//  }
-//  
 
   getDFTResults() {
     return this.dftResults;
