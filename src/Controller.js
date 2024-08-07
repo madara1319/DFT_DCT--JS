@@ -312,19 +312,25 @@ class Controller {
     const dct = new DCT(samples)
     const result = dct.transform()
     this.model.saveDCT(result)
+      
+    const labels=Array.from({length:result.length},(_,i)=>i.toString());
 
-    this.view.drawChart(
-      'transformChart',
-      Array.from({ length: result.length }, (_, i) => i.toString()),
-      result,
-      'line',
-    )
+  this.view.drawAmplitudeAndPhaseChart(labels, result,false);
 
-    this.view.showModificationButtons()
-    this.view.showReverseTransformationButton()
+
+ //   this.view.drawChart(
+ //     'amplitudeChart',
+ //     Array.from({ length: result.length }, (_, i) => i.toString()),
+ //     result,
+ //     'line',
+ //   )
+
+   this.view.killModificationButtons()
+    this.view.killReverseTransformationButton()
   }
 
   //________________________________________________________________________________
+  //need to fix it to draw on both charts
   handleTimeShift(timeShiftValue) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
@@ -338,14 +344,26 @@ class Controller {
       }
     })
 
-    const magnitudeOriginal = originalDFT.map((X_k) =>
+    const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
-    const magnitudeShifted = shiftedDFT.map((X_k) =>
+    const amplitudeShifted = shiftedDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
 
-    this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)
+  const phaseOriginal = originalDFT.map(X_k =>
+    Math.atan2(X_k.imag, X_k.real)
+  );
+  const phaseShifted = shiftedDFT.map(X_k =>
+    Math.atan2(X_k.imag, X_k.real)
+  );
+  this.view.drawShiftedDFTChart(
+    kArray,
+    { amplitude: amplitudeOriginal, phase: phaseOriginal },
+    { amplitude: amplitudeShifted, phase: phaseShifted }
+  );
+
+    //this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)
   }
 
   handleAmplitudeScaling() {

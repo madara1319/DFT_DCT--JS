@@ -34,22 +34,6 @@ class DFT extends Transformation {
       Math.atan2(r.imag, r.real)
     )
   }
-//  getAmplitude(dftResults) {
-//    let test = dftResults.map(({ real, imag }) => {
-//      Math.sqrt(real ** 2 + imag ** 2)
-//    })
-//
-//    console.log(`dftResults to  + ${dftResults[1].real}`)
-//    console.log(`dftResults to  + ${test}`)
-//    return dftResults.map(({ real, imag }) => {
-//      Math.sqrt(real ** 2 + imag ** 2)
-//    })
-//  }
-//  getPhase(dftResults) {
-//    return dftResults.map(({ real, imag }) => {
-//      Math.atan2(imag, real)
-//    })
-//  }
 }
 
 export { DFT }

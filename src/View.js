@@ -322,11 +322,19 @@ class View {
         'timeShiftButton button is clicked:',
         this.reverseTransformChart,
       )
+      let timeShiftInput=document.querySelector('.timeShiftInput');
+
+      if(!timeShiftInput){
+
       const timeShiftInput = document.createElement('input')
       timeShiftInput.type = 'number'
       timeShiftInput.placeholder = 'Enter time shift value'
       timeShiftInput.className = 'timeShiftInput'
 
+      modificationsButtonsDiv.appendChild(timeShiftInput)
+      timeShiftInput.focus()
+
+      
       timeShiftInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
           const shiftValue = parseFloat(timeShiftInput.value)
@@ -336,8 +344,7 @@ class View {
           }
         }
       })
-      modificationsButtonsDiv.appendChild(timeShiftInput)
-      timeShiftInput.focus()
+}
     })
 
     amplitudeScaleButton.addEventListener('click', () => {
@@ -353,20 +360,63 @@ class View {
     })
   }
   //________________________________________________________________________________
+killModificationButtons(){
+    let modificationsButtonsDiv = document.querySelector(
+      '.modificationsButtonsDiv',
+    )
+    if (modificationsButtonsDiv) {
+      modificationsButtonsDiv.remove();
+    }
+}
+
+
+  //________________________________________________________________________________
+
+killReverseTransformationButton(){
+
+    let reverseTransformButtonDiv = document.querySelector(
+      '.reverseTransformButtonDiv',
+    )
+    if (reverseTransformButtonDiv) {
+      reverseTransformButtonDiv.remove();
+    }
+}
+  //________________________________________________________________________________
+//need to fix it to draw on both charts 
   drawShiftedDFTChart(labels, originalData, shiftedData) {
     ChartDrawer.drawMultipleDataChart(
-      'transformChart',
+      'amplitudeChart',
       labels,
       [
         {
-          label: 'Original DFT',
-          data: originalData,
+          label: 'Original Amplitude',
+          data: originalData.amplitude,
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
         },
         {
-          label: 'Shifted DFT',
-          data: shiftedData,
+          label: 'Shifted Amplitude',
+          data: shiftedData.amplitude,
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        },
+      ],
+      'line',
+    )
+
+    ChartDrawer.drawMultipleDataChart(
+      'phaseChart',
+      labels,
+      [
+        {
+          label: 'Original Phase',
+          data: originalData.phase,
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+        },
+        {
+          label: 'Shifted Phase',
+          data: shiftedData.phase,
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
@@ -383,13 +433,16 @@ drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData) {
     amplitudeData,
     'line'
   );
-
+  console.log(phaseData)
+  ChartDrawer.killChart('phaseChart');
+  if (phaseData){
   ChartDrawer.drawChart(
     'phaseChart',
     labels,
     phaseData,
     'line'
   );
+  }
 }
 
 

@@ -2,6 +2,21 @@
 class ChartDrawer {
   static charts = {}
 
+  static killChart(chartId){
+    if(this.charts[chartId]){
+    this.charts[chartId].destroy();
+    this.charts[chartId]=null
+  }
+
+
+    // Find the container and close button
+    const chartContainer = document.getElementById(`${chartId}Container`)
+    const chartCloseButton = chartContainer.querySelector('.chartCloseButton')
+    if (chartCloseButton.style.display==='block')
+    {
+chartCloseButton.style.display='none';
+    }
+}
   static drawChart(chartId, labels, data, type) {
     // Destroy existing chart if it exists
     if (this.charts[chartId]) {
