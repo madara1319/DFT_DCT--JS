@@ -5,6 +5,7 @@ class Model{
     this.dctResults=JSON.parse(localStorage.getItem('dctResults')) || [];
     this.savedSignalsKey='savedSignals';
     this.savedSamplesKey='savedSamples';
+    this.modifiedDftResults=JSON.parse(localStorage.getItem('modifiedDftResults')) || [];
 //    this.dftKey='dft';
 //    this.dctKey='dct';
 //    this.loadSamples();
@@ -24,6 +25,10 @@ class Model{
     localStorage.setItem('dctResults', JSON.stringify(dctResults));
   }
 
+  saveModifiedDFT(modifiedDftResults) {
+    this.modifiedDftResults = modifiedDftResults;
+    localStorage.setItem('modifiedDftResults', JSON.stringify(modifiedDftResults));
+  }
 
   getSamples() {
     return this.samples;
@@ -40,6 +45,12 @@ class Model{
   getDCTResults() {
     return this.dctResults;
   }
+  
+  getModifiedDFT(){
+    return this.modifiedDftResults;
+  }
+
+
   saveSignalsToLocalStorage(signals){
     localStorage.setItem(this.savedSignalsKey, JSON.stringify(signals));
   }

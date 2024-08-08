@@ -8,8 +8,8 @@ class View {
     //tbc_____________________________
 
     this.sampleChart = null
-    this.amplitudeChart=null
-    this.phaseChart=null
+    this.amplitudeChart = null
+    this.phaseChart = null
     //tbc_____________________________
     console.log('odpalam konstruktor view')
     //przyciski wyboru tryby wprowadzania danych
@@ -317,16 +317,66 @@ class View {
       'button:nth-child(2)',
     )
 
-    timeShiftButton.addEventListener('click', () => {
-      console.log(
-        'timeShiftButton button is clicked:',
-        this.reverseTransformChart,
-      )
-      let timeShiftInput=document.querySelector('.timeShiftInput');
 
-      if(!timeShiftInput){
+    timeShiftButton.addEventListener('click',()=>{
+      this.handleTimeShiftInput();
+    })
+//    timeShiftButton.addEventListener('click', () => {
+//      console.log(
+//        'timeShiftButton button is clicked:',
+//        this.reverseTransformChart,
+//      )
+//      let timeShiftInput = document.querySelector('.timeShiftInput')
+//
+//      if (!timeShiftInput) {
+//        const timeShiftInput = document.createElement('input')
+//        timeShiftInput.type = 'number'
+//        timeShiftInput.placeholder = 'Enter time shift value'
+//        timeShiftInput.className = 'timeShiftInput'
+//
+//        modificationsButtonsDiv.appendChild(timeShiftInput)
+//        timeShiftInput.focus()
+//
+//        timeShiftInput.addEventListener('keydown', (event) => {
+//          if (event.key === 'Enter') {
+//            const shiftValue = parseFloat(timeShiftInput.value)
+//            if (!isNaN(shiftValue)) {
+//              this.controller.handleTimeShift(shiftValue)
+//              timeShiftInput.remove()
+//            }
+//          }
+//        })
+//      }
+//    })
 
-      const timeShiftInput = document.createElement('input')
+    amplitudeScaleButton.addEventListener('click', () => {
+      this.handleAmplitudeScaleInput();
+    })
+    rotateButton.addEventListener('click', () => {
+      console.log('rotateButton button is clicked:', this.reverseTransformChart)
+      this.controller.handleRotation()
+    })
+  }
+  //________________________________________________________________________________
+  killModificationButtons() {
+    let modificationsButtonsDiv = document.querySelector(
+      '.modificationsButtonsDiv',
+    )
+    if (modificationsButtonsDiv) {
+      modificationsButtonsDiv.remove()
+    }
+  }
+
+  //________________________________________________________________________________
+  handleTimeShiftInput() {
+    let modificationsButtonsDiv = document.querySelector(
+      '.modificationsButtonsDiv',
+    )
+
+    let timeShiftInput = document.querySelector('.timeShiftInput')
+
+    if (!timeShiftInput) {
+      timeShiftInput = document.createElement('input')
       timeShiftInput.type = 'number'
       timeShiftInput.placeholder = 'Enter time shift value'
       timeShiftInput.className = 'timeShiftInput'
@@ -334,7 +384,6 @@ class View {
       modificationsButtonsDiv.appendChild(timeShiftInput)
       timeShiftInput.focus()
 
-      
       timeShiftInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
           const shiftValue = parseFloat(timeShiftInput.value)
@@ -344,45 +393,48 @@ class View {
           }
         }
       })
-}
-    })
-
-    amplitudeScaleButton.addEventListener('click', () => {
-      console.log(
-        'timeShiftButton button is clicked:',
-        this.reverseTransformChart,
-      )
-      this.controller.handleAmplitudeScaling()
-    })
-    rotateButton.addEventListener('click', () => {
-      console.log('rotateButton button is clicked:', this.reverseTransformChart)
-      this.controller.handleRotation()
-    })
+    }
   }
   //________________________________________________________________________________
-killModificationButtons(){
+  handleAmplitudeScaleInput() {
     let modificationsButtonsDiv = document.querySelector(
       '.modificationsButtonsDiv',
     )
-    if (modificationsButtonsDiv) {
-      modificationsButtonsDiv.remove();
+
+    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
+
+    if (!amplitudeScaleInput) {
+      amplitudeScaleInput = document.createElement('input')
+      amplitudeScaleInput.type = 'number'
+      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
+      amplitudeScaleInput.className = 'amplitudeScaleInput'
+
+      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
+      amplitudeScaleInput.focus()
+
+      amplitudeScaleInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const scaleValue = parseFloat(amplitudeScaleInput.value)
+          if (!isNaN(scaleValue)) {
+            this.controller.handleAmplitudeScaling(scaleValue)
+            amplitudeScaleInput.remove()
+          }
+        }
+      })
     }
-}
-
-
+  }
   //________________________________________________________________________________
 
-killReverseTransformationButton(){
-
+  killReverseTransformationButton() {
     let reverseTransformButtonDiv = document.querySelector(
       '.reverseTransformButtonDiv',
     )
     if (reverseTransformButtonDiv) {
-      reverseTransformButtonDiv.remove();
+      reverseTransformButtonDiv.remove()
     }
-}
+  }
   //________________________________________________________________________________
-//need to fix it to draw on both charts 
+  //need to fix it to draw on both charts
   drawShiftedDFTChart(labels, originalData, shiftedData) {
     ChartDrawer.drawMultipleDataChart(
       'amplitudeChart',
@@ -426,25 +478,14 @@ killReverseTransformationButton(){
   }
 
   //________________________________________________________________________________
-drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData) {
-  ChartDrawer.drawChart(
-    'amplitudeChart',
-    labels,
-    amplitudeData,
-    'line'
-  );
-  console.log(phaseData)
-  ChartDrawer.killChart('phaseChart');
-  if (phaseData){
-  ChartDrawer.drawChart(
-    'phaseChart',
-    labels,
-    phaseData,
-    'line'
-  );
+  drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData) {
+    ChartDrawer.drawChart('amplitudeChart', labels, amplitudeData, 'line')
+    console.log(phaseData)
+    ChartDrawer.killChart('phaseChart')
+    if (phaseData) {
+      ChartDrawer.drawChart('phaseChart', labels, phaseData, 'line')
+    }
   }
-}
-
 
   //________________________________________________________________________________
   //to be done

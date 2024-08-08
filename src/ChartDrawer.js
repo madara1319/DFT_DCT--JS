@@ -62,13 +62,22 @@ chartCloseButton.style.display='none';
           maintainAspectRatio: false,
           scales: {
             x: {
+              scales:{
+                type:'linear',
+                position:'bottom'
+              },
               title: {
                 display: true,
                 text: 'X',
               },
             },
             y: {
+              scales:{
+
+                beginAtZero:true
+              },
               title: {
+
                 display: true,
                 text: 'Y',
               },
@@ -109,13 +118,24 @@ chartCloseButton.style.display='none';
           maintainAspectRatio: false,
           scales: {
             x: {
+
+              scales:{
+                type:'linear',
+                position:'bottom'
+              },
               title: {
                 display: true,
                 text: 'k',
               },
             },
             y: {
+
+              scales:{
+
+                beginAtZero:true
+              },
               title: {
+
                 display: true,
                 text: 'Magnitude',
               },

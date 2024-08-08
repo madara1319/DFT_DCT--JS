@@ -266,6 +266,17 @@ class Controller {
   }
 
   //________________________________________________________________________________
+  convertToPointFormat(transformResults){
+    return (value,index)=>{
+      return{
+        x:index,
+        y:value
+      }
+    
+  }}
+
+
+  //________________________________________________________________________________
   handleDFT() {
     const samples = this.model.samples
     console.log('Samples for DFT:', samples)
@@ -286,15 +297,15 @@ class Controller {
     console.log("amplitudy" + amplitude[1])
 
     console.log("fazy" + phase)
+
+    const amplitudePoints=amplitude.map(this.convertToPointFormat(amplitude));    
+
+    const phasePoints=phase.map(this.convertToPointFormat(phase));    
+
   this.view.drawAmplitudeAndPhaseChart(labels, amplitude,phase);
   
+//  this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
 
- //   this.view.drawChart(
- //     'transformChart',
- //     Array.from({ length: result.length }, (_, i) => i.toString()),
- //     result.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
- //     'line',
- //   )
     this.view.showModificationButtons()
 
     this.view.showReverseTransformationButton()
@@ -344,6 +355,8 @@ class Controller {
       }
     })
 
+    this.model.saveModifiedDFT(shiftedDFT);
+
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
@@ -366,8 +379,40 @@ class Controller {
     //this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)
   }
 
-  handleAmplitudeScaling() {
-    //show slider
+  handleAmplitudeScaling(scaleFactor) {
+
+    const N = this.model.getSamplesCount()
+    const kArray = Array.from({ length: N }, (_, k) => k)
+
+    const originalDFT = this.model.getDFTResults()
+    const modifiedDFT=this.model.getModifiedDFT();
+
+    const amplitudeOriginal = originalDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const amplitudeShifted = modifiedDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+
+  const phaseOriginal = originalDFT.map(X_k =>
+    Math.atan2(X_k.imag, X_k.real)
+  );
+  const phaseShifted = modifiedDFT.map(X_k =>
+    Math.atan2(X_k.imag, X_k.real)
+  );
+    const scaledDFT=modifiedDFT.map((X_k)=>({
+      real:X_k.real * scaleFactor,
+      imag:X_k.imag * scaleFactor,
+    }))
+
+    this.model.saveModifiedDFT(scaledDFT)
+
+  this.view.drawShiftedDFTChart(
+    kArray,
+    { amplitude: amplitudeOriginal, phase: phaseOriginal },
+    { amplitude: amplitudeShifted, phase: phaseShifted }
+  );
+
     console.log('amp scale')
   }
 
