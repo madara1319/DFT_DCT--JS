@@ -6,6 +6,7 @@ class Model{
     this.savedSignalsKey='savedSignals';
     this.savedSamplesKey='savedSamples';
     this.modifiedDftResults=JSON.parse(localStorage.getItem('modifiedDftResults')) || [];
+    this.reverseDFTResults=JSON.parse(localStorage.getItem('reverseDFTResults')) || [];
 //    this.dftKey='dft';
 //    this.dctKey='dct';
 //    this.loadSamples();
@@ -30,6 +31,10 @@ class Model{
     localStorage.setItem('modifiedDftResults', JSON.stringify(modifiedDftResults));
   }
 
+  saveReverseDFT(reverseDFTResults) {
+    this.reverseDFTResults = reverseDFTResults;
+    localStorage.setItem('reverseDFTResults', JSON.stringify(reverseDFTResults));
+  }
   getSamples() {
     return this.samples;
   }
@@ -50,6 +55,9 @@ class Model{
     return this.modifiedDftResults;
   }
 
+  getReverseDFT(){
+    return this.reverseDFTResults;
+  }
 
   saveSignalsToLocalStorage(signals){
     localStorage.setItem(this.savedSignalsKey, JSON.stringify(signals));

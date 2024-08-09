@@ -321,33 +321,6 @@ class View {
     timeShiftButton.addEventListener('click',()=>{
       this.handleTimeShiftInput();
     })
-//    timeShiftButton.addEventListener('click', () => {
-//      console.log(
-//        'timeShiftButton button is clicked:',
-//        this.reverseTransformChart,
-//      )
-//      let timeShiftInput = document.querySelector('.timeShiftInput')
-//
-//      if (!timeShiftInput) {
-//        const timeShiftInput = document.createElement('input')
-//        timeShiftInput.type = 'number'
-//        timeShiftInput.placeholder = 'Enter time shift value'
-//        timeShiftInput.className = 'timeShiftInput'
-//
-//        modificationsButtonsDiv.appendChild(timeShiftInput)
-//        timeShiftInput.focus()
-//
-//        timeShiftInput.addEventListener('keydown', (event) => {
-//          if (event.key === 'Enter') {
-//            const shiftValue = parseFloat(timeShiftInput.value)
-//            if (!isNaN(shiftValue)) {
-//              this.controller.handleTimeShift(shiftValue)
-//              timeShiftInput.remove()
-//            }
-//          }
-//        })
-//      }
-//    })
 
     amplitudeScaleButton.addEventListener('click', () => {
       this.handleAmplitudeScaleInput();
@@ -520,7 +493,7 @@ class View {
         'reverseTransform button is clicked:',
         this.reverseTransformChart,
       )
-      this.controller.handleReverseTransform()
+      this.controller.handleReverseDFT()
     })
   }
 

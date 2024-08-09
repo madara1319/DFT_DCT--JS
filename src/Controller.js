@@ -4,6 +4,7 @@ import { View } from './View.js'
 import { Model } from './Model.js'
 import { DFT } from './DFT.js'
 import { DCT } from './DCT.js'
+import {ReverseDFT} from './ReverseDFT.js'
 
 class Controller {
   constructor(view, model) {
@@ -266,15 +267,14 @@ class Controller {
   }
 
   //________________________________________________________________________________
-  convertToPointFormat(transformResults){
-    return (value,index)=>{
-      return{
-        x:index,
-        y:value
+  convertToPointFormat(transformResults) {
+    return (value, index) => {
+      return {
+        x: index,
+        y: value,
       }
-    
-  }}
-
+    }
+  }
 
   //________________________________________________________________________________
   handleDFT() {
@@ -289,22 +289,22 @@ class Controller {
     const dft = new DFT(samples)
     const result = dft.transform()
     this.model.saveDFT(result)
-    console.log("result to " + result[1].real)
+    console.log('result to ' + result[1].real)
 
-    const amplitude=dft.getAmplitude(result);
-    const phase=dft.getPhase(result);
-    const labels=Array.from({length:result.length},(_,i)=>i.toString());
-    console.log("amplitudy" + amplitude[1])
+    const amplitude = dft.getAmplitude(result)
+    const phase = dft.getPhase(result)
+    const labels = Array.from({ length: result.length }, (_, i) => i.toString())
+    console.log('amplitudy' + amplitude[1])
 
-    console.log("fazy" + phase)
+    console.log('fazy' + phase)
 
-    const amplitudePoints=amplitude.map(this.convertToPointFormat(amplitude));    
+    const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
 
-    const phasePoints=phase.map(this.convertToPointFormat(phase));    
+    const phasePoints = phase.map(this.convertToPointFormat(phase))
 
-  this.view.drawAmplitudeAndPhaseChart(labels, amplitude,phase);
-  
-//  this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
+    this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
+
+    //  this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
 
     this.view.showModificationButtons()
 
@@ -323,20 +323,19 @@ class Controller {
     const dct = new DCT(samples)
     const result = dct.transform()
     this.model.saveDCT(result)
-      
-    const labels=Array.from({length:result.length},(_,i)=>i.toString());
 
-  this.view.drawAmplitudeAndPhaseChart(labels, result,false);
+    const labels = Array.from({ length: result.length }, (_, i) => i.toString())
 
+    this.view.drawAmplitudeAndPhaseChart(labels, result, false)
 
- //   this.view.drawChart(
- //     'amplitudeChart',
- //     Array.from({ length: result.length }, (_, i) => i.toString()),
- //     result,
- //     'line',
- //   )
+    //   this.view.drawChart(
+    //     'amplitudeChart',
+    //     Array.from({ length: result.length }, (_, i) => i.toString()),
+    //     result,
+    //     'line',
+    //   )
 
-   this.view.killModificationButtons()
+    this.view.killModificationButtons()
     this.view.killReverseTransformationButton()
   }
 
@@ -355,7 +354,7 @@ class Controller {
       }
     })
 
-    this.model.saveModifiedDFT(shiftedDFT);
+    this.model.saveModifiedDFT(shiftedDFT)
 
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
@@ -364,28 +363,25 @@ class Controller {
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
 
-  const phaseOriginal = originalDFT.map(X_k =>
-    Math.atan2(X_k.imag, X_k.real)
-  );
-  const phaseShifted = shiftedDFT.map(X_k =>
-    Math.atan2(X_k.imag, X_k.real)
-  );
-  this.view.drawShiftedDFTChart(
-    kArray,
-    { amplitude: amplitudeOriginal, phase: phaseOriginal },
-    { amplitude: amplitudeShifted, phase: phaseShifted }
-  );
+    const phaseOriginal = originalDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+    const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
+    this.view.drawShiftedDFTChart(
+      kArray,
+      { amplitude: amplitudeOriginal, phase: phaseOriginal },
+      { amplitude: amplitudeShifted, phase: phaseShifted },
+    )
 
     //this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)
   }
 
   handleAmplitudeScaling(scaleFactor) {
-
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     const originalDFT = this.model.getDFTResults()
-    const modifiedDFT=this.model.getModifiedDFT();
+    const modifiedDFT = this.model.getModifiedDFT()
 
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
@@ -394,24 +390,24 @@ class Controller {
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
 
-  const phaseOriginal = originalDFT.map(X_k =>
-    Math.atan2(X_k.imag, X_k.real)
-  );
-  const phaseShifted = modifiedDFT.map(X_k =>
-    Math.atan2(X_k.imag, X_k.real)
-  );
-    const scaledDFT=modifiedDFT.map((X_k)=>({
-      real:X_k.real * scaleFactor,
-      imag:X_k.imag * scaleFactor,
+    const phaseOriginal = originalDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+    const phaseShifted = modifiedDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+    const scaledDFT = modifiedDFT.map((X_k) => ({
+      real: X_k.real * scaleFactor,
+      imag: X_k.imag * scaleFactor,
     }))
 
     this.model.saveModifiedDFT(scaledDFT)
 
-  this.view.drawShiftedDFTChart(
-    kArray,
-    { amplitude: amplitudeOriginal, phase: phaseOriginal },
-    { amplitude: amplitudeShifted, phase: phaseShifted }
-  );
+    this.view.drawShiftedDFTChart(
+      kArray,
+      { amplitude: amplitudeOriginal, phase: phaseOriginal },
+      { amplitude: amplitudeShifted, phase: phaseShifted },
+    )
 
     console.log('amp scale')
   }
@@ -421,9 +417,21 @@ class Controller {
     console.log('rotate')
   }
 
-  handleReverseTransform() {
-    //handle both reverseTransformations
+  //________________________________________________________________________________
+  handleReverseDFT() {
     console.log('reverseTransform')
+    const dftResults = this.model.getDFTResults()
+
+    if (!dftResults || dftResults.length === 0) {
+      console.error('No DFT data available for inverse transformation.')
+      return
+    }
+
+    const reverseDFT = new ReverseDFT(dftResults)
+    const reverseDFTResults = reverseDFT.reverseTransform()
+    this.model.saveReverseDFT(reverseDFTResults)
+
+    this.view.drawTimeDomainChart(reverseDFTResults)
   }
   //________________________________________________________________________________
   saveSignals() {
