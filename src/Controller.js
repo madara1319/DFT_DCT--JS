@@ -302,10 +302,14 @@ class Controller {
 
     const phasePoints = phase.map(this.convertToPointFormat(phase))
 
-    this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
+    const amplitudeLines=amplitude.map((amp,i)=>[{x:i,y:0},{x:i,y:amp}]).flat();
 
-    //  this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
+    const phaseLines=amplitude.map((ph,i)=>[{x:i,y:0},{x:i,y:ph}]).flat();
+   // this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
 
+      this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints,amplitudeLines,phaseLines);
+
+      //this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
     this.view.showModificationButtons()
 
     this.view.showReverseTransformationButton()

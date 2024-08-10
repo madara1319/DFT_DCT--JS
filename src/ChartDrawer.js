@@ -145,6 +145,69 @@ chartCloseButton.style.display='none';
       },
     )
   }
+
+static drawScatterWithVerticalLines(chartId, labels, scatterData, lineData) {
+    if (this.charts[chartId]) {
+      this.charts[chartId].destroy();
+      this.charts[chartId] = null;
+    }
+
+    const chartContainer = document.getElementById(`${chartId}Container`);
+    const chartCloseButton = chartContainer.querySelector('.chartCloseButton');
+
+    chartCloseButton.style.display = 'block';
+    chartCloseButton.onclick = () => {
+      this.killChart(chartId);
+    };
+
+    this.charts[chartId] = new Chart(
+      document.getElementById(chartId).getContext('2d'),
+      {
+        type: 'scatter',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Scatter Points',
+              data: scatterData,
+              backgroundColor: 'rgba(255,99,132,0.5)',
+            },
+            {
+              label: 'Vertical Lines',
+              data: lineData,
+              type: 'line',
+              borderColor: 'blue',
+              borderWidth: 2,
+              fill: false,
+              showLine: true,
+              pointRadius: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom',
+              title: {
+                display: true,
+                text: 'k',
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Magnitude',
+              },
+            },
+          },
+        },
+      },
+    );
+  }
 }
 
 export { ChartDrawer }
