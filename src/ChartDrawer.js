@@ -147,67 +147,81 @@ chartCloseButton.style.display='none';
   }
 
 static drawScatterWithVerticalLines(chartId, labels, scatterData, lineData) {
-    if (this.charts[chartId]) {
-      this.charts[chartId].destroy();
-      this.charts[chartId] = null;
-    }
+  if (this.charts[chartId]) {
+    this.charts[chartId].destroy();
+    this.charts[chartId] = null;
+  }
 
-    const chartContainer = document.getElementById(`${chartId}Container`);
-    const chartCloseButton = chartContainer.querySelector('.chartCloseButton');
+  const chartContainer = document.getElementById(`${chartId}Container`);
+  const chartCloseButton = chartContainer.querySelector('.chartCloseButton');
 
-    chartCloseButton.style.display = 'block';
-    chartCloseButton.onclick = () => {
-      this.killChart(chartId);
-    };
+  chartCloseButton.style.display = 'block';
+  chartCloseButton.onclick = () => {
+    this.killChart(chartId);
+  };
 
-    this.charts[chartId] = new Chart(
-      document.getElementById(chartId).getContext('2d'),
-      {
-        type: 'scatter',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Scatter Points',
-              data: scatterData,
-              backgroundColor: 'rgba(255,99,132,0.5)',
+  const datasets = [
+    {
+      data: scatterData,
+      backgroundColor: 'rgba(255,99,132,0.5)',
+      type: 'scatter',
+      label: '',  // Pusty label
+    },
+  ];
+
+  lineData.forEach(line => {
+    datasets.push({
+      data: [
+        { x: line.x, y: 0 },
+        { x: line.x, y: line.y }
+      ],
+      borderColor: 'blue',
+      borderWidth: 2,
+      fill: false,
+      showLine: true,
+      pointRadius: 0,
+      type: 'line',
+      label: '',  // Pusty label
+    showInLegend: false, // Usunięcie z legendy
+    });
+  });
+
+  this.charts[chartId] = new Chart(
+    document.getElementById(chartId).getContext('2d'),
+    {
+      type: 'scatter',
+      data: {
+        labels,
+        datasets: datasets,
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+            title: {
+              display: true,
+              text: 'k',
             },
-            {
-              label: 'Vertical Lines',
-              data: lineData,
-              type: 'line',
-              borderColor: 'blue',
-              borderWidth: 2,
-              fill: false,
-              showLine: true,
-              pointRadius: 0,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              type: 'linear',
-              position: 'bottom',
-              title: {
-                display: true,
-                text: 'k',
-              },
-            },
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Magnitude',
-              },
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Magnitude',
             },
           },
         },
+        plugins: {
+          legend: {
+            display: false,  // Ukrywa całą legendę
+          },
+        },
       },
-    );
-  }
+    },
+  );
 }
-
+}
 export { ChartDrawer }

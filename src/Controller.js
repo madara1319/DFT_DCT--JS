@@ -302,9 +302,8 @@ class Controller {
 
     const phasePoints = phase.map(this.convertToPointFormat(phase))
 
-    const amplitudeLines=amplitude.map((amp,i)=>[{x:i,y:0},{x:i,y:amp}]).flat();
-
-    const phaseLines=amplitude.map((ph,i)=>[{x:i,y:0},{x:i,y:ph}]).flat();
+  const amplitudeLines = amplitude.map((amp, i) => ({ x: i, y: amp }));
+ const phaseLines = phase.map((ph, i) => ({ x: i, y: ph }));
    // this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
 
       this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints,amplitudeLines,phaseLines);
