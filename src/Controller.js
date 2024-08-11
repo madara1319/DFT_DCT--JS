@@ -302,11 +302,15 @@ class Controller {
 
     const phasePoints = phase.map(this.convertToPointFormat(phase))
 
-  const amplitudeLines = amplitude.map((amp, i) => ({ x: i, y: amp }));
- const phaseLines = phase.map((ph, i) => ({ x: i, y: ph }));
+//  const amplitudeLines = amplitude.map((amp, i) => ({ x: i, y: amp }));
+// const phaseLines = phase.map((ph, i) => ({ x: i, y: ph }));
+
+    phasePoints.forEach((phase)=>{
+      console.log(`faza ` + phase.y)
+    })
    // this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
 
-      this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints,amplitudeLines,phaseLines);
+      this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
 
       //this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
     this.view.showModificationButtons()

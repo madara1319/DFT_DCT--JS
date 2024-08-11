@@ -426,7 +426,7 @@ class View {
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
       ],
-      'scatter',
+      'line',
     )
 
     ChartDrawer.drawMultipleDataChart(
@@ -446,7 +446,7 @@ class View {
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
       ],
-      'scatter',
+      'line',
     )
   }
 
@@ -457,13 +457,13 @@ class View {
    // ChartDrawer.drawChart('amplitudeChart', labels, amplitudeData, 'scatter')
     //ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData,'scatter');
 
-    ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData,amplitudeLines);
+    ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData);
 
     console.log(phaseData)
     ChartDrawer.killChart('phaseChart')
-    if (phaseData) {
+    if (phaseData && phaseData.length>0) {
       //ChartDrawer.drawChart('phaseChart', labels, phaseData, 'scatter')
-      ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData, phaseLines)
+      ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData)
 
       //ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData, 'line')
     }

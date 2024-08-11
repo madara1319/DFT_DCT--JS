@@ -48,6 +48,9 @@ chartCloseButton.style.display='none';
           labels,
           datasets: [
             {
+
+          barThickness:1,
+         // barPercentage:0.1,
               label: 'Signal',
               data,
               fill: false,
@@ -62,7 +65,9 @@ chartCloseButton.style.display='none';
           maintainAspectRatio: false,
           scales: {
             x: {
+
               scales:{
+
                 type:'linear',
                 position:'bottom'
               },
@@ -146,7 +151,7 @@ chartCloseButton.style.display='none';
     )
   }
 
-static drawScatterWithVerticalLines(chartId, labels, scatterData, lineData) {
+static drawScatterWithVerticalLines(chartId, labels, scatterData) {
   if (this.charts[chartId]) {
     this.charts[chartId].destroy();
     this.charts[chartId] = null;
@@ -165,31 +170,25 @@ static drawScatterWithVerticalLines(chartId, labels, scatterData, lineData) {
       data: scatterData,
       backgroundColor: 'rgba(255,99,132,0.5)',
       type: 'scatter',
-      label: '',  // Pusty label
+      label: '',  
     },
-  ];
+    {
+      data: scatterData.map(point=>point.y), 
 
-  lineData.forEach(line => {
-    datasets.push({
-      data: [
-        { x: line.x, y: 0 },
-        { x: line.x, y: line.y }
-      ],
-      borderColor: 'blue',
-      borderWidth: 2,
-      fill: false,
-      showLine: true,
-      pointRadius: 0,
-      type: 'line',
-      label: '',  // Pusty label
-    showInLegend: false, // Usunięcie z legendy
-    });
-  });
+ //     data: barData.map((point) => ({ x: point.x, y: point.y })), 
+      backgroundColor: 'rgba(54,162,235,0.5)',
+      type: 'bar',
+      barThickness: 1,
+     // barPercentage:1,
+
+      label: '', 
+    }
+  ];
 
   this.charts[chartId] = new Chart(
     document.getElementById(chartId).getContext('2d'),
     {
-      type: 'scatter',
+      type: 'bar',
       data: {
         labels,
         datasets: datasets,
@@ -216,8 +215,9 @@ static drawScatterWithVerticalLines(chartId, labels, scatterData, lineData) {
         },
         plugins: {
           legend: {
-            display: false,  // Ukrywa całą legendę
+            display: false,       
           },
+          
         },
       },
     },
