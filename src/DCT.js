@@ -18,5 +18,10 @@ class DCT extends Transformation{
     }
     return X;
   }
-}
+getAmplitude(dftResults) {
+
+  return dftResults.map((r) => 
+    Math.sqrt(r.real ** 2 + r.imag ** 2)
+  )
+}}
 export {DCT}

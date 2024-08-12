@@ -331,9 +331,12 @@ class Controller {
     const result = dct.transform()
     this.model.saveDCT(result)
 
+    const amplitude = dct.getAmplitude(result)
     const labels = Array.from({ length: result.length }, (_, i) => i.toString())
 
-    this.view.drawAmplitudeAndPhaseChart(labels, result, false)
+    const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
+
+    this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
 
     //   this.view.drawChart(
     //     'amplitudeChart',
