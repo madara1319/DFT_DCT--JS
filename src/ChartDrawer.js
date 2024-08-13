@@ -92,7 +92,7 @@ chartCloseButton.style.display='none';
       },
     )
   }
-  static drawMultipleDataChart(chartId, labels, datasets, type) {
+  static drawMultipleDataChart(chartId, labels, datasets, type="scatter") {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -110,13 +110,16 @@ chartCloseButton.style.display='none';
       chartCloseButton.style.display = 'none'
     }
 
+    const signalsDatasets=datasets.map(dataset=>({...dataset,
+    type:dataset.type||type,}))
+    console.log(signalsDatasets)
     this.charts[chartId] = new Chart(
       document.getElementById(chartId).getContext('2d'),
       {
-        type: type,
+        type: 'bar',
         data: {
           labels,
-          datasets,
+          datasets:signalsDatasets,
         },
         options: {
           responsive: true,

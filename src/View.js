@@ -414,58 +414,34 @@ class View {
       labels,
       [
         {
-          label: 'Original Amplitude',
+          label: 'Original Amplitude (scatter)',
           data: originalData.amplitude,
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
+          type:'scatter'
         },
         {
-          label: 'Shifted Amplitude',
+          label: 'Shifted Amplitude (scatter)',
           data: shiftedData.amplitude,
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          type:'scatter'
         },
-      ],
-      'scatter',
-    )
-
-    ChartDrawer.drawMultipleDataChart(
-      'amplitudeChart',
-      labels,
-      [
         {
-          label: '',
+          label: 'Original Amplitude (bar)',
           data: originalData.amplitude.map(point=>point.y),
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
+          type:'bar'
         },
         {
-          label: '',
+          label: 'Shifted Amplitude (bar)',
           data: shiftedData.amplitude.map(point=>point.y),
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          type:'bar'
         },
       ],
-      'bar',
-    )
-    ChartDrawer.drawMultipleDataChart(
-      'phaseChart',
-      labels,
-      [
-        {
-          label: 'Original Phase',
-          data: originalData.phase,
-          borderColor: 'rgb(255,99,132)',
-          backgroundColor: 'rgba(255,99,132,0.5)',
-        },
-        {
-          label: 'Shifted Phase',
-          data: shiftedData.phase,
-          borderColor: 'rgb(54, 162, 235)',
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        },
-      ],
-      'scatter',
     )
 
     ChartDrawer.drawMultipleDataChart(
@@ -473,20 +449,36 @@ class View {
       labels,
       [
         {
-          label: 'Original Phase',
+          label: 'Original Phase (scatter)',
+          data: originalData.phase,
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+          type:'scatter'
+        },
+        {
+          label: 'Shifted Phase (scatter)',
+          data: shiftedData.phase,
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          type:'scatter'
+        },
+        {
+          label: 'Original Phase (bar)',
           data: originalData.phase.map(point=>point.y),
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
+          type:'bar'
         },
         {
-          label: 'Shifted Phase',
+          label: 'Shifted Phase (bar)',
           data: shiftedData.phase.map(point=>point.y),
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          type:'bar'
         },
       ],
-      'bar',
     )
+
   }
 
   //________________________________________________________________________________
@@ -515,7 +507,7 @@ class View {
     let parentDiv = document.querySelector('.boxofboxes--js')
 
     let transformChartContainer = document.querySelector(
-      '#transformChartContainer',
+      '#phaseChartContainer',
     )
     let reverseChartContainer = document.querySelector('#reverseChartContainer')
     let reverseTransformButtonDiv = document.querySelector(
@@ -529,8 +521,9 @@ class View {
         <button class="selectButtons reverseTransform">Reverse Transform</button>
         </div>
         `
-
-      parentDiv.appendChild(reverseTransformButtonDiv, transformChartContainer)
+      console.log(reverseChartContainer);
+      parentDiv.insertBefore(reverseTransformButtonDiv, reverseChartContainer)
+     // parentDiv.appendChild(reverseTransformButtonDiv, transformChartContainer)
     }
     const reverseTransform = reverseTransformButtonDiv.querySelector(
       'button:nth-child(1)',
