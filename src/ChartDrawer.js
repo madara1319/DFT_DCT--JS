@@ -116,7 +116,7 @@ chartCloseButton.style.display='none';
         type: type,
         data: {
           labels,
-          datasets: datasets,
+          datasets,
         },
         options: {
           responsive: true,

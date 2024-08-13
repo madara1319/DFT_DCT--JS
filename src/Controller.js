@@ -336,6 +336,10 @@ class Controller {
 
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
 
+    amplitudePoints.forEach((amp)=>{
+      console.log(`faza ` + amp.y)
+    })
+
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
 
     //   this.view.drawChart(
@@ -377,10 +381,18 @@ class Controller {
       Math.atan2(X_k.imag, X_k.real),
     )
     const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
+
+
+    const amplitudeOriginalPoints = amplitudeOriginal.map(this.convertToPointFormat(amplitudeOriginal))
+    const phaseOriginalPoints = phaseOriginal.map(this.convertToPointFormat(phaseOriginal))
+
+    const amplitudeShiftedPoints = amplitudeShifted.map(this.convertToPointFormat(amplitudeShifted))
+    const phaseShiftedPoints = phaseShifted.map(this.convertToPointFormat(phaseShifted))
+
     this.view.drawShiftedDFTChart(
       kArray,
-      { amplitude: amplitudeOriginal, phase: phaseOriginal },
-      { amplitude: amplitudeShifted, phase: phaseShifted },
+      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
+      { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
     )
 
     //this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)

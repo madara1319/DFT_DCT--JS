@@ -426,9 +426,28 @@ class View {
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
       ],
-      'line',
+      'scatter',
     )
 
+    ChartDrawer.drawMultipleDataChart(
+      'amplitudeChart',
+      labels,
+      [
+        {
+          label: '',
+          data: originalData.amplitude.map(point=>point.y),
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+        },
+        {
+          label: '',
+          data: shiftedData.amplitude.map(point=>point.y),
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        },
+      ],
+      'bar',
+    )
     ChartDrawer.drawMultipleDataChart(
       'phaseChart',
       labels,
@@ -446,7 +465,27 @@ class View {
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
         },
       ],
-      'line',
+      'scatter',
+    )
+
+    ChartDrawer.drawMultipleDataChart(
+      'phaseChart',
+      labels,
+      [
+        {
+          label: 'Original Phase',
+          data: originalData.phase.map(point=>point.y),
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+        },
+        {
+          label: 'Shifted Phase',
+          data: shiftedData.phase.map(point=>point.y),
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        },
+      ],
+      'bar',
     )
   }
 
