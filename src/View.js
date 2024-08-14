@@ -539,6 +539,11 @@ class View {
   }
 
   //________________________________________________________________________________
+    drawTimeDomainChart(labels,reverseDFTResults){
+       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line') 
+    }
+
+  //________________________________________________________________________________
   showFloatingDiv() {
     let floatingDiv = document.querySelector('.showDiv')
     if (!floatingDiv) {

@@ -451,9 +451,11 @@ class Controller {
 
     const reverseDFT = new ReverseDFT(dftResults)
     const reverseDFTResults = reverseDFT.reverseTransform()
+
+    const labels = Array.from({ length: reverseDFTResults.length }, (_, i) => i.toString())
     this.model.saveReverseDFT(reverseDFTResults)
 
-    this.view.drawTimeDomainChart(reverseDFTResults)
+    this.view.drawTimeDomainChart(labels,reverseDFTResults)
   }
   //________________________________________________________________________________
   saveSignals() {
