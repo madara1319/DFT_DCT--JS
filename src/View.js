@@ -541,6 +541,7 @@ class View {
   //________________________________________________________________________________
     drawTimeDomainChart(labels,reverseDFTResults){
        ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line') 
+      console.log(reverseDFTResults)
     }
 
   //________________________________________________________________________________
