@@ -16,6 +16,7 @@ class View {
     this.baseFuncButton = document.querySelector('.showSelection')
     this.enterProbesButton = document.querySelector('.enterProbes')
     this.composerButton = document.querySelector('.showComposer')
+    this.clearStorageButton = document.querySelector('.clearLocalStorage')
 
     //tryby wprowadzania danych
     this.optionsDisplay = document.querySelector('.options')
@@ -114,6 +115,10 @@ class View {
     })
     this.composerLoadButton.addEventListener('click', () => {
       this.controller.loadSignals()
+    })
+
+    this.clearStorageButton.addEventListener('click',()=>{
+      this.controller.clearStorage()
     })
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
@@ -222,6 +227,7 @@ class View {
         this.controller.updateChart('Custom', [], [], dataArray)
       } else {
         console.log('nieprowadilowe dane')
+        window.aler("INCORRECT TYPE OF INPUT PLEASE CORRECT")
       }
     }
   }
@@ -300,7 +306,7 @@ class View {
         <div class="modificationsButtonsBox">
         <button class="selectButtons">Time Shift</button>
         <button class="selectButtons">Amplitude Scale</button>
-        <button class="selectButtons">Rotate</button>
+        <button class="selectButtons">Clear Modifications</button>
         </div>
         `
 
@@ -313,8 +319,8 @@ class View {
     const amplitudeScaleButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(2)',
     )
-    const rotateButton = modificationsButtonsDiv.querySelector(
-      'button:nth-child(2)',
+    const clearModButton = modificationsButtonsDiv.querySelector(
+      'button:nth-child(3)',
     )
 
 
@@ -325,9 +331,9 @@ class View {
     amplitudeScaleButton.addEventListener('click', () => {
       this.handleAmplitudeScaleInput();
     })
-    rotateButton.addEventListener('click', () => {
-      console.log('rotateButton button is clicked:', this.reverseTransformChart)
-      this.controller.handleRotation()
+    clearModButton.addEventListener('click', () => {
+      console.log('clearModButton button is clicked:')
+      this.controller.clearModSignal()
     })
   }
   //________________________________________________________________________________

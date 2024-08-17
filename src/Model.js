@@ -39,6 +39,18 @@ class Model{
     return this.samples;
   }
 
+  clearModDFT(modifiedDftResults){
+    if(this.modifiedDftResults)
+    {
+      localStorage.removeItem('modifiedDftResults')
+    }
+    console.log("cleared DFT" + this.modifiedDftResults)
+  }
+
+  clearLocalStorage(){
+    localStorage.clear()
+  }
+
   getSamplesCount() {
     return this.samples.length;
   }

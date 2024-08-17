@@ -360,6 +360,8 @@ class Controller {
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     const originalDFT = this.model.getDFTResults()
+    const shiftedDFT=this.model.getModifiedDFT()
+    if(!shiftedDFT || shiftedDFT.length===0){
     const shiftedDFT = originalDFT.map((X_k, k) => {
       const angle = (-2 * Math.PI * k * timeShiftValue) / N
       return {
@@ -367,6 +369,7 @@ class Controller {
         imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
       }
     })
+    }
 
     this.model.saveModifiedDFT(shiftedDFT)
 
@@ -434,9 +437,16 @@ class Controller {
     console.log('amp scale')
   }
 
-  handleRotation() {
-    //action button
-    console.log('rotate')
+  //________________________________________________________________________________
+
+  clearModSignal(){
+    this.model.clearModDFT()
+  }
+  
+  //________________________________________________________________________________
+
+  clearStorage(){
+    this.model.clearLocalStorage()
   }
 
   //________________________________________________________________________________
