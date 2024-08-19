@@ -75,10 +75,17 @@ main {
   background-color: #0fa65d;
 }
 
-#clearLocalStorage, #clearLocalStorage:active, #clearLocalStorage:hover:{
+.clearLocalStorage{
   background-color:#cc5200;
 }
 
+.clearLocalStorage:hover{
+  background-color:#cc5f0f;
+}
+
+.clearLocalStorage:active{
+  background-color:#cc520d;
+}
 .generateCombinedSignalButton {
   padding: 10px 20px;
   font-size: 16px;
