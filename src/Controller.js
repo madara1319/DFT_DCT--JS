@@ -360,9 +360,9 @@ class Controller {
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     const originalDFT = this.model.getDFTResults()
-    const shiftedDFT=this.model.getModifiedDFT()
+    let shiftedDFT=this.model.getModifiedDFT()
     if(!shiftedDFT || shiftedDFT.length===0){
-    const shiftedDFT = originalDFT.map((X_k, k) => {
+    shiftedDFT = originalDFT.map((X_k, k) => {
       const angle = (-2 * Math.PI * k * timeShiftValue) / N
       return {
         real: X_k.real * Math.cos(angle) - X_k.imag * Math.sin(angle),
