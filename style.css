@@ -76,11 +76,11 @@ main {
 }
 
 .clearLocalStorage{
-  background-color:#cc5200;
+  background-color:#e65c00;
 }
 
 .clearLocalStorage:hover{
-  background-color:#cc5f0f;
+  background-color:#cc520d;
 }
 
 .clearLocalStorage:active{

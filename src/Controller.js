@@ -406,27 +406,31 @@ class Controller {
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     const originalDFT = this.model.getDFTResults()
-    const modifiedDFT = this.model.getModifiedDFT()
+
+    let scaledDFT=this.model.getModifiedDFT()
+    if(!scaledDFT || scaledDFT.length===0){
+    scaledDFT = scaledDFT.map((X_k) => ({
+      real: X_k.real * scaleFactor,
+      imag: X_k.imag * scaleFactor,
+    })
+    )
+    }
+
+    this.model.saveModifiedDFT(scaledDFT)
 
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
-    const amplitudeShifted = modifiedDFT.map((X_k) =>
+    const amplitudeShifted = scaledDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
 
     const phaseOriginal = originalDFT.map((X_k) =>
       Math.atan2(X_k.imag, X_k.real),
     )
-    const phaseShifted = modifiedDFT.map((X_k) =>
+    const phaseShifted = scaledDFT.map((X_k) =>
       Math.atan2(X_k.imag, X_k.real),
     )
-    const scaledDFT = modifiedDFT.map((X_k) => ({
-      real: X_k.real * scaleFactor,
-      imag: X_k.imag * scaleFactor,
-    }))
-
-    this.model.saveModifiedDFT(scaledDFT)
 
     this.view.drawShiftedDFTChart(
       kArray,
