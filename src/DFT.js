@@ -15,6 +15,8 @@ class DFT extends Transformation {
         const angle = (-2 * Math.PI * k * n) / N
         sum.real += this.probes[n] * Math.cos(angle)
         sum.imag += this.probes[n] * Math.sin(angle)
+        sum.real = parseFloat(sum.real.toFixed(4))
+        sum.imag = parseFloat(sum.imag.toFixed(4))
       }
       X.push(sum)
     }
@@ -26,12 +28,12 @@ class DFT extends Transformation {
   getAmplitude(dftResults) {
 
     return dftResults.map((r) => 
-      Math.sqrt(r.real ** 2 + r.imag ** 2)
+      parseFloat(Math.sqrt(r.real ** 2 + r.imag ** 2).toFixed(4))
     )
   }
   getPhase(dftResults) {
     return dftResults.map((r) => 
-      Math.atan2(r.imag, r.real)
+      parseFloat(Math.atan2(r.imag, r.real).toFixed(4))
     )
   }
 }

@@ -306,7 +306,7 @@ class View {
         <div class="modificationsButtonsBox">
         <button class="selectButtons">Time Shift</button>
         <button class="selectButtons">Amplitude Scale</button>
-        <button class="selectButtons">Clear Modifications</button>
+        <button class="selectButtons clearModifications">Clear Modifications</button>
         </div>
         `
 

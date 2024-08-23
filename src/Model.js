@@ -43,6 +43,7 @@ class Model{
     if(this.modifiedDftResults)
     {
       localStorage.removeItem('modifiedDftResults')
+      this.modifiedDftResults=[];
     }
     console.log("cleared DFT" + this.modifiedDftResults)
   }

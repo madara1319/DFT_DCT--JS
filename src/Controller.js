@@ -358,18 +358,16 @@ class Controller {
   handleTimeShift(timeShiftValue) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
-
-    const originalDFT = this.model.getDFTResults()
-    let shiftedDFT=this.model.getModifiedDFT()
-    if(!shiftedDFT || shiftedDFT.length===0){
-    shiftedDFT = originalDFT.map((X_k, k) => {
+    const actualDFT=this.model.getModifiedDFT().length > 0 ? this.model.getModifiedDFT() : this.model.getDFTResults();
+    const originalDFT=this.model.getDFTResults();
+    const shiftedDFT = actualDFT.map((X_k, k) => {
       const angle = (-2 * Math.PI * k * timeShiftValue) / N
       return {
         real: X_k.real * Math.cos(angle) - X_k.imag * Math.sin(angle),
         imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
       }
     })
-    }
+    
 
     this.model.saveModifiedDFT(shiftedDFT)
 
@@ -404,17 +402,15 @@ class Controller {
   handleAmplitudeScaling(scaleFactor) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
+    const originalDFT=this.model.getDFTResults(); 
 
-    const originalDFT = this.model.getDFTResults()
-
-    let scaledDFT=this.model.getModifiedDFT()
-    if(!scaledDFT || scaledDFT.length===0){
-    scaledDFT = scaledDFT.map((X_k) => ({
+    const actualDFT=this.model.getModifiedDFT().length > 0 ? this.model.getModifiedDFT() : this.model.getDFTResults();
+    const scaledDFT = actualDFT.map((X_k) => ({
       real: X_k.real * scaleFactor,
       imag: X_k.imag * scaleFactor,
     })
     )
-    }
+    
 
     this.model.saveModifiedDFT(scaledDFT)
 
@@ -456,8 +452,8 @@ class Controller {
   //________________________________________________________________________________
   handleReverseDFT() {
     console.log('reverseTransform')
-    const dftResults = this.model.getDFTResults()
 
+    const dftResults=this.model.getModifiedDFT().length > 0 ? this.model.getModifiedDFT() : this.model.getDFTResults();
     if (!dftResults || dftResults.length === 0) {
       console.error('No DFT data available for inverse transformation.')
       return

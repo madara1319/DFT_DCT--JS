@@ -75,15 +75,15 @@ main {
   background-color: #0fa65d;
 }
 
-.clearLocalStorage{
+.clearModifications, .clearLocalStorage{
   background-color:#e65c00;
 }
 
-.clearLocalStorage:hover{
+.clearModifications:hover, .clearLocalStorage:hover{
   background-color:#cc520d;
 }
 
-.clearLocalStorage:active{
+.clearModifications:active, .clearLocalStorage:active{
   background-color:#cc520d;
 }
 .generateCombinedSignalButton {
