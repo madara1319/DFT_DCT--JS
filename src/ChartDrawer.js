@@ -49,7 +49,7 @@ chartCloseButton.style.display='none';
           datasets: [
             {
 
-          barThickness:1,
+          barThickness:5,
          // barPercentage:0.1,
               label: 'Signal',
               data,
@@ -92,6 +92,7 @@ chartCloseButton.style.display='none';
       },
     )
   }
+
   static drawMultipleDataChart(chartId, labels, datasets, type="scatter") {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()

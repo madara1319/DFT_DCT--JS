@@ -546,7 +546,14 @@ class View {
 
   //________________________________________________________________________________
     drawTimeDomainChart(labels,reverseDFTResults){
+      console.log(ChartDrawer.charts['sampleChart'].config.type)
+      if(ChartDrawer.charts['sampleChart'].config.type==='line'){
        ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line') 
+      }
+      else if(ChartDrawer.charts['sampleChart'].config.type==='bar'){
+      
+       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'bar') 
+      }
       console.log(reverseDFTResults)
     }
 
