@@ -13,7 +13,7 @@ class Controller {
     this.model = model
     this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
-
+    this.sampleRate=100;
     this.view.initialize()
     console.log('przeszelm inicjalizacje')
 
@@ -102,9 +102,9 @@ class Controller {
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const labels = []
     const data = []
-    const sampleRate = 100 // 100 samples per second
+    //const sampleRate = 100 // 100 samples per second
     const duration = 1 // 1 second
-    const length = sampleRate * duration
+    const length = this.sampleRate * duration
     console.log('generateSignal start ')
 
     console.log(
@@ -115,14 +115,14 @@ class Controller {
       return generatorFunction(
         frequencyArray[index],
         amplitude,
-        sampleRate,
+        this.sampleRate,
         length,
       )
     })
 
     // Sum the values at each time point
     for (let i = 0; i < length; i++) {
-      const t = Number((i / sampleRate).toFixed(3))
+      const t = Number((i / this.sampleRate).toFixed(3))
       let value = 0
       waveMapArray.forEach((waveMap) => {
         if (waveMap.has(t)) {
@@ -206,9 +206,9 @@ class Controller {
       }
     })
 
-    const sampleRate = 100 // 100 samples per second
+    //const sampleRate = 100 // 100 samples per second
     const duration = 1 // 1 second
-    const length = sampleRate * duration
+    const length = this.sampleRate * duration
 
     let combinedWave = new Map()
     signals.forEach((signal) => {
@@ -218,7 +218,7 @@ class Controller {
           wave = SignalGenerator.generateSineWave(
             signal.frequency,
             signal.amplitude,
-            sampleRate,
+            this.sampleRate,
             length,
           )
           break
@@ -226,7 +226,7 @@ class Controller {
           wave = SignalGenerator.generateSquareWave(
             signal.frequency,
             signal.amplitude,
-            sampleRate,
+            this.sampleRate,
             length,
           )
           break
@@ -234,7 +234,7 @@ class Controller {
           wave = SignalGenerator.generateTriangleWave(
             signal.frequency,
             signal.amplitude,
-            sampleRate,
+            this.sampleRate,
             length,
           )
           break
@@ -428,10 +428,19 @@ class Controller {
       Math.atan2(X_k.imag, X_k.real),
     )
 
+
+    const amplitudeOriginalPoints = amplitudeOriginal.map(this.convertToPointFormat(amplitudeOriginal))
+    const phaseOriginalPoints = phaseOriginal.map(this.convertToPointFormat(phaseOriginal))
+
+    const amplitudeShiftedPoints = amplitudeShifted.map(this.convertToPointFormat(amplitudeShifted))
+    const phaseShiftedPoints = phaseShifted.map(this.convertToPointFormat(phaseShifted))
+
+
+
     this.view.drawShiftedDFTChart(
       kArray,
-      { amplitude: amplitudeOriginal, phase: phaseOriginal },
-      { amplitude: amplitudeShifted, phase: phaseShifted },
+      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
+      { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
     )
 
     console.log('amp scale')
@@ -462,7 +471,8 @@ class Controller {
     const reverseDFT = new ReverseDFT(dftResults)
     const reverseDFTResults = reverseDFT.reverseTransform()
 
-    const labels = Array.from({ length: reverseDFTResults.length }, (_, i) => i.toString())
+    const labels = Array.from({ length: reverseDFTResults.length }, (_, i) =>(i/this.sampleRate).toString())
+    console.log(labels);
     this.model.saveReverseDFT(reverseDFTResults)
 
     this.view.drawTimeDomainChart(labels,reverseDFTResults)

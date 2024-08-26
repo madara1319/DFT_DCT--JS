@@ -2,21 +2,19 @@
 class ChartDrawer {
   static charts = {}
 
-  static killChart(chartId){
-    if(this.charts[chartId]){
-    this.charts[chartId].destroy();
-    this.charts[chartId]=null
-  }
-
+  static killChart(chartId) {
+    if (this.charts[chartId]) {
+      this.charts[chartId].destroy()
+      this.charts[chartId] = null
+    }
 
     // Find the container and close button
     const chartContainer = document.getElementById(`${chartId}Container`)
     const chartCloseButton = chartContainer.querySelector('.chartCloseButton')
-    if (chartCloseButton.style.display==='block')
-    {
-chartCloseButton.style.display='none';
+    if (chartCloseButton.style.display === 'block') {
+      chartCloseButton.style.display = 'none'
     }
-}
+  }
   static drawChart(chartId, labels, data, type) {
     // Destroy existing chart if it exists
     if (this.charts[chartId]) {
@@ -48,9 +46,8 @@ chartCloseButton.style.display='none';
           labels,
           datasets: [
             {
-
-          barThickness:5,
-         // barPercentage:0.1,
+              barThickness: 5,
+              // barPercentage:0.1,
               label: 'Signal',
               data,
               fill: false,
@@ -65,11 +62,9 @@ chartCloseButton.style.display='none';
           maintainAspectRatio: false,
           scales: {
             x: {
-
-              scales:{
-
-                type:'linear',
-                position:'bottom'
+              scales: {
+                type: 'linear',
+                position: 'bottom',
               },
               title: {
                 display: true,
@@ -77,23 +72,38 @@ chartCloseButton.style.display='none';
               },
             },
             y: {
-              scales:{
-
-                beginAtZero:true
+              scales: {
+                beginAtZero: true,
               },
               title: {
-
                 display: true,
                 text: 'Y',
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              display: true,
+            },
+
+            title: {
+              display: true,
+              text: 'test',
+              font:{
+                size:18,
               },
             },
           },
         },
       },
     )
+this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
+this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
+this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
+this.charts[chartId].update();
   }
 
-  static drawMultipleDataChart(chartId, labels, datasets, type="scatter") {
+  static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter') {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -111,26 +121,28 @@ chartCloseButton.style.display='none';
       chartCloseButton.style.display = 'none'
     }
 
-    const signalsDatasets=datasets.map(dataset=>({...dataset,
-    type:dataset.type||type,}))
+    const signalsDatasets = datasets.map((dataset) => ({
+      ...dataset,
+      type: dataset.type || type,
+    }))
     console.log(signalsDatasets)
+console.log('chart title to' + this.charts[chartId].options.plugins.title);
     this.charts[chartId] = new Chart(
       document.getElementById(chartId).getContext('2d'),
       {
         type: 'bar',
         data: {
           labels,
-          datasets:signalsDatasets,
+          datasets: signalsDatasets,
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
             x: {
-
-              scales:{
-                type:'linear',
-                position:'bottom'
+              scales: {
+                type: 'linear',
+                position: 'bottom',
               },
               title: {
                 display: true,
@@ -138,94 +150,123 @@ chartCloseButton.style.display='none';
               },
             },
             y: {
-
-              scales:{
-
-                beginAtZero:true
+              scales: {
+                beginAtZero: true,
               },
               title: {
-
                 display: true,
                 text: 'Magnitude',
+              },
+            },
+          },
+          plugins:{
+              legend:{
+                display:true,
+              },
+            title:{
+              display:true,
+              text:'test',
+              font:{
+                size:18,
+              },
+            }
+          },
+        },
+      },
+    )
+this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
+this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
+this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
+this.charts[chartId].update();
+  }
+
+  static drawScatterWithVerticalLines(chartId, labels, scatterData) {
+    if (this.charts[chartId]) {
+      this.charts[chartId].destroy()
+      this.charts[chartId] = null
+    }
+
+    const chartContainer = document.getElementById(`${chartId}Container`)
+    const chartCloseButton = chartContainer.querySelector('.chartCloseButton')
+
+    chartCloseButton.style.display = 'block'
+    chartCloseButton.onclick = () => {
+      this.killChart(chartId)
+    }
+
+    const datasets = [
+      {
+        data: scatterData,
+        backgroundColor: 'rgba(255,99,132,0.5)',
+        type: 'scatter',
+        label: 'Spectrum (scatter)',
+      },
+      {
+        data: scatterData.map((point) => point.y),
+
+        //     data: barData.map((point) => ({ x: point.x, y: point.y })),
+        backgroundColor: 'rgba(54,162,235,0.5)',
+        type: 'bar',
+        barThickness: 1,
+        // barPercentage:1,
+
+        label: 'Spectrum (bar)',
+      },
+    ]
+
+    this.charts[chartId] = new Chart(
+      document.getElementById(chartId).getContext('2d'),
+      {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: datasets,
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom',
+              title: {
+                display: true,
+                text: 'k',
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Magnitude',
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              display: true,
+            },
+
+            title: {
+              display: true, 
+              text: 'test', 
+              font: {
+                size: 18, 
+              },
+              padding: {
+                top: 10,
+                bottom: 10,
               },
             },
           },
         },
       },
     )
+
+this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
+this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
+this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
+this.charts[chartId].update();
   }
-
-static drawScatterWithVerticalLines(chartId, labels, scatterData) {
-  if (this.charts[chartId]) {
-    this.charts[chartId].destroy();
-    this.charts[chartId] = null;
-  }
-
-  const chartContainer = document.getElementById(`${chartId}Container`);
-  const chartCloseButton = chartContainer.querySelector('.chartCloseButton');
-
-  chartCloseButton.style.display = 'block';
-  chartCloseButton.onclick = () => {
-    this.killChart(chartId);
-  };
-
-  const datasets = [
-    {
-      data: scatterData,
-      backgroundColor: 'rgba(255,99,132,0.5)',
-      type: 'scatter',
-      label: '',  
-    },
-    {
-      data: scatterData.map(point=>point.y), 
-
- //     data: barData.map((point) => ({ x: point.x, y: point.y })), 
-      backgroundColor: 'rgba(54,162,235,0.5)',
-      type: 'bar',
-      barThickness: 1,
-     // barPercentage:1,
-
-      label: '', 
-    }
-  ];
-
-  this.charts[chartId] = new Chart(
-    document.getElementById(chartId).getContext('2d'),
-    {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: datasets,
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-            title: {
-              display: true,
-              text: 'k',
-            },
-          },
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Magnitude',
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,       
-          },
-          
-        },
-      },
-    },
-  );
-}
 }
 export { ChartDrawer }
