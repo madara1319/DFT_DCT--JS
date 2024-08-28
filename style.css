@@ -276,16 +276,17 @@ canvas {
   width:100% !important;
 }
 .chartContainer {
-  position: relative; /* Umożliwia absolutne pozycjonowanie przycisku wewnątrz kontenera */
+  position: relative; 
   display: inline-block;
-  width: 100%; /* Szerokość kontenera */
-  max-width: 600px; /* Maksymalna szerokość kontenera, dostosuj w razie potrzeby */
-  margin: 0 auto; /* Wycentrowanie kontenera */
-  padding-top: 50px; /* Dodatkowa przestrzeń u góry na przycisk zamykający */
+  width: 100%; 
+  max-width: 600px; 
+  margin: 0 auto; 
+  padding-top: 50px; 
 
-  margin-bottom: 20px; /* Space between charts */
+  margin-bottom: 20px; 
 
 }
+
 
 .transformChartGrid{
   display:grid;
@@ -295,6 +296,35 @@ canvas {
 }
 
 
+/*-----------------------------------------*/
+/*test*/
+.chartContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 400px; /* Dodaj określoną wysokość */
+  margin: 0 auto 20px;
+  padding-top: 50px;
+}
+
+.chartContainer canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chartjs-title {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  padding: 10px 0 !important;
+}
+
+
+.chartjs-axis-title {
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+/*-----------------------------------------*/
 /* Floating Div */
 .showDiv {
   position: fixed;

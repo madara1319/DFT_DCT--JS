@@ -86,21 +86,44 @@ class ChartDrawer {
               display: true,
             },
 
-            title: {
-              display: true,
-              text: 'test',
-              font:{
-                size:18,
-              },
+           // title: {
+           //   display: true,
+           //   text: 'test',
+           //   font:{
+           //     size:18,
+           //   },
+           // },
+            title:{
+            display: true,    
+            text: 'Title Text', 
+            align: 'center',   
+            color: 'black',    
+            fullSize: true,    
+            position: 'top',   
+            font: {
+                size: 16,       
+                weight: 'normal', 
+                family: 'Arial',  
+                style: 'normal'  
             },
+            padding: {
+                top: 10,         
+                bottom: 10,      
+                left: 10,        
+                right: 10        
+            },
+
           },
         },
       },
+      },
     )
+    console.log(this.charts[chartId].options.plugins.title.display)
 this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
 this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
 this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
 this.charts[chartId].update();
+//console.log('tytul' + this.charts[chartId].options.plugins.title.text )
   }
 
   static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter') {
@@ -126,7 +149,7 @@ this.charts[chartId].update();
       type: dataset.type || type,
     }))
     console.log(signalsDatasets)
-console.log('chart title to' + this.charts[chartId].options.plugins.title);
+//console.log('chart title to' + this.charts[chartId].options.plugins.title);
     this.charts[chartId] = new Chart(
       document.getElementById(chartId).getContext('2d'),
       {
