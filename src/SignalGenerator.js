@@ -7,7 +7,9 @@ class SignalGenerator {
     const timeIncrement = 1 / sampleRate
     for (let i = 0; i < length; i++) {
       //const time = i * timeIncrement
-      const time = parseFloat((i * timeIncrement).toFixed(3))
+     // const time = parseFloat((i * timeIncrement).toFixed(3))
+
+      const time = parseFloat((i * timeIncrement))
       wave.set(time, amplitude * Math.sin(angularFrequency * time))
     }
     return wave
@@ -20,7 +22,8 @@ class SignalGenerator {
     const halfPeriod =Math.floor( period / 2);
     const timeIncrement = 1 / sampleRate
     for (let i = 0; i < length; i++) {
-      const time = parseFloat((i * timeIncrement).toFixed(3))
+      //const time = parseFloat((i * timeIncrement).toFixed(3))
+      const time = parseFloat((i * timeIncrement))
       const phase=i%period;
       wave.set(time, phase < halfPeriod ? amplitude : -amplitude)
       //console.log(wave)
@@ -37,7 +40,8 @@ class SignalGenerator {
     for (let i = 0; i < length; i++) {
       const phase = i % period
       //const time = i * timeIncrement
-      const time = parseFloat((i * timeIncrement).toFixed(3))
+     // const time = parseFloat((i * timeIncrement).toFixed(3))
+      const time = parseFloat((i * timeIncrement))
       wave.set(
         time,
         (2 / halfPeriod) *

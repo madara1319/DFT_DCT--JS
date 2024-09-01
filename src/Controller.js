@@ -13,7 +13,7 @@ class Controller {
     this.model = model
     this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
-    this.sampleRate=100;
+    this.sampleRate=1000;
     this.view.initialize()
     console.log('przeszelm inicjalizacje')
 
@@ -102,7 +102,7 @@ class Controller {
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const labels = []
     const data = []
-    //const sampleRate = 100 // 100 samples per second
+    //const sampleRate = 100 // 100 samples per seco
     const duration = 1 // 1 second
     const length = this.sampleRate * duration
     console.log('generateSignal start ')
@@ -131,7 +131,8 @@ class Controller {
         }
       })
       labels.push(t.toFixed(3))
-      data.push(value)
+      data.push(value.toFixed(3))
+
       //console.log(data);
     }
 
@@ -206,8 +207,7 @@ class Controller {
       }
     })
 
-    //const sampleRate = 100 // 100 samples per second
-    const duration = 1 // 1 second
+    const duration = 1 
     const length = this.sampleRate * duration
 
     let combinedWave = new Map()
@@ -250,9 +250,15 @@ class Controller {
     })
     const labels = Array.from(combinedWave.keys())
     const data = Array.from(combinedWave.values())
+    let fixedLabels=[]
+    let fixedData=[]
+    labels.forEach((label)=>fixedLabels.push(label))
+    data.forEach((element)=>fixedData.push(element))
 
     this.model.saveSamples(data)
-    this.view.drawChart('sampleChart', labels, data, 'line')
+  this.view.drawChart('sampleChart', labels, data, 'line')
+
+    //this.view.drawChart('sampleChart', fixedLabels, fixedLabels, 'line')
 
     this.view.showTransformationButtons()
   }

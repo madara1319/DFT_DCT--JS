@@ -655,6 +655,8 @@ class View {
   }
 
   drawChart(chartId, labels, data, type) {
+    console.log(`data w tym miejscu ${data}`)
+    console.log(`labels w tym miejscu ${labels}`)
     ChartDrawer.drawChart(chartId, labels, data, type)
   }
 
