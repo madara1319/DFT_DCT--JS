@@ -11,7 +11,7 @@ class View {
     this.amplitudeChart = null
     this.phaseChart = null
     //tbc_____________________________
-    console.log('odpalam konstruktor view')
+    //console.log('odpalam konstruktor view')
     //przyciski wyboru tryby wprowadzania danych
     this.baseFuncButton = document.querySelector('.showSelection')
     this.enterProbesButton = document.querySelector('.enterProbes')
@@ -54,17 +54,17 @@ class View {
     //toggle do do przyciskow wprowadzania
     this.baseFuncButton.addEventListener('click', (event) => {
       clickCount++
-      console.log('baseFuncButton klikniety', clickCount)
+      //console.log('baseFuncButton klikniety', clickCount)
       this.toggleElement(event, this.optionsDisplay)
     })
     this.enterProbesButton.addEventListener('click', (event) => {
       clickCount++
-      console.log('enterProbesButton klikniety', clickCount)
+      //console.log('enterProbesButton klikniety', clickCount)
       this.toggleElement(event, this.enterBox)
     })
     this.composerButton.addEventListener('click', (event) => {
       clickCount++
-      console.log('composerButton klikniety', clickCount)
+      //console.log('composerButton klikniety', clickCount)
       this.toggleElement(event, this.composerBox)
     })
 
@@ -122,7 +122,7 @@ class View {
     })
     //jak strona sie zaladuje odpal funkcje setupCharts
     document.addEventListener('DOMContentLoaded', this.setupCharts.bind(this))
-    console.log('wewnetrzna initializacja')
+    //console.log('wewnetrzna initializacja')
   }
   //________________________________________________________________________________
 
@@ -133,28 +133,28 @@ class View {
   //funkcja wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(event, chosenButton) {
     event.preventDefault()
-    console.log(' toggle start')
-    console.log('Chosen button:', chosenButton)
-    console.log('Initial state:', chosenButton.className)
+  //  console.log(' toggle start')
+  //  console.log('Chosen button:', chosenButton)
+  //  console.log('Initial state:', chosenButton.className)
     const openButton = chosenButton.classList.contains('open')
-    console.log('Is open?', openButton)
+  //  console.log('Is open?', openButton)
 
     this.toggleButtons.forEach((element) => {
       element.classList.add('hidden')
       element.classList.remove('open')
-      console.log('Toggled off: ', element.className)
+      //console.log('Toggled off: ', element.className)
     })
     if (!openButton) {
       chosenButton.classList.remove('hidden')
       chosenButton.classList.add('open')
-      console.log('powinien byc open')
-      console.log('toggled on: ', chosenButton.className)
+    //  console.log('powinien byc open')
+     // console.log('toggled on: ', chosenButton.className)
     }
-    console.log(' toggle end')
-    console.log('Final state:', chosenButton.className)
+  //  console.log(' toggle end')
+   // console.log('Final state:', chosenButton.className)
 
     this.toggleButtons.forEach((element, index) => {
-      console.log(`Button ${index} final state: ${element.className}`)
+    //  console.log(`Button ${index} final state: ${element.className}`)
     })
   }
 
@@ -177,14 +177,14 @@ class View {
     //oblicz dane ze sladjerow i narsysuj nowego charta
     this.controller.updateChart(selectedOption, amplitudeArray, frequencyArray)
     //dodac funkcje pokazujaca guzik do transformacji
-    console.log('czy handleSlider dziala?')
+    //console.log('czy handleSlider dziala?')
   }
   //________________________________________________________________________________
   //funckja obslugujaca rysowanie defaultowych wykresow po zmianie base function
   handleOptionChange(event) {
-    console.log(' handleOptionChange start')
+    //console.log(' handleOptionChange start')
     const selectedValue = event.target.value
-    console.log('Selected value:', selectedValue)
+   // console.log('Selected value:', selectedValue)
 
     const amplitudeValue = parseFloat(this.amplitudeSlider.value)
     const frequencyValue = parseFloat(this.frequencySlider.value)
@@ -195,7 +195,7 @@ class View {
       [amplitudeValue],
       [frequencyValue],
     )
-    console.log(' handleOptionChange end')
+    //console.log(' handleOptionChange end')
     //dodac funkcje pokazujaca guzik do transformacji
   }
 
@@ -204,14 +204,14 @@ class View {
 
   //wymiary do przemyslania pod katem designu
   setupCharts() {
-    console.log('czy setupCharts dziala? 1')
+    //console.log('czy setupCharts dziala? 1')
     this.sampleChart = new Chart(
       document.getElementById('sampleChart').getContext('2d'),
     )
     this.sampleChart.canvas.width = 400
     this.sampleChart.canvas.height = 400
 
-    console.log(' setupCharts dziala')
+    //console.log(' setupCharts dziala')
   }
 
   //________________________________________________________________________________
@@ -226,7 +226,7 @@ class View {
         //dane probki  i narsysuj nowego charta
         this.controller.updateChart('Custom', [], [], dataArray)
       } else {
-        console.log('nieprowadilowe dane')
+        //console.log('nieprowadilowe dane')
         window.aler("INCORRECT TYPE OF INPUT PLEASE CORRECT")
       }
     }
@@ -263,11 +263,11 @@ class View {
     )
 
     dftButton.addEventListener('click', () => {
-      console.log('Sample chart when DFT button is clicked:', this.sampleChart)
+      //console.log('Sample chart when DFT button is clicked:', this.sampleChart)
       this.controller.handleDFT()
     })
     dctButton.addEventListener('click', () => {
-      console.log('Sample chart when DCT button is clicked:', this.sampleChart)
+      //console.log('Sample chart when DCT button is clicked:', this.sampleChart)
       this.controller.handleDCT()
     })
   }
@@ -332,7 +332,7 @@ class View {
       this.handleAmplitudeScaleInput();
     })
     clearModButton.addEventListener('click', () => {
-      console.log('clearModButton button is clicked:')
+      //console.log('clearModButton button is clicked:')
       this.controller.clearModSignal()
     })
   }
@@ -496,7 +496,7 @@ class View {
 
     ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData);
 
-    console.log(phaseData)
+  //  console.log(phaseData)
     ChartDrawer.killChart('phaseChart')
     if (phaseData && phaseData.length>0) {
       //ChartDrawer.drawChart('phaseChart', labels, phaseData, 'scatter')
@@ -527,7 +527,7 @@ class View {
         <button class="selectButtons reverseTransform">Reverse Transform</button>
         </div>
         `
-      console.log(reverseChartContainer);
+      //console.log(reverseChartContainer);
       parentDiv.insertBefore(reverseTransformButtonDiv, reverseChartContainer)
      // parentDiv.appendChild(reverseTransformButtonDiv, transformChartContainer)
     }
@@ -536,17 +536,17 @@ class View {
     )
 
     reverseTransform.addEventListener('click', () => {
-      console.log(
-        'reverseTransform button is clicked:',
-        this.reverseTransformChart,
-      )
+  //    console.log(
+  //      'reverseTransform button is clicked:',
+  //      this.reverseTransformChart,
+  //    )
       this.controller.handleReverseDFT()
     })
   }
 
   //________________________________________________________________________________
     drawTimeDomainChart(labels,reverseDFTResults){
-      console.log(ChartDrawer.charts['sampleChart'].config.type)
+     // console.log(ChartDrawer.charts['sampleChart'].config.type)
       if(ChartDrawer.charts['sampleChart'].config.type==='line'){
        ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line') 
       }
@@ -554,7 +554,7 @@ class View {
       
        ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'bar') 
       }
-      console.log(reverseDFTResults)
+      //console.log(reverseDFTResults)
     }
 
   //________________________________________________________________________________
@@ -640,7 +640,7 @@ class View {
     //tu jest cos nie tak z przypiswaniem do ogarniecia
     li.textContent = `${element.selectedOption} - Amplitude: ${element.amplitude}, Frequency: ${element.frequency}`
     this.list.appendChild(li)
-    console.log('addElementToListView i textConent ' + li.textContent)
+    //console.log('addElementToListView i textConent ' + li.textContent)
 
     this.controller.addCloseButton(li)
     this.controller.addCloseEventListeners(li)
@@ -655,8 +655,8 @@ class View {
   }
 
   drawChart(chartId, labels, data, type) {
-    console.log(`data w tym miejscu ${data}`)
-    console.log(`labels w tym miejscu ${labels}`)
+   // console.log(`data w tym miejscu ${data}`)
+   // console.log(`labels w tym miejscu ${labels}`)
     ChartDrawer.drawChart(chartId, labels, data, type)
   }
 

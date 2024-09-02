@@ -46,7 +46,7 @@ class ChartDrawer {
           labels,
           datasets: [
             {
-              barThickness: 5,
+              barThickness: 2,
               // barPercentage:0.1,
               label: 'Signal',
               data,
@@ -68,7 +68,7 @@ class ChartDrawer {
               },
               title: {
                 display: true,
-                text: 'X',
+                text: 'X Axis',
               },
             },
             y: {
@@ -77,7 +77,7 @@ class ChartDrawer {
               },
               title: {
                 display: true,
-                text: 'Y',
+                text: 'Y Axis',
               },
             },
           },
@@ -86,44 +86,36 @@ class ChartDrawer {
               display: true,
             },
 
-           // title: {
-           //   display: true,
-           //   text: 'test',
-           //   font:{
-           //     size:18,
-           //   },
-           // },
-            title:{
-            display: true,    
-            text: 'Title Text', 
-            align: 'center',   
-            color: 'black',    
-            fullSize: true,    
-            position: 'top',   
-            font: {
-                size: 16,       
-                weight: 'normal', 
-                family: 'Arial',  
-                style: 'normal'  
+            title: {
+              display: true,
+              text: 'Title Text',
+              align: 'center',
+              color: 'black',
+              fullSize: true,
+              position: 'top',
+              font: {
+                size: 16,
+                weight: 'normal',
+                family: 'Arial',
+                style: 'normal',
+              },
+              padding: {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                right: 10,
+              },
             },
-            padding: {
-                top: 10,         
-                bottom: 10,      
-                left: 10,        
-                right: 10        
-            },
-
           },
         },
       },
-      },
     )
     console.log(this.charts[chartId].options.plugins.title.display)
-this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
-this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
-this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
-this.charts[chartId].update();
-//console.log('tytul' + this.charts[chartId].options.plugins.title.text )
+    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
+    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
+    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
+    this.charts[chartId].update()
+    //console.log('tytul' + this.charts[chartId].options.plugins.title.text )
   }
 
   static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter') {
@@ -148,12 +140,12 @@ this.charts[chartId].update();
       ...dataset,
       type: dataset.type || type,
     }))
-    console.log(signalsDatasets)
-//console.log('chart title to' + this.charts[chartId].options.plugins.title);
+    //console.log(signalsDatasets)
     this.charts[chartId] = new Chart(
       document.getElementById(chartId).getContext('2d'),
       {
         type: 'bar',
+        barThickness: 2,
         data: {
           labels,
           datasets: signalsDatasets,
@@ -182,25 +174,33 @@ this.charts[chartId].update();
               },
             },
           },
-          plugins:{
-              legend:{
-                display:true,
+          plugins: {
+            legend: {
+              display: true,
+            },
+            title: {
+              display: true,
+              text: 'test',
+              font: {
+                size: 18,
               },
-            title:{
-              display:true,
-              text:'test',
-              font:{
-                size:18,
-              },
-            }
+            },
           },
         },
       },
     )
-this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
-this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
-this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
-this.charts[chartId].update();
+
+    console.log(
+      'chart title to' + this.charts[chartId].options.plugins.title.text,
+    )
+    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
+    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
+    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
+    this.charts[chartId].update()
+
+    console.log(
+      'chart title to' + this.charts[chartId].options.plugins.title.text,
+    )
   }
 
   static drawScatterWithVerticalLines(chartId, labels, scatterData) {
@@ -230,7 +230,7 @@ this.charts[chartId].update();
         //     data: barData.map((point) => ({ x: point.x, y: point.y })),
         backgroundColor: 'rgba(54,162,235,0.5)',
         type: 'bar',
-        barThickness: 1,
+        barThickness: 2,
         // barPercentage:1,
 
         label: 'Spectrum (bar)',
@@ -271,10 +271,10 @@ this.charts[chartId].update();
             },
 
             title: {
-              display: true, 
-              text: 'test', 
+              display: true,
+              text: 'test',
               font: {
-                size: 18, 
+                size: 18,
               },
               padding: {
                 top: 10,
@@ -286,10 +286,76 @@ this.charts[chartId].update();
       },
     )
 
-this.charts[chartId].options.plugins.title.text = 'Nowy tytuł';
-this.charts[chartId].options.scales.x.title.text = 'Nowa oś X';
-this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y';
-this.charts[chartId].update();
+    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
+    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
+    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
+    this.charts[chartId].update()
   }
+
+  static testData = [
+    { year: 2010, count: 10 },
+    { year: 2011, count: 20 },
+    { year: 2012, count: 15 },
+    { year: 2013, count: 25 },
+    { year: 2014, count: 22 },
+    { year: 2015, count: 30 },
+    { year: 2016, count: 28 },
+  ]
+  static drawTestChart() {
+    const testCanvas = document.getElementById(`testCanvas`)
+
+     new Chart(document.getElementById('canvas').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: this.testData.map((row) => row.year),
+        datasets: [
+          {
+            label: 'Acquisitions by year',
+            data: this.testData.map((row) => row.count),
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+
+          maintainAspectRatio: false,
+
+          scales: {
+            x: {
+              scales: {
+                type: 'linear',
+                position: 'bottom',
+              },
+              title: {
+                display: true,
+                text: 'X Axis',
+              },
+            },
+            y: {
+              scales: {
+                beginAtZero: true,
+              },
+              title: {
+                display: true,
+                text: 'Y Axis',
+              },
+            },
+          },
+        plugins: {
+          legend:{
+            position:'top',
+          },
+          title: {
+            display: true,
+            text: 'Test Chart',
+          },
+        },
+      },
+    })
+  }
+
 }
+document.addEventListener('DOMContentLoaded', () => {
+  ChartDrawer.drawTestChart();
+});
 export { ChartDrawer }

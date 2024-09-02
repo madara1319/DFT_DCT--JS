@@ -16,8 +16,24 @@ class DCT extends Transformation{
       }
       X.push(sum);
     }
+    this.clearSpectrum(X);
     return X;
   }
+
+  clearSpectrum(X){
+    const maxAmp=Math.max(...X.map(r=>Math.abs(r.real)))
+    const tol=maxAmp/10000
+    X.forEach((r,i)=>{
+      const amp=Math.abs(r.real)
+      if(amp<tol){
+        X[i]={real:0,imag:0}
+      }
+      
+    });
+
+  }
+
+
 getAmplitude(dctResults) {
 
   return dctResults

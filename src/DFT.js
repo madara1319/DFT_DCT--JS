@@ -21,7 +21,7 @@ class DFT extends Transformation {
       X.push(sum)
     }
 
-    console.log('dft to ' + X[1].real)
+    //console.log('dft to ' + X[1].real)
     this.clearSpectrum(X)
     return X
   }

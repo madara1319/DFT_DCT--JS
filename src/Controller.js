@@ -8,14 +8,14 @@ import {ReverseDFT} from './ReverseDFT.js'
 
 class Controller {
   constructor(view, model) {
-    console.log('odpalam konstriktor kontrolera')
+    //console.log('odpalam konstriktor kontrolera')
     this.view = view
     this.model = model
     this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
-    this.sampleRate=1000;
+    this.sampleRate=100;
     this.view.initialize()
-    console.log('przeszelm inicjalizacje')
+    //console.log('przeszelm inicjalizacje')
 
     //tbc_________________________
     //   this.view.setupCharts()
@@ -29,7 +29,7 @@ class Controller {
     frequencyArray = [10],
     customData = [],
   ) {
-    console.log('updateChart start')
+    //console.log('updateChart start')
     const { labels, data } = this.calculateInput(
       selectedOption,
       amplitudeArray,
@@ -46,7 +46,7 @@ class Controller {
     this.view.showTransformationButtons()
     // this.view.showModificationButtons();
     //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
-    console.log('updateChart end')
+    //console.log('updateChart end')
   }
 
   //________________________________________________________________________________
@@ -94,7 +94,7 @@ class Controller {
           break
       }
     }
-    console.log('Calculated input data:', data)
+    //console.log('Calculated input data:', data)
     return { labels, data }
   }
   //________________________________________________________________________________
@@ -102,14 +102,13 @@ class Controller {
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const labels = []
     const data = []
-    //const sampleRate = 100 // 100 samples per seco
     const duration = 1 // 1 second
     const length = this.sampleRate * duration
-    console.log('generateSignal start ')
+    //console.log('generateSignal start ')
 
-    console.log(
-      ` generatorFunction ${generatorFunction}, amplitudeArray ${amplitudeArray}, frequencyArray ${frequencyArray} `,
-    )
+ //   console.log(
+ //     ` generatorFunction ${generatorFunction}, amplitudeArray ${amplitudeArray}, frequencyArray ${frequencyArray} `,
+ //   )
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
       return generatorFunction(
@@ -131,12 +130,12 @@ class Controller {
         }
       })
       labels.push(t.toFixed(3))
-      data.push(value.toFixed(3))
+      data.push(value.toFixed(6))
 
       //console.log(data);
     }
 
-    console.log('generateSignal end ')
+    //console.log('generateSignal end ')
     return { labels, data }
   }
 
@@ -144,7 +143,7 @@ class Controller {
   //do weryfikacji
   //przekazuje parametry do metody view ktora dodaje punkt do listy HTML
   addElementToList(selectedOption, amplitude, frequency) {
-    console.log('addElementToList start ')
+    //console.log('addElementToList start ')
     const element = {
       selectedOption,
       amplitude: parseFloat(amplitude),
@@ -152,9 +151,9 @@ class Controller {
     }
     this.view.addElementToListView(element)
 
-    console.log(
-      'addElementToList end ' + element.selectedOption + element.amplitude,
-    )
+ //   console.log(
+ //     'addElementToList end ' + element.selectedOption + element.amplitude,
+ //   )
   }
 
   //________________________________________________________________________________
@@ -163,7 +162,7 @@ class Controller {
     const selectedOption = document.querySelector('.composerSelect').value
     const amplitude = document.querySelector('.amplitudeComposerInput').value
     const frequency = document.querySelector('.frequencyComposerInput').value
-    console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
+   // console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
     this.addElementToList(selectedOption, amplitude, frequency)
   }
 
@@ -285,24 +284,24 @@ class Controller {
   //________________________________________________________________________________
   handleDFT() {
     const samples = this.model.samples
-    console.log('Samples for DFT:', samples)
+   // console.log('Samples for DFT:', samples)
 
     if (!samples || samples.length === 0) {
-      console.error('No data available for DFT transformation.')
+      //console.error('No data available for DFT transformation.')
       return
     }
 
     const dft = new DFT(samples)
     const result = dft.transform()
     this.model.saveDFT(result)
-    console.log('result to ' + result[1].real)
+    //console.log('result to ' + result[1].real)
 
     const amplitude = dft.getAmplitude(result)
     const phase = dft.getPhase(result)
     const labels = Array.from({ length: result.length }, (_, i) => i.toString())
-    console.log('amplitudy' + amplitude[1])
+    //console.log('amplitudy' + amplitude[1])
 
-    console.log('fazy' + phase)
+    //console.log('fazy' + phase)
 
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
 
@@ -312,7 +311,7 @@ class Controller {
 // const phaseLines = phase.map((ph, i) => ({ x: i, y: ph }));
 
     phasePoints.forEach((phase)=>{
-      console.log(`faza ` + phase.y)
+      //console.log(`faza ` + phase.y)
     })
    // this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
 
@@ -326,10 +325,10 @@ class Controller {
 
   handleDCT() {
     const samples = this.model.samples
-    console.log('Samples for DCT:', samples)
+    //console.log('Samples for DCT:', samples)
 
     if (!samples || samples.length === 0) {
-      console.error('No data available for DCT transformation.')
+      //console.error('No data available for DCT transformation.')
       return
     }
 
@@ -343,7 +342,7 @@ class Controller {
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
 
     amplitudePoints.forEach((amp)=>{
-      console.log(`faza ` + amp.y)
+      //console.log(`faza ` + amp.y)
     })
 
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
@@ -449,7 +448,7 @@ class Controller {
       { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
     )
 
-    console.log('amp scale')
+    //console.log('amp scale')
   }
 
   //________________________________________________________________________________
@@ -466,11 +465,11 @@ class Controller {
 
   //________________________________________________________________________________
   handleReverseDFT() {
-    console.log('reverseTransform')
+    //console.log('reverseTransform')
 
     const dftResults=this.model.getModifiedDFT().length > 0 ? this.model.getModifiedDFT() : this.model.getDFTResults();
     if (!dftResults || dftResults.length === 0) {
-      console.error('No DFT data available for inverse transformation.')
+      //console.error('No DFT data available for inverse transformation.')
       return
     }
 
@@ -478,7 +477,7 @@ class Controller {
     const reverseDFTResults = reverseDFT.reverseTransform()
 
     const labels = Array.from({ length: reverseDFTResults.length }, (_, i) =>(i/this.sampleRate).toString())
-    console.log(labels);
+    //console.log(labels);
     this.model.saveReverseDFT(reverseDFTResults)
 
     this.view.drawTimeDomainChart(labels,reverseDFTResults)
