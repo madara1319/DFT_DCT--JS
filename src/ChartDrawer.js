@@ -347,7 +347,12 @@ class ChartDrawer {
           },
           title: {
             display: true,
+            position:'left',
             text: 'Test Chart',
+                padding: {
+                    top: 10,
+                    bottom: 30
+                },
           },
         },
       },
