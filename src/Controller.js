@@ -13,7 +13,7 @@ class Controller {
     this.model = model
     this.view.setController(this)
     //ok to powodowalo podwojny nasluch:w
-    this.sampleRate=100;
+    this.sampleRate=1000;
     this.view.initialize()
     //console.log('przeszelm inicjalizacje')
 

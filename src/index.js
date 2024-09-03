@@ -12,28 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const model=new Model();
   const view = new View();
   const controller = new Controller(view,model);
-  const test=document.getElementById(`testingCanvas`);
-
-  new Chart(document.getElementById('testtestcanvas').getContext('2d'),{
-    type:'bar',
-    data:{
-      labels:[1,2,3,4,5],
-      datasets:[
-        {
-          data:[1,1,1,1,1],
-          label:'labeltest',
-        },
-      ],
-    },
-    options:{
-      plugins:{
-        title:{
-          display:true,
-          text:"Titletest",
-        },
-      },
-    },
-  })
 
   //console.log("jestm po funkcjach");
 });

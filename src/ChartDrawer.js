@@ -1,4 +1,5 @@
-//klasa do korzystania w View
+import Chart from 'chart.js/auto';
+
 class ChartDrawer {
   static charts = {}
 
@@ -68,7 +69,7 @@ class ChartDrawer {
               },
               title: {
                 display: true,
-                text: 'X Axis',
+                text: 't[s]',
               },
             },
             y: {
@@ -77,7 +78,7 @@ class ChartDrawer {
               },
               title: {
                 display: true,
-                text: 'Y Axis',
+                text: 'x(t)',
               },
             },
           },
@@ -88,7 +89,7 @@ class ChartDrawer {
 
             title: {
               display: true,
-              text: 'Title Text',
+              text: 'Entrance Signal',
               align: 'center',
               color: 'black',
               fullSize: true,
@@ -110,11 +111,11 @@ class ChartDrawer {
         },
       },
     )
-    console.log(this.charts[chartId].options.plugins.title.display)
-    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
-    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
-    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
-    this.charts[chartId].update()
+ //   console.log(this.charts[chartId].options.plugins.title.display)
+ //   this.charts[chartId].options.plugins.title.text = 'Testowy tytuł'
+ //   this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
+ //   this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
+ //   this.charts[chartId].update()
     //console.log('tytul' + this.charts[chartId].options.plugins.title.text )
   }
 
@@ -190,17 +191,17 @@ class ChartDrawer {
       },
     )
 
-    console.log(
-      'chart title to' + this.charts[chartId].options.plugins.title.text,
-    )
-    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
-    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
-    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
-    this.charts[chartId].update()
-
-    console.log(
-      'chart title to' + this.charts[chartId].options.plugins.title.text,
-    )
+//    console.log(
+//      'chart title to' + this.charts[chartId].options.plugins.title.text,
+//    )
+//    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
+//    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
+//    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
+//    this.charts[chartId].update()
+//
+//    console.log(
+//      'chart title to' + this.charts[chartId].options.plugins.title.text,
+//    )
   }
 
   static drawScatterWithVerticalLines(chartId, labels, scatterData) {
@@ -286,81 +287,12 @@ class ChartDrawer {
       },
     )
 
-    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
-    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
-    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
-    this.charts[chartId].update()
+//    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
+//    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
+//    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
+//    this.charts[chartId].update()
   }
 
-  static testData = [
-    { year: 2010, count: 10 },
-    { year: 2011, count: 20 },
-    { year: 2012, count: 15 },
-    { year: 2013, count: 25 },
-    { year: 2014, count: 22 },
-    { year: 2015, count: 30 },
-    { year: 2016, count: 28 },
-  ]
-  static drawTestChart() {
-    const testCanvas = document.getElementById(`testCanvas`)
-
-     new Chart(document.getElementById('canvas').getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels: this.testData.map((row) => row.year),
-        datasets: [
-          {
-            label: 'Acquisitions by year',
-            data: this.testData.map((row) => row.count),
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-
-          maintainAspectRatio: false,
-
-          scales: {
-            x: {
-              scales: {
-                type: 'linear',
-                position: 'bottom',
-              },
-              title: {
-                display: true,
-                text: 'X Axis',
-              },
-            },
-            y: {
-              scales: {
-                beginAtZero: true,
-              },
-              title: {
-                display: true,
-                text: 'Y Axis',
-              },
-            },
-          },
-        plugins: {
-          legend:{
-            position:'top',
-          },
-          title: {
-            display: true,
-            position:'left',
-            text: 'Test Chart',
-                padding: {
-                    top: 10,
-                    bottom: 30
-                },
-          },
-        },
-      },
-    })
-  }
 
 }
-document.addEventListener('DOMContentLoaded', () => {
-  ChartDrawer.drawTestChart();
-});
 export { ChartDrawer }
