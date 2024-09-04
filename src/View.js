@@ -17,6 +17,7 @@ class View {
     this.enterProbesButton = document.querySelector('.enterProbes')
     this.composerButton = document.querySelector('.showComposer')
     this.clearStorageButton = document.querySelector('.clearLocalStorage')
+    this.signalSampleButto = document.querySelector('.signalSampleRate')
 
     //tryby wprowadzania danych
     this.optionsDisplay = document.querySelector('.options')
@@ -27,6 +28,9 @@ class View {
 
     //wybor baseFunction
     this.selectedOption = document.querySelector('.selection')
+
+    this.signalSampleInput=document.querySelector('.signalSampleInput')
+
 
     //podpiecie sliderow
     this.amplitudeSlider = document.querySelector('.amplitudeSlider')
@@ -424,7 +428,7 @@ class View {
           data: originalData.amplitude,
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
-          type:'scatter'
+          type:'scatter',
         },
         {
           label: 'Shifted Amplitude (scatter)',
@@ -448,6 +452,9 @@ class View {
           type:'bar'
         },
       ],
+
+          'scatter',
+          'Amplitude Spectrum',
     )
 
     ChartDrawer.drawMultipleDataChart(
@@ -483,6 +490,9 @@ class View {
           type:'bar'
         },
       ],
+
+          'scatter',
+          'Phase Spectrum',
     )
 
   }
@@ -494,13 +504,13 @@ class View {
    // ChartDrawer.drawChart('amplitudeChart', labels, amplitudeData, 'scatter')
     //ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData,'scatter');
 
-    ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData);
+    ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData,'Amplitude Spectrum');
 
   //  console.log(phaseData)
     ChartDrawer.killChart('phaseChart')
     if (phaseData && phaseData.length>0) {
       //ChartDrawer.drawChart('phaseChart', labels, phaseData, 'scatter')
-      ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData)
+      ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData,'Phase Spectrum')
 
       //ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData, 'line')
     }
@@ -548,11 +558,11 @@ class View {
     drawTimeDomainChart(labels,reverseDFTResults){
      // console.log(ChartDrawer.charts['sampleChart'].config.type)
       if(ChartDrawer.charts['sampleChart'].config.type==='line'){
-       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line') 
+       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line','Output Signal') 
       }
       else if(ChartDrawer.charts['sampleChart'].config.type==='bar'){
       
-       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'bar') 
+       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'bar','Output Signal' )
       }
       //console.log(reverseDFTResults)
     }
@@ -654,10 +664,10 @@ class View {
     return document.getElementsByClassName('close')
   }
 
-  drawChart(chartId, labels, data, type) {
+  drawChart(chartId, labels, data, type,title) {
    // console.log(`data w tym miejscu ${data}`)
    // console.log(`labels w tym miejscu ${labels}`)
-    ChartDrawer.drawChart(chartId, labels, data, type)
+    ChartDrawer.drawChart(chartId, labels, data, type,title)
   }
 
   //________________________________________________________________________________

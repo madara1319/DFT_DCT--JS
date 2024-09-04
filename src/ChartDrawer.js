@@ -16,7 +16,7 @@ class ChartDrawer {
       chartCloseButton.style.display = 'none'
     }
   }
-  static drawChart(chartId, labels, data, type) {
+  static drawChart(chartId, labels, data, type,title) {
     // Destroy existing chart if it exists
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
@@ -89,7 +89,7 @@ class ChartDrawer {
 
             title: {
               display: true,
-              text: 'Entrance Signal',
+              text: title,
               align: 'center',
               color: 'black',
               fullSize: true,
@@ -119,7 +119,7 @@ class ChartDrawer {
     //console.log('tytul' + this.charts[chartId].options.plugins.title.text )
   }
 
-  static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter') {
+  static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter',title) {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -181,7 +181,7 @@ class ChartDrawer {
             },
             title: {
               display: true,
-              text: 'test',
+              text: title,
               font: {
                 size: 18,
               },
@@ -204,7 +204,7 @@ class ChartDrawer {
 //    )
   }
 
-  static drawScatterWithVerticalLines(chartId, labels, scatterData) {
+  static drawScatterWithVerticalLines(chartId, labels, scatterData,title) {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -273,7 +273,7 @@ class ChartDrawer {
 
             title: {
               display: true,
-              text: 'test',
+              text: title,
               font: {
                 size: 18,
               },

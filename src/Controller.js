@@ -42,6 +42,7 @@ class Controller {
       labels,
       data,
       customData.length > 0 ? 'bar' : 'line',
+      'Entrance Signal'
     )
     this.view.showTransformationButtons()
     // this.view.showModificationButtons();
@@ -255,7 +256,7 @@ class Controller {
     data.forEach((element)=>fixedData.push(element))
 
     this.model.saveSamples(data)
-  this.view.drawChart('sampleChart', labels, data, 'line')
+  this.view.drawChart('sampleChart', labels, data, 'line','Entrance Signal')
 
     //this.view.drawChart('sampleChart', fixedLabels, fixedLabels, 'line')
 
