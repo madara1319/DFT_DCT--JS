@@ -17,20 +17,26 @@ class View {
     this.enterProbesButton = document.querySelector('.enterProbes')
     this.composerButton = document.querySelector('.showComposer')
     this.clearStorageButton = document.querySelector('.clearLocalStorage')
-    this.signalSampleButto = document.querySelector('.signalSampleRate')
+    this.signalSampleButton = document.querySelector('.signalSampleRate')
 
     //tryby wprowadzania danych
     this.optionsDisplay = document.querySelector('.options')
     this.enterBox = document.querySelector('.entering')
     this.composerBox = document.querySelector('.composer')
 
-    this.toggleButtons = [this.optionsDisplay, this.enterBox, this.composerBox]
+    this.signalSampleBox = document.querySelector('.signalSampleBox')
+
+    this.toggleButtons = [
+      this.optionsDisplay,
+      this.enterBox,
+      this.composerBox,
+      this.signalSampleBox,
+    ]
 
     //wybor baseFunction
     this.selectedOption = document.querySelector('.selection')
 
-    this.signalSampleInput=document.querySelector('.signalSampleInput')
-
+    this.signalSampleInput = document.querySelector('.signalSampleInput')
 
     //podpiecie sliderow
     this.amplitudeSlider = document.querySelector('.amplitudeSlider')
@@ -72,6 +78,11 @@ class View {
       this.toggleElement(event, this.composerBox)
     })
 
+    this.signalSampleButton.addEventListener('click', (event) => {
+      clickCount++
+      console.log('signalSample klikniety', clickCount)
+      this.toggleElement(event, this.signalSampleBox)
+    })
     //podpiecie naslichiwania rusowanie po zmianie
     this.selectedOption.addEventListener(
       'click',
@@ -91,6 +102,15 @@ class View {
     this.enterBox
       .querySelector('.textArea')
       .addEventListener('keydown', this.handleTextArea.bind(this))
+
+    document
+      .querySelector('.signalSampleInput')
+      .addEventListener('keydown', this.handleSampleRate.bind(this))
+
+    //   //podpiecie funkcji do ustawienia sampleRate
+    //   this.signalSampleBox = document
+    //     .querySelector('.signalSampleInput')
+    //     .addEventListener('keydown', this.handleSampleRate.bind(this))
 
     //wywal initial elementy z composera
     this.removeInitialElement()
@@ -121,7 +141,7 @@ class View {
       this.controller.loadSignals()
     })
 
-    this.clearStorageButton.addEventListener('click',()=>{
+    this.clearStorageButton.addEventListener('click', () => {
       this.controller.clearStorage()
     })
     //jak strona sie zaladuje odpal funkcje setupCharts
@@ -137,11 +157,11 @@ class View {
   //funkcja wyswietlanie ukrywanie opcji wprowadzania danych
   toggleElement(event, chosenButton) {
     event.preventDefault()
-  //  console.log(' toggle start')
-  //  console.log('Chosen button:', chosenButton)
-  //  console.log('Initial state:', chosenButton.className)
+    //  console.log(' toggle start')
+    //  console.log('Chosen button:', chosenButton)
+    //  console.log('Initial state:', chosenButton.className)
     const openButton = chosenButton.classList.contains('open')
-  //  console.log('Is open?', openButton)
+    //  console.log('Is open?', openButton)
 
     this.toggleButtons.forEach((element) => {
       element.classList.add('hidden')
@@ -151,14 +171,14 @@ class View {
     if (!openButton) {
       chosenButton.classList.remove('hidden')
       chosenButton.classList.add('open')
-    //  console.log('powinien byc open')
-     // console.log('toggled on: ', chosenButton.className)
+      //  console.log('powinien byc open')
+      // console.log('toggled on: ', chosenButton.className)
     }
-  //  console.log(' toggle end')
-   // console.log('Final state:', chosenButton.className)
+    //  console.log(' toggle end')
+    // console.log('Final state:', chosenButton.className)
 
     this.toggleButtons.forEach((element, index) => {
-    //  console.log(`Button ${index} final state: ${element.className}`)
+      //  console.log(`Button ${index} final state: ${element.className}`)
     })
   }
 
@@ -188,7 +208,7 @@ class View {
   handleOptionChange(event) {
     //console.log(' handleOptionChange start')
     const selectedValue = event.target.value
-   // console.log('Selected value:', selectedValue)
+    // console.log('Selected value:', selectedValue)
 
     const amplitudeValue = parseFloat(this.amplitudeSlider.value)
     const frequencyValue = parseFloat(this.frequencySlider.value)
@@ -231,10 +251,20 @@ class View {
         this.controller.updateChart('Custom', [], [], dataArray)
       } else {
         //console.log('nieprowadilowe dane')
-        window.aler("INCORRECT TYPE OF INPUT PLEASE CORRECT")
+        window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
       }
     }
   }
+
+  //________________________________________________________________________________
+  handleSampleRate(event) {
+    if (event.key === 'Enter') {
+      const data = event.target.value.trim()
+      console.log('uruchamiam handleSampleRate')
+      this.controller.sampleRate = data
+    }
+  }
+
   //________________________________________________________________________________
   showTransformationButtons() {
     let parentDiv = document.querySelector('.boxofboxes--js')
@@ -327,13 +357,12 @@ class View {
       'button:nth-child(3)',
     )
 
-
-    timeShiftButton.addEventListener('click',()=>{
-      this.handleTimeShiftInput();
+    timeShiftButton.addEventListener('click', () => {
+      this.handleTimeShiftInput()
     })
 
     amplitudeScaleButton.addEventListener('click', () => {
-      this.handleAmplitudeScaleInput();
+      this.handleAmplitudeScaleInput()
     })
     clearModButton.addEventListener('click', () => {
       //console.log('clearModButton button is clicked:')
@@ -428,33 +457,33 @@ class View {
           data: originalData.amplitude,
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
-          type:'scatter',
+          type: 'scatter',
         },
         {
           label: 'Shifted Amplitude (scatter)',
           data: shiftedData.amplitude,
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          type:'scatter'
+          type: 'scatter',
         },
         {
           label: 'Original Amplitude (bar)',
-          data: originalData.amplitude.map(point=>point.y),
+          data: originalData.amplitude.map((point) => point.y),
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
-          type:'bar'
+          type: 'bar',
         },
         {
           label: 'Shifted Amplitude (bar)',
-          data: shiftedData.amplitude.map(point=>point.y),
+          data: shiftedData.amplitude.map((point) => point.y),
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          type:'bar'
+          type: 'bar',
         },
       ],
 
-          'scatter',
-          'Amplitude Spectrum',
+      'scatter',
+      'Amplitude Spectrum',
     )
 
     ChartDrawer.drawMultipleDataChart(
@@ -466,51 +495,65 @@ class View {
           data: originalData.phase,
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
-          type:'scatter'
+          type: 'scatter',
         },
         {
           label: 'Shifted Phase (scatter)',
           data: shiftedData.phase,
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          type:'scatter'
+          type: 'scatter',
         },
         {
           label: 'Original Phase (bar)',
-          data: originalData.phase.map(point=>point.y),
+          data: originalData.phase.map((point) => point.y),
           borderColor: 'rgb(255,99,132)',
           backgroundColor: 'rgba(255,99,132,0.5)',
-          type:'bar'
+          type: 'bar',
         },
         {
           label: 'Shifted Phase (bar)',
-          data: shiftedData.phase.map(point=>point.y),
+          data: shiftedData.phase.map((point) => point.y),
           borderColor: 'rgb(54, 162, 235)',
           backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          type:'bar'
+          type: 'bar',
         },
       ],
 
-          'scatter',
-          'Phase Spectrum',
+      'scatter',
+      'Phase Spectrum',
     )
-
   }
 
   //________________________________________________________________________________
-  drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData,amplitudeLines,phaseLines) {
-
-  //drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData) {
-   // ChartDrawer.drawChart('amplitudeChart', labels, amplitudeData, 'scatter')
+  drawAmplitudeAndPhaseChart(
+    labels,
+    amplitudeData,
+    phaseData,
+    amplitudeLines,
+    phaseLines,
+  ) {
+    //drawAmplitudeAndPhaseChart(labels, amplitudeData, phaseData) {
+    // ChartDrawer.drawChart('amplitudeChart', labels, amplitudeData, 'scatter')
     //ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData,'scatter');
 
-    ChartDrawer.drawScatterWithVerticalLines('amplitudeChart',labels,amplitudeData,'Amplitude Spectrum');
+    ChartDrawer.drawScatterWithVerticalLines(
+      'amplitudeChart',
+      labels,
+      amplitudeData,
+      'Amplitude Spectrum',
+    )
 
-  //  console.log(phaseData)
+    //  console.log(phaseData)
     ChartDrawer.killChart('phaseChart')
-    if (phaseData && phaseData.length>0) {
+    if (phaseData && phaseData.length > 0) {
       //ChartDrawer.drawChart('phaseChart', labels, phaseData, 'scatter')
-      ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData,'Phase Spectrum')
+      ChartDrawer.drawScatterWithVerticalLines(
+        'phaseChart',
+        labels,
+        phaseData,
+        'Phase Spectrum',
+      )
 
       //ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData, 'line')
     }
@@ -522,9 +565,7 @@ class View {
     //gotta fixing adding buttons while there are existing ones
     let parentDiv = document.querySelector('.boxofboxes--js')
 
-    let transformChartContainer = document.querySelector(
-      '#phaseChartContainer',
-    )
+    let transformChartContainer = document.querySelector('#phaseChartContainer')
     let reverseChartContainer = document.querySelector('#reverseChartContainer')
     let reverseTransformButtonDiv = document.querySelector(
       '.reverseTransformButtonDiv',
@@ -539,33 +580,43 @@ class View {
         `
       //console.log(reverseChartContainer);
       parentDiv.insertBefore(reverseTransformButtonDiv, reverseChartContainer)
-     // parentDiv.appendChild(reverseTransformButtonDiv, transformChartContainer)
+      // parentDiv.appendChild(reverseTransformButtonDiv, transformChartContainer)
     }
     const reverseTransform = reverseTransformButtonDiv.querySelector(
       'button:nth-child(1)',
     )
 
     reverseTransform.addEventListener('click', () => {
-  //    console.log(
-  //      'reverseTransform button is clicked:',
-  //      this.reverseTransformChart,
-  //    )
+      //    console.log(
+      //      'reverseTransform button is clicked:',
+      //      this.reverseTransformChart,
+      //    )
       this.controller.handleReverseDFT()
     })
   }
 
   //________________________________________________________________________________
-    drawTimeDomainChart(labels,reverseDFTResults){
-     // console.log(ChartDrawer.charts['sampleChart'].config.type)
-      if(ChartDrawer.charts['sampleChart'].config.type==='line'){
-       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'line','Output Signal') 
-      }
-      else if(ChartDrawer.charts['sampleChart'].config.type==='bar'){
-      
-       ChartDrawer.drawChart('reverseChart',labels,reverseDFTResults,'bar','Output Signal' )
-      }
-      //console.log(reverseDFTResults)
+  drawTimeDomainChart(labels, reverseDFTResults) {
+    // console.log(ChartDrawer.charts['sampleChart'].config.type)
+    if (ChartDrawer.charts['sampleChart'].config.type === 'line') {
+      ChartDrawer.drawChart(
+        'reverseChart',
+        labels,
+        reverseDFTResults,
+        'line',
+        'Output Signal',
+      )
+    } else if (ChartDrawer.charts['sampleChart'].config.type === 'bar') {
+      ChartDrawer.drawChart(
+        'reverseChart',
+        labels,
+        reverseDFTResults,
+        'bar',
+        'Output Signal',
+      )
     }
+    //console.log(reverseDFTResults)
+  }
 
   //________________________________________________________________________________
   showFloatingDiv() {
@@ -664,10 +715,10 @@ class View {
     return document.getElementsByClassName('close')
   }
 
-  drawChart(chartId, labels, data, type,title) {
-   // console.log(`data w tym miejscu ${data}`)
-   // console.log(`labels w tym miejscu ${labels}`)
-    ChartDrawer.drawChart(chartId, labels, data, type,title)
+  drawChart(chartId, labels, data, type, title) {
+    // console.log(`data w tym miejscu ${data}`)
+    // console.log(`labels w tym miejscu ${labels}`)
+    ChartDrawer.drawChart(chartId, labels, data, type, title)
   }
 
   //________________________________________________________________________________
