@@ -146,7 +146,8 @@ class ChartDrawer {
       document.getElementById(chartId).getContext('2d'),
       {
         type: 'bar',
-        barThickness: 2,
+        //barThickness: 2,
+        barPercentage:50,
         data: {
           labels,
           datasets: signalsDatasets,
