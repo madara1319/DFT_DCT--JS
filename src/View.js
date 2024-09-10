@@ -484,6 +484,7 @@ class View {
 
       'scatter',
       'Amplitude Spectrum',
+      '|X(f)|',
     )
 
     ChartDrawer.drawMultipleDataChart(
@@ -522,6 +523,7 @@ class View {
 
       'scatter',
       'Phase Spectrum',
+      '\u03C6[°]',
     )
   }
 
@@ -542,6 +544,7 @@ class View {
       labels,
       amplitudeData,
       'Amplitude Spectrum',
+      '|X(f)|',
     )
 
     //  console.log(phaseData)
@@ -553,6 +556,7 @@ class View {
         labels,
         phaseData,
         'Phase Spectrum',
+        '\u03C6[°]',
       )
 
       //ChartDrawer.drawScatterWithVerticalLines('phaseChart', labels, phaseData, 'line')
@@ -661,7 +665,6 @@ class View {
           { once: true },
         )
       })
-
       document
         .querySelector('.composerAddToList')
         .addEventListener('click', () =>
@@ -671,17 +674,23 @@ class View {
       document
         .querySelector('.amplitudeComposerInput')
         .addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') {
-            this.controller.addElementToListHandler()
+          if (event.key === 'Enter' && (typeof event.target.value === 'number')) {
+              this.controller.addElementToListHandler()
+            } else {
+              window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
+            }
           }
-        })
+        )
       document
         .querySelector('.frequencyComposerInput')
         .addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') {
-            this.controller.addElementToListHandler()
+          if (event.key === 'Enter' && (typeof event.target.value === 'number')) {
+              this.controller.addElementToListHandler()
+            } else {
+              window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
+            }
           }
-        })
+        )
       document
         .querySelector('.closeFloatingDiv')
         .addEventListener('click', () => {

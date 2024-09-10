@@ -119,7 +119,7 @@ class ChartDrawer {
     //console.log('tytul' + this.charts[chartId].options.plugins.title.text )
   }
 
-  static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter',title) {
+  static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter',title,titleYAxis) {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -163,7 +163,7 @@ class ChartDrawer {
               },
               title: {
                 display: true,
-                text: 'k',
+                text: 'f[Hz]',
               },
             },
             y: {
@@ -172,7 +172,7 @@ class ChartDrawer {
               },
               title: {
                 display: true,
-                text: 'Magnitude',
+                text: titleYAxis,
               },
             },
           },
@@ -205,7 +205,7 @@ class ChartDrawer {
 //    )
   }
 
-  static drawScatterWithVerticalLines(chartId, labels, scatterData,title) {
+  static drawScatterWithVerticalLines(chartId, labels, scatterData,title,titleYAxis) {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -256,14 +256,14 @@ class ChartDrawer {
               position: 'bottom',
               title: {
                 display: true,
-                text: 'k',
+                text: 'f[Hz]',
               },
             },
             y: {
               beginAtZero: true,
               title: {
                 display: true,
-                text: 'Magnitude',
+                text: titleYAxis,
               },
             },
           },
