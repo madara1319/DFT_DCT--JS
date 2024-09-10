@@ -159,12 +159,31 @@ class Controller {
 
   //________________________________________________________________________________
 
+  checkIfNumber(value){
+   // if(typeof numberValue === 'number' && isFinite(numberValue))
+    if(!isNaN(value) && isFinite(value) && /^[+-]?\d+(\.\d+)?$/.test(value))
+    {
+      console.log("Input value is correct number")
+      return true;
+    }
+    else{
+      window.alert("Incorrect input! Must provide number");
+      throw new Error('Incorrect input! Must provide number');
+    }
+  }
+
+
+  //________________________________________________________________________________
+
   addElementToListHandler() {
     const selectedOption = document.querySelector('.composerSelect').value
     const amplitude = document.querySelector('.amplitudeComposerInput').value
     const frequency = document.querySelector('.frequencyComposerInput').value
    // console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
+    if(this.checkIfNumber(parseFloat(amplitude)) && this.checkIfNumber(parseFloat(frequency))){
+
     this.addElementToList(selectedOption, amplitude, frequency)
+    } 
   }
 
   //________________________________________________________________________________

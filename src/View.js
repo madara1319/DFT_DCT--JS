@@ -671,26 +671,40 @@ class View {
           this.controller.addElementToListHandler(),
         )
 
+      //      document
+      //        .querySelector('.amplitudeComposerInput')
+      //        .addEventListener('keydown', (event) => {
+      //          if (event.key === 'Enter' && (typeof event.target.value === 'number')) {
+      //              this.controller.addElementToListHandler()
+      //            } else {
+      //              window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
+      //            }
+      //          }
+      //        )
+      //      document
+      //        .querySelector('.frequencyComposerInput')
+      //        .addEventListener('keydown', (event) => {
+      //          if (event.key === 'Enter' && (typeof event.target.value === 'number')) {
+      //              this.controller.addElementToListHandler()
+      //            } else {
+      //              window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
+      //            }
+      //          }
+      //        )
       document
         .querySelector('.amplitudeComposerInput')
         .addEventListener('keydown', (event) => {
-          if (event.key === 'Enter' && (typeof event.target.value === 'number')) {
+          if (event.key === 'Enter') {
               this.controller.addElementToListHandler()
-            } else {
-              window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
-            }
           }
-        )
+        })
       document
         .querySelector('.frequencyComposerInput')
         .addEventListener('keydown', (event) => {
-          if (event.key === 'Enter' && (typeof event.target.value === 'number')) {
+          if (event.key === 'Enter') {
               this.controller.addElementToListHandler()
-            } else {
-              window.alert('INCORRECT TYPE OF INPUT PLEASE CORRECT')
-            }
           }
-        )
+        })
       document
         .querySelector('.closeFloatingDiv')
         .addEventListener('click', () => {
