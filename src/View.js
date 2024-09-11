@@ -261,7 +261,8 @@ class View {
     if (event.key === 'Enter') {
       const data = event.target.value.trim()
       console.log('uruchamiam handleSampleRate')
-      this.controller.sampleRate = data
+     // this.controller.sampleRate = data
+      this.controller.sampleRateHandler(data);
     }
   }
 

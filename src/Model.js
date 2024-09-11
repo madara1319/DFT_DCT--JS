@@ -7,12 +7,19 @@ class Model{
     this.savedSamplesKey='savedSamples';
     this.modifiedDftResults=JSON.parse(localStorage.getItem('modifiedDftResults')) || [];
     this.reverseDFTResults=JSON.parse(localStorage.getItem('reverseDFTResults')) || [];
+    this.sampleRate=JSON.parse(localStorage.getItem('sampleRate'));
 //    this.dftKey='dft';
 //    this.dctKey='dct';
 //    this.loadSamples();
   }
+
+  setSampleRate(sampleRate) {
+    this.sampleRate= sampleRate;
+    localStorage.setItem('sampleRate', JSON.stringify(sampleRate));
+  }
+
   saveSamples(samples) {
-    this.samples = samples;
+    this.samples= samples;
     localStorage.setItem('samples', JSON.stringify(samples));
   }
 
@@ -50,6 +57,10 @@ class Model{
 
   clearLocalStorage(){
     localStorage.clear()
+  }
+
+  getSampleRate() {
+    return this.sampleRate;
   }
 
   getSamplesCount() {
