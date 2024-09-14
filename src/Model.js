@@ -7,7 +7,7 @@ class Model{
     this.savedSamplesKey='savedSamples';
     this.modifiedDftResults=JSON.parse(localStorage.getItem('modifiedDftResults')) || [];
     this.reverseDFTResults=JSON.parse(localStorage.getItem('reverseDFTResults')) || [];
-    this.sampleRate=JSON.parse(localStorage.getItem('sampleRate'));
+    this.sampleRate=JSON.parse(localStorage.getItem('sampleRate'))||100;
 //    this.dftKey='dft';
 //    this.dctKey='dct';
 //    this.loadSamples();

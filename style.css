@@ -41,7 +41,13 @@ main {
 /* Headings */
 .description {
   font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.descriptionParagraph {
+  font-size: 15;
   margin-bottom: 20px;
+  font-style:italic;
 }
 
 .Selection, .Probes {

@@ -24,17 +24,26 @@ class Controller {
     //tbc___________________
   }
 
-  sampleRateHandler(value){
+  sampleRateHandler(value) {
     //dodac weryfikacje czy value to number!!!
+    console.log(typeof value)
     console.log(`typ value w setSample to ${typeof value} => ${value}`)
-    console.log(`typ sampleRate z modelu to ${typeof (this.model.getSampleRate())} => ${this.model.getSampleRate()}`)
-    if(typeof parseFloat(value) ===Number)
-    {
+    console.log(
+      `typ sampleRate z modelu to ${typeof this.model.getSampleRate()} => ${this.model.getSampleRate()}`,
+    )
+    const parsedValue = parseFloat(value)
 
-    this.model.setSampleRate(value)
-    }
-    else{
-      this.model.setSampleRate(100)
+    if (!isNaN(parsedValue) && isFinite(parsedValue) && parsedValue > 0) {
+      this.model.setSampleRate(parseFloat(value))
+      const selectedOption = this.view.selectedOption.value
+      const amplitudeValue = parseFloat(this.view.amplitudeSlider.value)
+      const frequencyValue = parseFloat(this.view.frequencySlider.value)
+
+      // Aktualizuj wykres
+      this.updateChart(selectedOption, [amplitudeValue], [frequencyValue])
+    } else {
+      console.error('Błędna wartość częstotliwości próbkowania')
+      // Możesz tu dodać kod do wyświetlenia komunikatu o błędzie użytkownikowi
     }
   }
 
@@ -177,10 +186,10 @@ class Controller {
   checkIfNumber(value) {
     // if(typeof numberValue === 'number' && isFinite(numberValue))
     const stringNumber = String(value).trim()
-   const regex = /^(-?(?:0|[1-9]\d*)(?:\.\d+)?)$/; 
-  
-   if (regex.test(stringNumber)) { 
-   
+    const regex = /^(-?(?:0|[1-9]\d*)(?:\.\d+)?)$/
+    const parsedNumber = Number(stringNumber)
+    // if (regex.test(stringNumber)) {
+    if (!isNaN(parsedNumber) && stringNumber === String(parsedNumber)) {
       console.log('Input value is correct number')
       return true
     } else {
