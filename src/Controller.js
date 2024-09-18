@@ -51,7 +51,7 @@ class Controller {
   }
 
   //________________________________________________________________________________
-  //calculating input signal values using generateSignal() method and SignalGenerator class 
+  //calculating input signal values using generateSignal() method and SignalGenerator class
   calculateInput(
     optionValue,
     amplitudeArray = [1],
@@ -124,7 +124,6 @@ class Controller {
       })
       labels.push(t.toFixed(3))
       data.push(value.toFixed(6))
-
     }
 
     return { labels, data }
@@ -139,7 +138,6 @@ class Controller {
       frequency: parseFloat(frequency),
     }
     this.view.addElementToListView(element)
-
   }
 
   //________________________________________________________________________________
@@ -261,7 +259,6 @@ class Controller {
     this.model.saveSamples(data)
     this.view.drawChart('sampleChart', labels, data, 'line', 'Entrance Signal')
 
-
     this.view.showTransformationButtons()
   }
 
@@ -301,9 +298,7 @@ class Controller {
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
     const phasePoints = phase.map(this.convertToPointFormat(phase))
 
-
-    phasePoints.forEach((phase) => {
-    })
+    phasePoints.forEach((phase) => {})
 
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, phasePoints)
 
@@ -329,15 +324,13 @@ class Controller {
 
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
 
-    amplitudePoints.forEach((amp) => {
-    })
+    amplitudePoints.forEach((amp) => {})
 
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
 
-
     this.view.killModificationButtons()
     this.view.killReverseTransformationButton()
-  
+  }
 
   //________________________________________________________________________________
   handleTimeShift(timeShiftValue) {
@@ -442,7 +435,6 @@ class Controller {
 
   //________________________________________________________________________________
   handleReverseDFT() {
-
     const dftResults =
       this.model.getModifiedDFT().length > 0
         ? this.model.getModifiedDFT()
