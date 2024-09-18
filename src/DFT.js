@@ -4,11 +4,9 @@ class DFT extends Transformation {
     //access properties on an object literal or class's [[Protype]]
     super(probes)
   }
-
   transform() {
     const N = this.probes.length
     const X = []
-
     for (let k = 0; k < N; k++) {
       let sum = { real: 0, imag: 0 }
       for (let n = 0; n < N; n++) {
@@ -20,35 +18,29 @@ class DFT extends Transformation {
       }
       X.push(sum)
     }
-
-    //console.log('dft to ' + X[1].real)
     this.clearSpectrum(X)
     return X
   }
-
-  clearSpectrum(X){
-    const maxAmp=Math.max(...X.map(r=>Math.sqrt(r.real ** 2 + r.imag ** 2)))
-    const tol=maxAmp/10000
-    X.forEach((r,i)=>{
-      const amp=Math.sqrt(r.real ** 2 + r.imag ** 2)
-      if(amp<tol){
-        X[i]={real:0,imag:0}
+  clearSpectrum(X) {
+    const maxAmp = Math.max(
+      ...X.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
+    )
+    const tol = maxAmp / 10000
+    X.forEach((r, i) => {
+      const amp = Math.sqrt(r.real ** 2 + r.imag ** 2)
+      if (amp < tol) {
+        X[i] = { real: 0, imag: 0 }
       }
-      
-    });
-
+    })
   }
-
   getAmplitude(dftResults) {
-
-    return dftResults.map((r) => 
-      parseFloat(Math.sqrt(r.real ** 2 + r.imag ** 2).toFixed(4))
+    return dftResults.map((r) =>
+      parseFloat(Math.sqrt(r.real ** 2 + r.imag ** 2).toFixed(4)),
     )
   }
   getPhase(dftResults) {
-    return dftResults.map((r) => 
-     // parseFloat(Math.atan2(r.imag, r.real).toFixed(4))
-      parseFloat((Math.atan2(r.imag, r.real)))*(180/Math.PI)
+    return dftResults.map(
+      (r) => parseFloat(Math.atan2(r.imag, r.real)) * (180 / Math.PI),
     )
   }
 }

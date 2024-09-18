@@ -16,7 +16,8 @@ class ChartDrawer {
       chartCloseButton.style.display = 'none'
     }
   }
-  static drawChart(chartId, labels, data, type,title) {
+
+  static drawChart(chartId, labels, data, type, title) {
     // Destroy existing chart if it exists
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
@@ -37,11 +38,9 @@ class ChartDrawer {
       chartCloseButton.style.display = 'none'
     }
 
-    //this.sampleChart = new Chart(
     this.charts[chartId] = new Chart(
       document.getElementById(chartId).getContext('2d'),
       {
-        //type: data.length > 0 ? 'bar' : 'line',
         type: type,
         data: {
           labels,
@@ -111,15 +110,16 @@ class ChartDrawer {
         },
       },
     )
- //   console.log(this.charts[chartId].options.plugins.title.display)
- //   this.charts[chartId].options.plugins.title.text = 'Testowy tytuł'
- //   this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
- //   this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
- //   this.charts[chartId].update()
-    //console.log('tytul' + this.charts[chartId].options.plugins.title.text )
   }
-
-  static drawMultipleDataChart(chartId, labels, datasets, type = 'scatter',title,titleYAxis) {
+//method for drawing multiple charts on one plot
+  static drawMultipleDataChart(
+    chartId,
+    labels,
+    datasets,
+    type = 'scatter',
+    title,
+    titleYAxis,
+  ) {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -141,13 +141,12 @@ class ChartDrawer {
       ...dataset,
       type: dataset.type || type,
     }))
-    //console.log(signalsDatasets)
     this.charts[chartId] = new Chart(
       document.getElementById(chartId).getContext('2d'),
       {
         type: 'bar',
         //barThickness: 2,
-        barPercentage:50,
+        barPercentage: 50,
         data: {
           labels,
           datasets: signalsDatasets,
@@ -191,21 +190,15 @@ class ChartDrawer {
         },
       },
     )
-
-//    console.log(
-//      'chart title to' + this.charts[chartId].options.plugins.title.text,
-//    )
-//    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
-//    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
-//    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
-//    this.charts[chartId].update()
-//
-//    console.log(
-//      'chart title to' + this.charts[chartId].options.plugins.title.text,
-//    )
   }
 
-  static drawScatterWithVerticalLines(chartId, labels, scatterData,title,titleYAxis) {
+  static drawScatterWithVerticalLines(
+    chartId,
+    labels,
+    scatterData,
+    title,
+    titleYAxis,
+  ) {
     if (this.charts[chartId]) {
       this.charts[chartId].destroy()
       this.charts[chartId] = null
@@ -229,11 +222,9 @@ class ChartDrawer {
       {
         data: scatterData.map((point) => point.y),
 
-        //     data: barData.map((point) => ({ x: point.x, y: point.y })),
         backgroundColor: 'rgba(54,162,235,0.5)',
         type: 'bar',
         barThickness: 2,
-        // barPercentage:1,
 
         label: 'Spectrum (bar)',
       },
@@ -287,13 +278,6 @@ class ChartDrawer {
         },
       },
     )
-
-//    this.charts[chartId].options.plugins.title.text = 'Nowy tytuł'
-//    this.charts[chartId].options.scales.x.title.text = 'Nowa oś X'
-//    this.charts[chartId].options.scales.y.title.text = 'Nowa oś Y'
-//    this.charts[chartId].update()
   }
-
-
 }
 export { ChartDrawer }

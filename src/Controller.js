@@ -1,5 +1,4 @@
 import { SignalGenerator } from './SignalGenerator.js'
-//import { ChartDrawer } from './ChartDrawer.js';
 import { View } from './View.js'
 import { Model } from './Model.js'
 import { DFT } from './DFT.js'
@@ -8,42 +7,23 @@ import { ReverseDFT } from './ReverseDFT.js'
 
 class Controller {
   constructor(view, model) {
-    //console.log('odpalam konstriktor kontrolera')
     this.view = view
     this.model = model
     this.view.setController(this)
-    //ok to powodowalo podwojny nasluch:w
-    //this.sampleRate = 1000
-
     this.view.initialize()
-    //console.log('przeszelm inicjalizacje')
-
-    //tbc_________________________
-    //   this.view.setupCharts()
-    //   this.view.showTransformationButtons()
-    //tbc___________________
   }
 
   sampleRateHandler(value) {
-    //dodac weryfikacje czy value to number!!!
-    console.log(typeof value)
-    console.log(`typ value w setSample to ${typeof value} => ${value}`)
-    console.log(
-      `typ sampleRate z modelu to ${typeof this.model.getSampleRate()} => ${this.model.getSampleRate()}`,
-    )
     const parsedValue = parseFloat(value)
-
     if (!isNaN(parsedValue) && isFinite(parsedValue) && parsedValue > 0) {
       this.model.setSampleRate(parseFloat(value))
       const selectedOption = this.view.selectedOption.value
       const amplitudeValue = parseFloat(this.view.amplitudeSlider.value)
       const frequencyValue = parseFloat(this.view.frequencySlider.value)
-
-      // Aktualizuj wykres
       this.updateChart(selectedOption, [amplitudeValue], [frequencyValue])
     } else {
-      console.error('Błędna wartość częstotliwości próbkowania')
-      // Możesz tu dodać kod do wyświetlenia komunikatu o błędzie użytkownikowi
+      console.error('Wrong type of input!')
+      window.alert('Wrong Type of input!')
     }
   }
 
@@ -53,7 +33,6 @@ class Controller {
     frequencyArray = [10],
     customData = [],
   ) {
-    //console.log('updateChart start')
     const { labels, data } = this.calculateInput(
       selectedOption,
       amplitudeArray,
@@ -69,13 +48,10 @@ class Controller {
       'Entrance Signal',
     )
     this.view.showTransformationButtons()
-    // this.view.showModificationButtons();
-    //tu dodac metode ktora bedzie w view i bedzie odzpowiedzialna za wyswietlanie guzikow do DCT/DFT
-    //console.log('updateChart end')
   }
 
   //________________________________________________________________________________
-  //funckja do obliczania sygnalu
+  //calculating input signal values using generateSignal() method and SignalGenerator class 
   calculateInput(
     optionValue,
     amplitudeArray = [1],
@@ -119,21 +95,14 @@ class Controller {
           break
       }
     }
-    //console.log('Calculated input data:', data)
     return { labels, data }
   }
   //________________________________________________________________________________
-  //funckja do poprawy
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const labels = []
     const data = []
     const duration = 1 // 1 second
     const length = this.model.getSampleRate() * duration
-    //console.log('generateSignal start ')
-
-    //   console.log(
-    //     ` generatorFunction ${generatorFunction}, amplitudeArray ${amplitudeArray}, frequencyArray ${frequencyArray} `,
-    //   )
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
       return generatorFunction(
@@ -151,24 +120,19 @@ class Controller {
       waveMapArray.forEach((waveMap) => {
         if (waveMap.has(t)) {
           value += waveMap.get(t)
-          //console.log(value);
         }
       })
       labels.push(t.toFixed(3))
       data.push(value.toFixed(6))
 
-      //console.log(data);
     }
 
-    //console.log('generateSignal end ')
     return { labels, data }
   }
 
   //________________________________________________________________________________
-  //do weryfikacji
-  //przekazuje parametry do metody view ktora dodaje punkt do listy HTML
+  //pass parameters to view method which will add point to HTML list
   addElementToList(selectedOption, amplitude, frequency) {
-    //console.log('addElementToList start ')
     const element = {
       selectedOption,
       amplitude: parseFloat(amplitude),
@@ -176,19 +140,14 @@ class Controller {
     }
     this.view.addElementToListView(element)
 
-    //   console.log(
-    //     'addElementToList end ' + element.selectedOption + element.amplitude,
-    //   )
   }
 
   //________________________________________________________________________________
 
   checkIfNumber(value) {
-    // if(typeof numberValue === 'number' && isFinite(numberValue))
     const stringNumber = String(value).trim()
     const regex = /^(-?(?:0|[1-9]\d*)(?:\.\d+)?)$/
     const parsedNumber = Number(stringNumber)
-    // if (regex.test(stringNumber)) {
     if (!isNaN(parsedNumber) && stringNumber === String(parsedNumber)) {
       console.log('Input value is correct number')
       return true
@@ -204,7 +163,6 @@ class Controller {
     const selectedOption = document.querySelector('.composerSelect').value
     const amplitude = document.querySelector('.amplitudeComposerInput').value
     const frequency = document.querySelector('.frequencyComposerInput').value
-    // console.log(`test metodu addElementToListHandler amplitude ${amplitude}`)
     if (
       this.checkIfNumber(parseFloat(amplitude)) &&
       this.checkIfNumber(parseFloat(frequency))
@@ -214,7 +172,6 @@ class Controller {
   }
 
   //________________________________________________________________________________
-  //to nie dziala
   addCloseButtons() {
     const items = this.view.getSignalListElements()
     for (let i = 0; i < items.length; i++) {
@@ -304,7 +261,6 @@ class Controller {
     this.model.saveSamples(data)
     this.view.drawChart('sampleChart', labels, data, 'line', 'Entrance Signal')
 
-    //this.view.drawChart('sampleChart', fixedLabels, fixedLabels, 'line')
 
     this.view.showTransformationButtons()
   }
@@ -313,8 +269,7 @@ class Controller {
   addCloseEventListeners(item) {
     item.querySelector('.close').addEventListener('click', (event) => {
       const div = event.target.parentElement
-      //div.style.display = 'none'
-      div.remove()
+      div.remove() //remove element on close button click
     })
   }
 
@@ -331,51 +286,37 @@ class Controller {
   //________________________________________________________________________________
   handleDFT() {
     const samples = this.model.samples
-    // console.log('Samples for DFT:', samples)
-
     if (!samples || samples.length === 0) {
-      //console.error('No data available for DFT transformation.')
       return
     }
 
     const dft = new DFT(samples)
     const result = dft.transform()
     this.model.saveDFT(result)
-    //console.log('result to ' + result[1].real)
 
     const amplitude = dft.getAmplitude(result)
     const phase = dft.getPhase(result)
     const labels = Array.from({ length: result.length }, (_, i) => i.toString())
-    //console.log('amplitudy' + amplitude[1])
-
-    //console.log('fazy' + phase)
 
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
-
     const phasePoints = phase.map(this.convertToPointFormat(phase))
 
-    //  const amplitudeLines = amplitude.map((amp, i) => ({ x: i, y: amp }));
-    // const phaseLines = phase.map((ph, i) => ({ x: i, y: ph }));
 
     phasePoints.forEach((phase) => {
-      //console.log(`faza ` + phase.y)
     })
-    // this.view.drawAmplitudeAndPhaseChart(labels, amplitude, phase)
 
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, phasePoints)
 
-    //this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints,phasePoints);
     this.view.showModificationButtons()
 
     this.view.showReverseTransformationButton()
   }
 
+  //________________________________________________________________________________
   handleDCT() {
     const samples = this.model.samples
-    //console.log('Samples for DCT:', samples)
 
     if (!samples || samples.length === 0) {
-      //console.error('No data available for DCT transformation.')
       return
     }
 
@@ -389,24 +330,16 @@ class Controller {
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
 
     amplitudePoints.forEach((amp) => {
-      //console.log(`faza ` + amp.y)
     })
 
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
 
-    //   this.view.drawChart(
-    //     'amplitudeChart',
-    //     Array.from({ length: result.length }, (_, i) => i.toString()),
-    //     result,
-    //     'line',
-    //   )
 
     this.view.killModificationButtons()
     this.view.killReverseTransformationButton()
-  }
+  
 
   //________________________________________________________________________________
-  //need to fix it to draw on both charts
   handleTimeShift(timeShiftValue) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
@@ -422,49 +355,41 @@ class Controller {
         imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
       }
     })
-
     this.model.saveModifiedDFT(shiftedDFT)
-
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
     const amplitudeShifted = shiftedDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
-
     const phaseOriginal = originalDFT.map((X_k) =>
       Math.atan2(X_k.imag, X_k.real),
     )
     const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
-
     const amplitudeOriginalPoints = amplitudeOriginal.map(
       this.convertToPointFormat(amplitudeOriginal),
     )
     const phaseOriginalPoints = phaseOriginal.map(
       this.convertToPointFormat(phaseOriginal),
     )
-
     const amplitudeShiftedPoints = amplitudeShifted.map(
       this.convertToPointFormat(amplitudeShifted),
     )
     const phaseShiftedPoints = phaseShifted.map(
       this.convertToPointFormat(phaseShifted),
     )
-
     this.view.drawShiftedDFTChart(
       kArray,
       { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
       { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
     )
-
-    //this.view.drawShiftedDFTChart(kArray, magnitudeOriginal, magnitudeShifted)
   }
 
+  //________________________________________________________________________________
   handleAmplitudeScaling(scaleFactor) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
     const originalDFT = this.model.getDFTResults()
-
     const actualDFT =
       this.model.getModifiedDFT().length > 0
         ? this.model.getModifiedDFT()
@@ -473,42 +398,34 @@ class Controller {
       real: X_k.real * scaleFactor,
       imag: X_k.imag * scaleFactor,
     }))
-
     this.model.saveModifiedDFT(scaledDFT)
-
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
     const amplitudeShifted = scaledDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
-
     const phaseOriginal = originalDFT.map((X_k) =>
       Math.atan2(X_k.imag, X_k.real),
     )
     const phaseShifted = scaledDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
-
     const amplitudeOriginalPoints = amplitudeOriginal.map(
       this.convertToPointFormat(amplitudeOriginal),
     )
     const phaseOriginalPoints = phaseOriginal.map(
       this.convertToPointFormat(phaseOriginal),
     )
-
     const amplitudeShiftedPoints = amplitudeShifted.map(
       this.convertToPointFormat(amplitudeShifted),
     )
     const phaseShiftedPoints = phaseShifted.map(
       this.convertToPointFormat(phaseShifted),
     )
-
     this.view.drawShiftedDFTChart(
       kArray,
       { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
       { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
     )
-
-    //console.log('amp scale')
   }
 
   //________________________________________________________________________________
@@ -525,14 +442,12 @@ class Controller {
 
   //________________________________________________________________________________
   handleReverseDFT() {
-    //console.log('reverseTransform')
 
     const dftResults =
       this.model.getModifiedDFT().length > 0
         ? this.model.getModifiedDFT()
         : this.model.getDFTResults()
     if (!dftResults || dftResults.length === 0) {
-      //console.error('No DFT data available for inverse transformation.')
       return
     }
 
@@ -542,7 +457,6 @@ class Controller {
     const labels = Array.from({ length: reverseDFTResults.length }, (_, i) =>
       (i / this.model.getSampleRate()).toString(),
     )
-    //console.log(labels);
     this.model.saveReverseDFT(reverseDFTResults)
 
     this.view.drawTimeDomainChart(labels, reverseDFTResults)
@@ -561,6 +475,8 @@ class Controller {
     })
     this.model.saveSignalsToLocalStorage(signals)
   }
+
+  //________________________________________________________________________________
   loadSignals() {
     const signals = this.model.loadSignalsFromLocalStorage()
     this.view.clearSignalList()
@@ -577,6 +493,7 @@ class Controller {
     this.model.saveSamplesToLocalStorage(samples)
   }
 
+  //________________________________________________________________________________
   loadSamples() {
     const samples = this.model.loadSamplesFromLocalStorage()
     this.view.textArea.value = samples.join('\n')
