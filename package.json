@@ -4,12 +4,12 @@
   "scripts": {
     "start": "live-server --port=8181",
     "build": "webpack --config webpack.config.cjs",
-    "watch":"webpack --watch --config webpack.config.cjs"
-    
-
+    "watch": "webpack --watch --config webpack.config.cjs"
   },
   "dependencies": {
     "chart.js": "^4.4.4",
+    "dct": "^0.1.0",
+    "fft-js": "0.0.1",
     "webpack": "^5.90.2"
   },
   "type": "module",
