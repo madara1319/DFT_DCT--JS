@@ -1,65 +1,69 @@
-import { Transformation } from './Transformation.js';
+import { Transformation } from './Transformation.js'
 
-import fft from 'fft-js';
-
+import fft from 'fft-js'
 
 class DFT extends Transformation {
   constructor(probes) {
     //access properties on an object literal or class's [[Protype]]
     super(probes)
+const simpleInput = [[1, 0], [0, 0], [0, 0], [0, 0]];
+const fftResult = fft(simpleInput);
+console.log('Test FFT Result:', fftResult);
   }
-//first attemp at implementing algorithm  
-//  transform() {
-//    const N = this.probes.length
-//    const X = []
-//    for (let k = 0; k < N; k++) {
-//      let sum = { real: 0, imag: 0 }
-//      for (let n = 0; n < N; n++) {
-//        const angle = (-2 * Math.PI * k * n) / N
-//        sum.real += this.probes[n] * Math.cos(angle)
-//        sum.imag += this.probes[n] * Math.sin(angle)
-//        sum.real = parseFloat(sum.real.toFixed(4))
-//        sum.imag = parseFloat(sum.imag.toFixed(4))
-//      }
-//      X.push(sum)
-//    }
-//    this.clearSpectrum(X)
-//    return X
-//  }
-//_______________________________________________________________
-//attemp at using npm package for DFT
+  //first attemp at implementing algorithm
+  //  transform() {
+  //    const N = this.probes.length
+  //    const X = []
+  //    for (let k = 0; k < N; k++) {
+  //      let sum = { real: 0, imag: 0 }
+  //      for (let n = 0; n < N; n++) {
+  //        const angle = (-2 * Math.PI * k * n) / N
+  //        sum.real += this.probes[n] * Math.cos(angle)
+  //        sum.imag += this.probes[n] * Math.sin(angle)
+  //        sum.real = parseFloat(sum.real.toFixed(4))
+  //        sum.imag = parseFloat(sum.imag.toFixed(4))
+  //      }
+  //      X.push(sum)
+  //    }
+  //    this.clearSpectrum(X)
+  //    return X
+  //  }
+  //_______________________________________________________________
+  //attemp at using npm package for DFT
   transform() {
-    const N = this.probes.length;
-    
+    const newLength = 2 ** Math.ceil(Math.log2(this.probes.length))
+    this.probes = this.fillWithZeros(newLength) // Ensure length is a power of 2
+    const N = this.probes.length
+
     if ((N & (N - 1)) !== 0) {
-      console.error("Liczba próbek musi być potęgą 2 dla FFT");
-      return [];
+      console.error(`Liczba próbek musi być potęgą 2 dla FFT: ${N}`)
+      return []
     }
-    
-    const input = this.probes.map(p => [p, 0]);
-    
+
+    // Prepare input: Convert real probes to complex form [real, imag] and ensure real values are numbers
+    const input = this.probes.map((p) => [parseFloat(p), 0])
+    console.log('Input to FFT:', input) // Log the input array
+
     try {
-      const fftResult = fft(input);
-      
-      const X = fftResult.map(complex => {
-        if (!Array.isArray(complex) || complex.length < 2) {
-          throw new Error("Nieprawidłowy format wyniku FFT");
-        }
-        return {
-          real: parseFloat(complex[0].toFixed(4)),
-          imag: parseFloat(complex[1].toFixed(4)),
-        };
-      });
-      
-      this.clearSpectrum(X);
-      return X;
+      const fftResult = fft(input) // Perform FFT on complex input
+      console.log('FFT Result:', fftResult) // Log the result from FFT
+
+      // Parse the FFT result, ensuring values are numbers before formatting
+      const X = fftResult.map(([real, imag]) => ({
+        real: typeof real === 'number' ? parseFloat(real.toFixed(4)) : NaN,
+        imag: typeof imag === 'number' ? parseFloat(imag.toFixed(4)) : NaN,
+      }))
+
+      console.log('Parsed FFT Result:', X) // Log the parsed result
+
+      this.clearSpectrum(X)
+      return X
     } catch (error) {
-      console.error("Błąd podczas wykonywania FFT:", error);
-      return [];
+      console.error('Błąd podczas wykonywania FFT:', error)
+      return []
     }
   }
-
-//_______________________________________________________________
+  //_______________________________________________________________
   clearSpectrum(X) {
     const maxAmp = Math.max(
       ...X.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
