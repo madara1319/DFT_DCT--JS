@@ -6,6 +6,7 @@ class DFT extends Transformation {
   constructor(probes) {
     //access properties on an object literal or class's [[Protype]]
     super(probes)
+    console.log(probes)
 const simpleInput = [[1, 0], [0, 0], [0, 0], [0, 0]];
 const fftResult = fft(simpleInput);
 console.log('Test FFT Result:', fftResult);
@@ -40,21 +41,20 @@ console.log('Test FFT Result:', fftResult);
       return []
     }
 
-    // Prepare input: Convert real probes to complex form [real, imag] and ensure real values are numbers
-    const input = this.probes.map((p) => [parseFloat(p), 0])
-    console.log('Input to FFT:', input) // Log the input array
+    //const input = this.probes.map((p) => [parseFloat(p), 0])
+    const input=this.probes;
+    console.log('Input to FFT:', input) 
 
     try {
-      const fftResult = fft(input) // Perform FFT on complex input
-      console.log('FFT Result:', fftResult) // Log the result from FFT
+      const fftResult = fft(input) 
+      console.log('FFT Result:', fftResult) 
 
-      // Parse the FFT result, ensuring values are numbers before formatting
       const X = fftResult.map(([real, imag]) => ({
         real: typeof real === 'number' ? parseFloat(real.toFixed(4)) : NaN,
         imag: typeof imag === 'number' ? parseFloat(imag.toFixed(4)) : NaN,
       }))
 
-      console.log('Parsed FFT Result:', X) // Log the parsed result
+      console.log('Parsed FFT Result:', X) 
 
       this.clearSpectrum(X)
       return X
