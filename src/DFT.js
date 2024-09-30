@@ -32,23 +32,23 @@ class DFT extends Transformation {
   //    }
   //
 
-//  bruteForceDFTtransform() {
-//    const N = this.probes.length
-//    const X = []
-//    for (let k = 0; k < N; k++) {
-//      let sum = { real: 0, imag: 0 }
-//      for (let n = 0; n < N; n++) {
-//        const angle = (-2 * Math.PI * k * n) / N
-//        sum.real += this.probes[n] * Math.cos(angle)
-//        sum.imag += this.probes[n] * Math.sin(angle)
-//        sum.real = parseFloat(sum.real.toFixed(4))
-//        sum.imag = parseFloat(sum.imag.toFixed(4))
-//      }
-//      X.push(sum)
-//    }
-//    this.clearSpectrum(X)
-//    return X
-//  }
+  //  bruteForceDFTtransform() {
+  //    const N = this.probes.length
+  //    const X = []
+  //    for (let k = 0; k < N; k++) {
+  //      let sum = { real: 0, imag: 0 }
+  //      for (let n = 0; n < N; n++) {
+  //        const angle = (-2 * Math.PI * k * n) / N
+  //        sum.real += this.probes[n] * Math.cos(angle)
+  //        sum.imag += this.probes[n] * Math.sin(angle)
+  //        sum.real = parseFloat(sum.real.toFixed(4))
+  //        sum.imag = parseFloat(sum.imag.toFixed(4))
+  //      }
+  //      X.push(sum)
+  //    }
+  //    this.clearSpectrum(X)
+  //    return X
+  //  }
   bruteForceDFTtransform(probes) {
     const N = probes.length
     const X = []
@@ -77,47 +77,53 @@ class DFT extends Transformation {
       console.error(`Liczba próbek musi być potęgą 2 dla FFT: ${N}`)
       return []
     }
-    
-    const testArrayFirst=[1,1,1,1]
-    const testArraySecond=[1,0,1,0]
-    const testArrayThird=[2,3,1,12,22,7,13,19]
-    const calcDFTfirst=this.bruteForceDFTtransform(testArrayFirst); 
-    const calcDFTsecond=this.bruteForceDFTtransform(testArraySecond); 
-    const calcDFTthird=this.bruteForceDFTtransform(testArrayThird); 
-      console.log(`input to ${testArrayFirst} jego fft to ${JSON.stringify(fft(testArrayFirst))} a moje dft to ${JSON.stringify(calcDFTfirst)}`);
-  
-  console.log(`input to ${testArraySecond} jego fft to ${JSON.stringify(fft(testArraySecond))} a moje dft to ${JSON.stringify(calcDFTsecond)}`);
-  
-  console.log(`input to ${testArrayThird} jego fft to ${JSON.stringify(fft(testArrayThird))} a moje dft to ${JSON.stringify(calcDFTthird)}`);
-    console.log(`moj input to ${JSON.stringify(this.probes)}`)
-    //const input = this.probes.map((p) => [parseFloat(p), 0])
- //   const input = [];
- //   for (let i = 0; i < this.probes.length; i++) {
- //     input.push([parseFloat(this.probes[i]), 0]);
- //     let test=[parseFloat(this.probes[i]), 0];
- //     let fftTest=fft(test);
- //   }
 
-const input = this.probes.map(p => parseFloat(p) || 0); 
-     console.log(JSON.stringify(input)) 
-      const X = [];
-        let fftResult=fft((input))
-        console.log(JSON.stringify(fftResult))
-   //     const real = fftResult[i][0] 
-   //     const imag = fftResult[i][1]
-   //     X.push({
-   //       real: parseFloat(real.toFixed(4)),
-   //       imag: parseFloat(imag.toFixed(4))
-  //      });
+    //____________________________________________________
+    //testy
+    //    const testArrayFirst=[1,1,1,1]
+    //    const testArraySecond=[1,0,1,0]
+    //    const testArrayThird=[2,3,1,12,22,7,13,19]
+    //    const calcDFTfirst=this.bruteForceDFTtransform(testArrayFirst);
+    //    const calcDFTsecond=this.bruteForceDFTtransform(testArraySecond);
+    //    const calcDFTthird=this.bruteForceDFTtransform(testArrayThird);
+    //      console.log(`input to ${testArrayFirst} jego fft to ${JSON.stringify(fft(testArrayFirst))} a moje dft to ${JSON.stringify(calcDFTfirst)}`);
+    //
+    //  console.log(`input to ${testArraySecond} jego fft to ${JSON.stringify(fft(testArraySecond))} a moje dft to ${JSON.stringify(calcDFTsecond)}`);
+    //
+    //  console.log(`input to ${testArrayThird} jego fft to ${JSON.stringify(fft(testArrayThird))} a moje dft to ${JSON.stringify(calcDFTthird)}`);
+    //    console.log(`moj input to ${JSON.stringify(this.probes)}`)
+    //____________________________________________________
+    const input = this.probes.map((p) => parseFloat(p) || 0)
 
-      console.log('Parsed FFT Result:', X);
-    
-      this.clearSpectrum(X);
-      return X;
-    
+    try {
+      let fftResult = fft(input)
+      let testDFT = this.bruteForceDFTtransform(input)
+      console.log('fft to ' + JSON.stringify(fftResult))
+
+      const X = fftResult.map(([real, imag]) => ({
+        real: parseFloat(real.toFixed(4)),
+        imag: parseFloat(imag.toFixed(4)),
+      }))
+
+      for (let kj = 0; kj < testDFT.length; kj++) {
+        console.log(`real ${X[kj].real} i imag ${X[kj].imag}`)
+
+        console.log(
+          `real ${X[kj].real - testDFT[kj].real} i imag ${X[kj].imag - testDFT[kj].imag}`,
+        )
+      }
+
+      //console.log('Parsed FFT Result:', X)
+
+      this.clearSpectrum(X)
+      return X
+    } catch (error) {
+      console.error('Bład w przy liczeniu FFT')
+      return []
+    }
   }
 
-    //_______________________________________________________________
+  //_______________________________________________________________
   clearSpectrum(X) {
     const maxAmp = Math.max(
       ...X.map((r) => Math.sqrt(r.real ** 2 + r.imag ** 2)),
@@ -135,11 +141,12 @@ const input = this.probes.map(p => parseFloat(p) || 0);
       parseFloat(Math.sqrt(r.real ** 2 + r.imag ** 2).toFixed(4)),
     )
   }
-  getPhase(dftResults) {
-    return dftResults.map(
-      (r) => parseFloat(Math.atan2(r.imag, r.real)) * (180 / Math.PI),
-    )
-  }
+
+    getPhase(dftResults) {
+      return dftResults.map(
+        (r) => parseFloat(Math.atan2(r.imag, r.real)) * (180 / Math.PI),
+      )
+    }
 }
 
 export { DFT }
