@@ -142,11 +142,27 @@ class DFT extends Transformation {
     )
   }
 
-    getPhase(dftResults) {
-      return dftResults.map(
-        (r) => parseFloat(Math.atan2(r.imag, r.real)) * (180 / Math.PI),
-      )
-    }
+ //   getPhase(dftResults) {
+ //     return dftResults.map(
+ //       (r) => parseFloat(Math.atan2(r.imag, r.real)) * (180 / Math.PI),
+ //     )
+ //   }
+
+
+ getPhase(dftResults) {
+    const amplitudes = this.getAmplitude(dftResults)
+    const maxAmp = Math.max(...amplitudes)
+    const threshold = maxAmp / 2 
+
+    return dftResults.map((r, index) => {
+      if (amplitudes[index] > threshold) {
+        return parseFloat((Math.atan2(r.imag, r.real) * (180 / Math.PI)).toFixed(4))
+      } else {
+        return 0 
+      }
+    })
+  }
+
 }
 
 export { DFT }
