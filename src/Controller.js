@@ -101,30 +101,55 @@ class Controller {
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const labels = []
     const data = []
-    const duration = 1 // 1 second
-    const length = this.model.getSampleRate() * duration
-    // Generate the signals for all amplitudes and frequencies
-    let waveMapArray = amplitudeArray.map((amplitude, index) => {
-      return generatorFunction(
-        frequencyArray[index],
-        amplitude,
-        this.model.getSampleRate(),
-        length,
-      )
-    })
+    //const duration = 1 // 1 second
+    //const length = this.model.getSampleRate() * duration
 
-    // Sum the values at each time point
+    const duration=Math.ceil(this.model.getSampleRate()/frequencyArray[0]);
+    const length=duration;
+
+    // Generate the signals for all amplitudes and frequencies
+//    let waveMapArray = amplitudeArray.map((amplitude, index) => {
+//      return generatorFunction(
+//        frequencyArray[index],
+//        amplitude,
+//        this.model.getSampleRate(),
+//        length,
+//      )
+//    })
+//
+
+
+    let waveFunctions = amplitudeArray.map((amplitude, index)=>{
+      return (t) => generatorFunction(
+      frequencyArray[index],
+      amplitude,
+      this.model.getSampleRate(),
+      length
+    )
+    }); 
+      
     for (let i = 0; i < length; i++) {
-      const t = Number((i / this.model.getSampleRate()).toFixed(3))
+      const t = Number((i / this.model.getSampleRate()).toFixed(10))
       let value = 0
-      waveMapArray.forEach((waveMap) => {
-        if (waveMap.has(t)) {
-          value += waveMap.get(t)
-        }
+      waveFunctions.forEach((waveFunction) => {
+          value += waveFunction(t)
       })
-      labels.push(t.toFixed(3))
-      data.push(value.toFixed(6))
+      labels.push(t.toFixed(10))
+      data.push(value)
     }
+    
+    // Sum the values at each time point
+//    for (let i = 0; i < length; i++) {
+//      const t = Number((i / this.model.getSampleRate()).toFixed(3))
+//      let value = 0
+//      waveMapArray.forEach((waveMap) => {
+//        if (waveMap.has(t)) {
+//          value += waveMap.get(t)
+//        }
+//      })
+//      labels.push(t.toFixed(3))
+//      data.push(value.toFixed(6))
+//    }
 
     return { labels, data }
   }

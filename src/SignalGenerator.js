@@ -1,14 +1,19 @@
 //class used to generate base Functions
 class SignalGenerator {
+//  static generateSineWave(frequency, amplitude = 1, sampleRate, length) {
+//    const wave = new Map()
+//    const angularFrequency = 2 * Math.PI * frequency
+//    const timeIncrement = 1 / sampleRate
+//    for (let i = 0; i < length; i++) {
+//      const time = parseFloat((i * timeIncrement).toFixed(10))
+//      wave.set(time, amplitude * Math.sin(angularFrequency * time))
+//    }
+//    return wave
+//  }
+//
   static generateSineWave(frequency, amplitude = 1, sampleRate, length) {
-    const wave = new Map()
     const angularFrequency = 2 * Math.PI * frequency
-    const timeIncrement = 1 / sampleRate
-    for (let i = 0; i < length; i++) {
-      const time = parseFloat((i * timeIncrement).toFixed(10))
-      wave.set(time, amplitude * Math.sin(angularFrequency * time))
-    }
-    return wave
+    return (t) => amplitude * Math.sin(angularFrequency * t)
   }
   static generateSquareWave(frequency, amplitude = 1, sampleRate, length) {
     const wave = new Map()
