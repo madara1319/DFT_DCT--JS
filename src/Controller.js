@@ -104,39 +104,44 @@ class Controller {
     //const duration = 1 // 1 second
     //const length = this.model.getSampleRate() * duration
 
-    const duration=Math.ceil(this.model.getSampleRate()/frequencyArray[0]);
-    const length=duration;
+    //testing
+    const numberOfPeriods=5;
+    const maxFrequency=Math.max(...frequencyArray)
+    const period=1/maxFrequency
+    const duration=numberOfPeriods * period
+    //const duration=numberOfPeriods/maxFrequency
+    const length=Math.floor(this.model.getSampleRate()*duration)
+
+
+    
+
 
     // Generate the signals for all amplitudes and frequencies
-//    let waveMapArray = amplitudeArray.map((amplitude, index) => {
-//      return generatorFunction(
-//        frequencyArray[index],
-//        amplitude,
-//        this.model.getSampleRate(),
-//        length,
-//      )
-//    })
-//
+    let waveMapArray = amplitudeArray.map((amplitude, index) => {
+      return generatorFunction(
+        frequencyArray[index],
+        amplitude,
+        this.model.getSampleRate(),
+        length,
+      )
+    })
+
+    //testing
+  for (let i = 0; i < length; i++) {
+    const t = i / this.model.getSampleRate() // Time value for current sample
+    let value = 0
+    waveMapArray.forEach((waveMap) => {
+      // Snap the time to avoid floating-point precision issues
+      const snappedTime = parseFloat(t.toFixed(10))
+      if (waveMap.has(snappedTime)) {
+        value += waveMap.get(snappedTime)
+      }
+    })
+    labels.push(t.toFixed(3))
+    data.push(value.toFixed(6))
+  }
 
 
-    let waveFunctions = amplitudeArray.map((amplitude, index)=>{
-      return (t) => generatorFunction(
-      frequencyArray[index],
-      amplitude,
-      this.model.getSampleRate(),
-      length
-    )
-    }); 
-      
-    for (let i = 0; i < length; i++) {
-      const t = Number((i / this.model.getSampleRate()).toFixed(10))
-      let value = 0
-      waveFunctions.forEach((waveFunction) => {
-          value += waveFunction(t)
-      })
-      labels.push(t.toFixed(10))
-      data.push(value)
-    }
     
     // Sum the values at each time point
 //    for (let i = 0; i < length; i++) {
