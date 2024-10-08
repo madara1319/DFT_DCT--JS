@@ -13,24 +13,24 @@ class DFT extends Transformation {
     //console.log('Test FFT Result:', fftResult);
   }
   //first attemp at implementing algorithm
-  //    transform() {
-  //      const N = this.probes.length
-  //      const X = []
-  //      for (let k = 0; k < N; k++) {
-  //        let sum = { real: 0, imag: 0 }
-  //        for (let n = 0; n < N; n++) {
-  //          const angle = (-2 * Math.PI * k * n) / N
-  //          sum.real += this.probes[n] * Math.cos(angle)
-  //          sum.imag += this.probes[n] * Math.sin(angle)
-  //          sum.real = parseFloat(sum.real.toFixed(4))
-  //          sum.imag = parseFloat(sum.imag.toFixed(4))
-  //        }
-  //        X.push(sum)
-  //      }
-  //      this.clearSpectrum(X)
-  //      return X
-  //    }
-  //
+    transform() {
+      const N = this.probes.length
+      const X = []
+      for (let k = 0; k < N; k++) {
+        let sum = { real: 0, imag: 0 }
+        for (let n = 0; n < N; n++) {
+          const angle = (-2 * Math.PI * k * n) / N
+          sum.real += this.probes[n] * Math.cos(angle)
+          sum.imag += this.probes[n] * Math.sin(angle)
+          sum.real = parseFloat(sum.real.toFixed(4))
+          sum.imag = parseFloat(sum.imag.toFixed(4))
+        }
+        X.push(sum)
+      }
+      this.clearSpectrum(X)
+      return X
+    }
+
 
   //  bruteForceDFTtransform() {
   //    const N = this.probes.length
@@ -125,27 +125,28 @@ class DFT extends Transformation {
 
 //testing
 
-transform() {
-    const N = this.probes.length;
-    const paddedLength = 2 ** Math.ceil(Math.log2(N));
-    const paddedProbes = this.fillWithZeros(paddedLength);
-
-    const input = paddedProbes.map(p => [parseFloat(p) || 0, 0]);
-    
-    try {
-      const fftResult = fft(input);
-      const X = fftResult.map(([real, imag]) => ({
-        real: parseFloat(real.toFixed(4)),
-        imag: parseFloat(imag.toFixed(4))
-      }));
-
-      this.clearSpectrum(X);
-      return X;
-    } catch (error) {
-      console.error('Błąd przy liczeniu FFT:', error);
-      return [];
-    }
-  }
+//transform() {
+//    const N = this.probes.length;
+//    const paddedLength = 2 ** Math.ceil(Math.log2(N));
+//    const paddedProbes = this.fillWithZeros(paddedLength);
+//
+//    //const input = paddedProbes.map(p => [parseFloat(p) || 0, 0]);
+//    const input = paddedProbes.map((p) => parseFloat(p) || 0)
+//    
+//    try {
+//      const fftResult = fft(input);
+//      const X = fftResult.map(([real, imag]) => ({
+//        real: parseFloat(real.toFixed(4)),
+//        imag: parseFloat(imag.toFixed(4))
+//      }));
+//
+//      this.clearSpectrum(X);
+//      return X;
+//    } catch (error) {
+//      console.error('Błąd przy liczeniu FFT:', error);
+//      return [];
+//    }
+//  }
 
 
 
@@ -178,15 +179,26 @@ transform() {
 
 
   //testing
-
-  getPhase(dftResults) {
-    return dftResults.map(r => {
-      if (Math.abs(r.real) < 1e-10 && Math.abs(r.imag) < 1e-10) {
-        return 0;
+ getPhase(dftResults) {
+    const amplitudes = this.getAmplitude(dftResults)
+    const maxAmp = Math.max(...amplitudes)
+    const threshold = maxAmp / 2 
+    return dftResults.map((r, index) => {
+      if (amplitudes[index] > threshold) {
+        return parseFloat((Math.atan2(r.imag, r.real) * (180 / Math.PI)).toFixed(4))
+      } else {
+        return 0 
       }
-      return parseFloat((Math.atan2(r.imag, r.real) * (180 / Math.PI)).toFixed(4));
-    });
+    })
   }
+//  getPhase(dftResults) {
+//    return dftResults.map(r => {
+//      if (Math.abs(r.real) < 1e-10 && Math.abs(r.imag) < 1e-10) {
+//        return 0;
+//      }
+//      return parseFloat((Math.atan2(r.imag, r.real) * (180 / Math.PI)).toFixed(4));
+//    });
+//  }
 
 }
 
