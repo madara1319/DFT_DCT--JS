@@ -3,6 +3,7 @@ class Model {
     this.samples = JSON.parse(localStorage.getItem('samples')) || []
     this.dftResults = JSON.parse(localStorage.getItem('dftResults')) || []
     this.dctResults = JSON.parse(localStorage.getItem('dctResults')) || []
+    this.transformationType='DFT';
     this.savedSignalsKey = 'savedSignals'
     this.savedSamplesKey = 'savedSamples'
     this.modifiedDftResults =
@@ -11,6 +12,15 @@ class Model {
       JSON.parse(localStorage.getItem('reverseDFTResults')) || []
     this.sampleRate = JSON.parse(localStorage.getItem('sampleRate')) || 100
   }
+  
+  setCurrentTransformation(type){
+    this.transformationType=type;
+  }
+
+  getCurrentTransformation(){
+    return this.transformationType;
+  }
+  
 
   setSampleRate(sampleRate) {
     this.sampleRate = sampleRate

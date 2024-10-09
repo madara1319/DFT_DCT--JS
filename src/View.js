@@ -48,7 +48,7 @@ class View {
     this.enteringLoadButton = document.querySelector('.enteringLoadButton')
   }
   //________________________________________________________________________________
-  //Activate buttons like toggle eventlisteners floatingDiv and combineSignal 
+  //Activate buttons like toggle eventlisteners floatingDiv and combineSignal
   initialize() {
     //display toggle on entrance buttons
     this.baseFuncButton.addEventListener('click', (event) => {
@@ -85,7 +85,6 @@ class View {
     document
       .querySelector('.signalSampleInput')
       .addEventListener('keydown', this.handleSampleRate.bind(this))
-
 
     //remove Initial elements from composer
     this.removeInitialElement()
@@ -141,8 +140,7 @@ class View {
       chosenButton.classList.add('open')
     }
 
-    this.toggleButtons.forEach((element, index) => {
-    })
+    this.toggleButtons.forEach((element, index) => {})
   }
 
   //calculate and draw baseFunctions using values from sliders
@@ -186,7 +184,6 @@ class View {
     )
     this.sampleChart.canvas.width = 400
     this.sampleChart.canvas.height = 400
-
   }
 
   //________________________________________________________________________________
@@ -211,7 +208,7 @@ class View {
     if (event.key === 'Enter') {
       const data = event.target.value.trim()
       console.log('uruchamiam handleSampleRate')
-      this.controller.sampleRateHandler(data);
+      this.controller.sampleRateHandler(data)
     }
   }
 
@@ -236,7 +233,6 @@ class View {
       parentDiv.insertBefore(transformationButtonsDiv, amplitudeChartContainer)
     }
 
-
     const dftButton = transformationButtonsDiv.querySelector(
       'button:nth-child(1)',
     )
@@ -245,9 +241,11 @@ class View {
     )
 
     dftButton.addEventListener('click', () => {
+      this.controller.setTransformationType('DFT')
       this.controller.handleDFT()
     })
     dctButton.addEventListener('click', () => {
+      this.controller.setTransformationType('DCT')
       this.controller.handleDCT()
     })
   }
@@ -300,14 +298,26 @@ class View {
     const clearModButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(3)',
     )
-
+    //________________________________________________________________________________
+    //working on
     timeShiftButton.addEventListener('click', () => {
-      this.handleTimeShiftInput()
+      const shiftValue = parseFloat(prompt('Enter time shift value'))
+      this.controller.timeShiftViewHandler(shiftValue)
     })
 
     amplitudeScaleButton.addEventListener('click', () => {
-      this.handleAmplitudeScaleInput()
+      const scaleFactor = parseFloat(prompt('Enter amplitude scale factor'))
+      this.controller.amplitudeScaleViewHandler(scaleFactor)
     })
+
+    //________________________________________________________________________________
+    //    timeShiftButton.addEventListener('click', () => {
+    //      this.handleTimeShiftInput()
+    //    })
+    //
+    //    amplitudeScaleButton.addEventListener('click', () => {
+    //      this.handleAmplitudeScaleInput()
+    //    })
     clearModButton.addEventListener('click', () => {
       this.controller.clearModSignal()
     })
@@ -477,7 +487,6 @@ class View {
     amplitudeLines,
     phaseLines,
   ) {
-
     ChartDrawer.drawScatterWithVerticalLines(
       'amplitudeChart',
       labels,
@@ -495,7 +504,6 @@ class View {
         'Phase Spectrum',
         '\u03C6[°]',
       )
-
     }
   }
 
@@ -573,6 +581,8 @@ class View {
       floatingDiv.style.left = '50%'
 
       let offsetX, offsetY
+
+      //desktop mouse event listeners
       floatingDiv.addEventListener('mousedown', (event) => {
         offsetX = event.clientX - floatingDiv.getBoundingClientRect().left
         offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
@@ -591,6 +601,30 @@ class View {
           { once: true },
         )
       })
+
+      //mobile event listeners
+      floatingDiv.addEventListener('touchstart', (event) => {
+        const touch = event.touches[0]
+        offsetX = touch.clientX - floatingDiv.getBoundingClientRect().left
+        offsetY = touch.clientY - floatingDiv.getBoundingClientRect().top
+
+        function moveFloatingDivTouch(event) {
+          const touch = event.touches[0]
+          floatingDiv.style.left = `${touch.clientX - offsetX}px`
+          floatingDiv.style.top = `${touch.clientY - offsetY}px`
+        }
+
+        document.addEventListener('touchmove', moveFloatingDivTouch)
+        document.addEventListener(
+          'touchend',
+          () => {
+            document.removeEventListener('touchmove', moveFloatingDivTouch)
+          },
+          { once: true },
+        )
+      })
+
+      //buttons acions
       document
         .querySelector('.composerAddToList')
         .addEventListener('click', () =>
@@ -601,14 +635,14 @@ class View {
         .querySelector('.amplitudeComposerInput')
         .addEventListener('keydown', (event) => {
           if (event.key === 'Enter') {
-              this.controller.addElementToListHandler()
+            this.controller.addElementToListHandler()
           }
         })
       document
         .querySelector('.frequencyComposerInput')
         .addEventListener('keydown', (event) => {
           if (event.key === 'Enter') {
-              this.controller.addElementToListHandler()
+            this.controller.addElementToListHandler()
           }
         })
       document
@@ -616,7 +650,6 @@ class View {
         .addEventListener('click', () => {
           floatingDiv.remove()
         })
-
     }
   }
   //________________________________________________________________________________

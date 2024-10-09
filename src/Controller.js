@@ -105,16 +105,12 @@ class Controller {
     //const length = this.model.getSampleRate() * duration
 
     //testing
-    const numberOfPeriods=5;
-    const maxFrequency=Math.max(...frequencyArray)
-    const period=1/maxFrequency
-    const duration=numberOfPeriods * period
+    const numberOfPeriods = 5
+    const maxFrequency = Math.max(...frequencyArray)
+    const period = 1 / maxFrequency
+    const duration = numberOfPeriods * period
     //const duration=numberOfPeriods/maxFrequency
-    const length=Math.floor(this.model.getSampleRate()*duration)
-
-
-    
-
+    const length = Math.floor(this.model.getSampleRate() * duration)
 
     // Generate the signals for all amplitudes and frequencies
     let waveMapArray = amplitudeArray.map((amplitude, index) => {
@@ -127,34 +123,32 @@ class Controller {
     })
 
     //testing
-  for (let i = 0; i < length; i++) {
-    const t = i / this.model.getSampleRate() // Time value for current sample
-    let value = 0
-    waveMapArray.forEach((waveMap) => {
-      // Snap the time to avoid floating-point precision issues
-      const snappedTime = parseFloat(t.toFixed(10))
-      if (waveMap.has(snappedTime)) {
-        value += waveMap.get(snappedTime)
-      }
-    })
-    labels.push(t.toFixed(3))
-    data.push(value.toFixed(6))
-  }
+    for (let i = 0; i < length; i++) {
+      const t = i / this.model.getSampleRate() // Time value for current sample
+      let value = 0
+      waveMapArray.forEach((waveMap) => {
+        // Snap the time to avoid floating-point precision issues
+        const snappedTime = parseFloat(t.toFixed(10))
+        if (waveMap.has(snappedTime)) {
+          value += waveMap.get(snappedTime)
+        }
+      })
+      labels.push(t.toFixed(3))
+      data.push(value.toFixed(6))
+    }
 
-
-    
     // Sum the values at each time point
-//    for (let i = 0; i < length; i++) {
-//      const t = Number((i / this.model.getSampleRate()).toFixed(3))
-//      let value = 0
-//      waveMapArray.forEach((waveMap) => {
-//        if (waveMap.has(t)) {
-//          value += waveMap.get(t)
-//        }
-//      })
-//      labels.push(t.toFixed(3))
-//      data.push(value.toFixed(6))
-//    }
+    //    for (let i = 0; i < length; i++) {
+    //      const t = Number((i / this.model.getSampleRate()).toFixed(3))
+    //      let value = 0
+    //      waveMapArray.forEach((waveMap) => {
+    //        if (waveMap.has(t)) {
+    //          value += waveMap.get(t)
+    //        }
+    //      })
+    //      labels.push(t.toFixed(3))
+    //      data.push(value.toFixed(6))
+    //    }
 
     return { labels, data }
   }
@@ -357,13 +351,80 @@ class Controller {
     amplitudePoints.forEach((amp) => {})
 
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
-
-    this.view.killModificationButtons()
-    this.view.killReverseTransformationButton()
+    this.view.showModificationButtons()
+    this.view.showReverseTransformationButton()
+    //this.view.killModificationButtons()
+    //this.view.killReverseTransformationButton()
   }
 
   //________________________________________________________________________________
-  handleTimeShift(timeShiftValue) {
+  //  handleTimeShift(timeShiftValue) {
+  //    const N = this.model.getSamplesCount()
+  //    const kArray = Array.from({ length: N }, (_, k) => k)
+  //    const actualDFT =
+  //      this.model.getModifiedDFT().length > 0
+  //        ? this.model.getModifiedDFT()
+  //        : this.model.getDFTResults()
+  //    const originalDFT = this.model.getDFTResults()
+  //    const shiftedDFT = actualDFT.map((X_k, k) => {
+  //      const angle = (-2 * Math.PI * k * timeShiftValue) / N
+  //      return {
+  //        real: X_k.real * Math.cos(angle) - X_k.imag * Math.sin(angle),
+  //        imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
+  //      }
+  //    })
+  //    this.model.saveModifiedDFT(shiftedDFT)
+  //    const amplitudeOriginal = originalDFT.map((X_k) =>
+  //      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+  //    )
+  //    const amplitudeShifted = shiftedDFT.map((X_k) =>
+  //      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+  //    )
+  //    const phaseOriginal = originalDFT.map((X_k) =>
+  //      Math.atan2(X_k.imag, X_k.real),
+  //    )
+  //    const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
+  //    const amplitudeOriginalPoints = amplitudeOriginal.map(
+  //      this.convertToPointFormat(amplitudeOriginal),
+  //    )
+  //    const phaseOriginalPoints = phaseOriginal.map(
+  //      this.convertToPointFormat(phaseOriginal),
+  //    )
+  //    const amplitudeShiftedPoints = amplitudeShifted.map(
+  //      this.convertToPointFormat(amplitudeShifted),
+  //    )
+  //    const phaseShiftedPoints = phaseShifted.map(
+  //      this.convertToPointFormat(phaseShifted),
+  //    )
+  //    this.view.drawShiftedDFTChart(
+  //      kArray,
+  //      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
+  //      { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
+  //    )
+  //  }
+  //testing
+  //dodatkowe handlery modfyikacji zeby view nie mial dostepu do modelu
+
+  timeShiftViewHandler(shiftValue) {
+    if (this.model.getCurrentTransformation() === 'DFT') {
+      this.handleDFTTimeShift(shiftValue)
+    } else {
+      this.handleDCTTimeShift(shiftValue)
+    }
+  }
+
+  amplitudeScaleViewHandler(scaleFactor) {
+    if (this.model.getCurrentTransformation() === 'DFT') {
+      this.handleDFTAmplitudeScaling(scaleFactor)
+    } else {
+      this.handleDCTAmplitudeScaling(scaleFactor)
+    }
+  }
+
+  //to zrobic handleDFTTimeShift!!
+  //handleTimeShift(timeShiftValue) {
+
+  handleDFTTimeShift(timeShiftValue) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
     const actualDFT =
@@ -371,14 +432,22 @@ class Controller {
         ? this.model.getModifiedDFT()
         : this.model.getDFTResults()
     const originalDFT = this.model.getDFTResults()
+
+    // Poprawiona implementacja przesunięcia czasowego
     const shiftedDFT = actualDFT.map((X_k, k) => {
       const angle = (-2 * Math.PI * k * timeShiftValue) / N
+      const magnitude = Math.sqrt(X_k.real ** 2 + X_k.imag ** 2)
+      const phase = Math.atan2(X_k.imag, X_k.real)
+      const newPhase = phase - angle
       return {
-        real: X_k.real * Math.cos(angle) - X_k.imag * Math.sin(angle),
-        imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
+        real: magnitude * Math.cos(newPhase),
+        imag: magnitude * Math.sin(newPhase),
       }
     })
+
     this.model.saveModifiedDFT(shiftedDFT)
+
+    // Obliczanie amplitudy i fazy dla oryginalnego i przesuniętego sygnału
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
@@ -389,6 +458,8 @@ class Controller {
       Math.atan2(X_k.imag, X_k.real),
     )
     const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
+
+    // Konwersja do formatu punktów
     const amplitudeOriginalPoints = amplitudeOriginal.map(
       this.convertToPointFormat(amplitudeOriginal),
     )
@@ -401,6 +472,8 @@ class Controller {
     const phaseShiftedPoints = phaseShifted.map(
       this.convertToPointFormat(phaseShifted),
     )
+
+    // Aktualizacja wykresu
     this.view.drawShiftedDFTChart(
       kArray,
       { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
@@ -409,7 +482,48 @@ class Controller {
   }
 
   //________________________________________________________________________________
-  handleAmplitudeScaling(scaleFactor) {
+  //working on
+  handleDCTTimeShift(shiftValue) {
+    const samples = this.model.getSamples()
+    if (!samples || samples.length === 0) return
+
+    const dct = new DCT(samples)
+    const shiftedResults = dct.timeShift(shiftValue)
+    this.model.saveDCT(shiftedResults)
+
+    // Update the view with the modified DCT results
+    const amplitude = dct.getAmplitude(shiftedResults)
+    const labels = Array.from({ length: shiftedResults.length }, (_, i) =>
+      i.toString(),
+    )
+    const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
+
+    this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
+  }
+  //________________________________________________________________________________
+  //working on
+  //________________________________
+  handleDCTAmplitudeScale(scaleFactor) {
+    const samples = this.model.getSamples()
+    if (!samples || samples.length === 0) return
+
+    const dct = new DCT(samples)
+    const scaledResults = dct.amplitudeScale(scaleFactor)
+    this.model.saveDCT(scaledResults)
+
+    // Update the view with the modified DCT results
+    const amplitude = dct.getAmplitude(scaledResults)
+    const labels = Array.from({ length: scaledResults.length }, (_, i) =>
+      i.toString(),
+    )
+    const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
+
+    this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
+  }
+  // ________________________________________________
+  //to zrobic handleDCTAmpscale!!
+//  handleAmplitudeScaling(scaleFactor) {
+  handleDFTAmplitudeScaling(scaleFactor) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
     const originalDFT = this.model.getDFTResults()
@@ -519,6 +633,11 @@ class Controller {
   loadSamples() {
     const samples = this.model.loadSamplesFromLocalStorage()
     this.view.textArea.value = samples.join('\n')
+  }
+
+  //________________________________________________________________________________
+  setTransformationType(type) {
+    this.model.setCurrentTransformation(type)
   }
 
   //________________________________________________________________________________
