@@ -4,6 +4,7 @@ import { Model } from './Model.js'
 import { DFT } from './DFT.js'
 import { DCT } from './DCT.js'
 import { ReverseDFT } from './ReverseDFT.js'
+import { ReverseDCT } from './ReverseDCT.js'
 
 class Controller {
   constructor(view, model) {
@@ -483,63 +484,93 @@ class Controller {
 
   //________________________________________________________________________________
   //working on
+  //_________________________________
   handleDCTTimeShift(shiftValue) {
-    // Get the original signal
     const samples = this.model.getSamples()
     if (!samples || samples.length === 0) return
 
-    // Perform the time shift on the samples
+    // Shifted signal
     const shiftedSamples = samples.map((_, index) => {
       const newIndex = (index + shiftValue) % samples.length
       return samples[newIndex]
     })
 
-    // Save the shifted samples to the model
+    // Save shifted and original samples
     this.model.saveSamples(shiftedSamples)
+    const originalSamples = this.model.getSamples()
 
-    // Recalculate the DCT on the shifted signal
-    const dct = new DCT(shiftedSamples)
-    const shiftedDCT = dct.transform()
-    this.model.saveDCT(shiftedDCT)
+    const N = this.model.getSamplesCount()
+    const kArray = Array.from({ length: N }, (_, k) => k)
 
-    // Update the view with the modified DCT results
-    const amplitude = dct.getAmplitude(shiftedDCT)
-    const labels = Array.from({ length: shiftedDCT.length }, (_, i) =>
-      i.toString(),
+    // DCT for original and shifted signals
+    const dctOriginal = new DCT(originalSamples)
+    const dctShifted = new DCT(shiftedSamples)
+
+    const originalDCT = dctOriginal.transform()
+    const shiftedDCT = dctShifted.transform()
+
+    const amplitudeOriginal = dctOriginal.getAmplitude(originalDCT)
+    const amplitudeShifted = dctShifted.getAmplitude(shiftedDCT)
+
+    // Points for plotting
+    const amplitudeOriginalPoints = amplitudeOriginal.map(
+      this.convertToPointFormat(amplitudeOriginal),
     )
-    const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
+    const amplitudeShiftedPoints = amplitudeShifted.map(
+      this.convertToPointFormat(amplitudeShifted),
+    )
 
-    this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
+    // Draw the chart
+    this.view.drawShiftedDCTChart(
+      kArray,
+      { amplitude: amplitudeOriginalPoints },
+      { amplitude: amplitudeShiftedPoints },
+    )
   }
-  //________________________________________________________________________________
+  //_______________________________________________
   //working on
   //________________________________
+  // _____________________________
   handleDCTAmplitudeScaling(scaleFactor) {
-    // Get the original samples
     const samples = this.model.getSamples()
     if (!samples || samples.length === 0) return
 
-    // Scale the amplitude of each sample
+    // Scaled samples
     const scaledSamples = samples.map((sample) => sample * scaleFactor)
 
-    // Save the scaled samples to the model
+    // Save both original and scaled samples
     this.model.saveSamples(scaledSamples)
+    const originalSamples = this.model.getSamples()
 
-    // Recalculate the DCT on the scaled signal
-    const dct = new DCT(scaledSamples)
-    const scaledDCT = dct.transform()
-    this.model.saveDCT(scaledDCT)
+    const N = this.model.getSamplesCount()
+    const kArray = Array.from({ length: N }, (_, k) => k)
 
-    // Update the view with the modified DCT results
-    const amplitude = dct.getAmplitude(scaledDCT)
-    const labels = Array.from({ length: scaledDCT.length }, (_, i) =>
-      i.toString(),
+    // DCT for original and scaled signals
+    const dctOriginal = new DCT(originalSamples)
+    const dctScaled = new DCT(scaledSamples)
+
+    const originalDCT = dctOriginal.transform()
+    const scaledDCT = dctScaled.transform()
+
+    const amplitudeOriginal = dctOriginal.getAmplitude(originalDCT)
+    const amplitudeScaled = dctScaled.getAmplitude(scaledDCT)
+
+    // Points for plotting
+    const amplitudeOriginalPoints = amplitudeOriginal.map(
+      this.convertToPointFormat(amplitudeOriginal),
     )
-    const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
+    const amplitudeScaledPoints = amplitudeScaled.map(
+      this.convertToPointFormat(amplitudeScaled),
+    )
 
-    this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
+    // Draw the chart
+    this.view.drawShiftedDCTChart(
+      kArray,
+      { amplitude: amplitudeOriginalPoints },
+      { amplitude: amplitudeScaledPoints },
+    )
   }
-  // ________________________________________________
+  ___________________
   //to zrobic handleDCTAmpscale!!
   //  handleAmplitudeScaling(scaleFactor) {
   handleDFTAmplitudeScaling(scaleFactor) {
@@ -596,6 +627,18 @@ class Controller {
     this.model.clearLocalStorage()
   }
 
+
+  //________________________________________________________________________________
+  handleReverseTransform(){
+    if (this.model.getCurrentTransformation() === 'DFT') {
+      this.handleReverseDFT()
+    } else {
+      this.handleReverseDCT()
+    }
+
+  }
+
+
   //________________________________________________________________________________
   handleReverseDFT() {
     const dftResults =
@@ -616,6 +659,30 @@ class Controller {
 
     this.view.drawTimeDomainChart(labels, reverseDFTResults)
   }
+
+
+  //________________________________________________________________________________
+  handleReverseDCT() {
+    const dctResults =
+      this.model.getModifiedDCT().length > 0
+        ? this.model.getModifiedDCT()
+        : this.model.getDCTResults()
+    if (!dctResults || dctResults.length === 0) {
+      return
+    }
+
+    const reverseDCT = new ReverseDCT(dctResults)
+    const reverseDCTResults = reverseDCT.reverseTransform()
+
+    const labels = Array.from({ length: reverseDCTResults.length }, (_, i) =>
+      (i / this.model.getSampleRate()).toString(),
+    )
+    this.model.saveReverseDCT(reverseDCTResults)
+
+    this.view.drawTimeDomainChart(labels, reverseDCTResults)
+  }
+  //________________________________________________________________________________
+
   //________________________________________________________________________________
   saveSignals() {
     const signals = Array.from(

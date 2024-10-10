@@ -11,6 +11,10 @@ class Model {
     this.reverseDFTResults =
       JSON.parse(localStorage.getItem('reverseDFTResults')) || []
     this.sampleRate = JSON.parse(localStorage.getItem('sampleRate')) || 100
+    this.modifiedDctResults =
+      JSON.parse(localStorage.getItem('modifiedDctResults')) || []
+    this.reverseDCTResults =
+      JSON.parse(localStorage.getItem('reverseDCTResults')) || []
   }
   
   setCurrentTransformation(type){
@@ -54,6 +58,18 @@ class Model {
     this.reverseDFTResults = reverseDFTResults
     localStorage.setItem('reverseDFTResults', JSON.stringify(reverseDFTResults))
   }
+  saveModifiedDCT(modifiedDctResults) {
+    this.modifiedDctResults = modifiedDctResults
+    localStorage.setItem(
+      'modifiedDctResults',
+      JSON.stringify(modifiedDctResults),
+    )
+  }
+
+  saveReverseDCT(reverseDCTResults) {
+    this.reverseDCTResults = reverseDCTResults
+    localStorage.setItem('reverseDCTResults', JSON.stringify(reverseDCTResults))
+  }
   getSamples() {
     return this.samples
   }
@@ -64,6 +80,13 @@ class Model {
       this.modifiedDftResults = []
     }
     console.log('cleared DFT' + this.modifiedDftResults)
+  }
+  clearModDCT(modifiedDctResults) {
+    if (this.modifiedDctResults) {
+      localStorage.removeItem('modifiedDctResults')
+      this.modifiedDctResults = []
+    }
+    console.log('cleared DCT' + this.modifiedDctResults)
   }
 
   clearLocalStorage() {
@@ -92,6 +115,14 @@ class Model {
 
   getReverseDFT() {
     return this.reverseDFTResults
+  }
+
+  getModifiedDCT() {
+    return this.modifiedDctResults
+  }
+
+  getReverseDCT() {
+    return this.reverseDCTResults
   }
 
   saveSignalsToLocalStorage(signals) {

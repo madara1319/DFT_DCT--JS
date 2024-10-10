@@ -333,62 +333,62 @@ class View {
   }
 
   //________________________________________________________________________________
-  handleTimeShiftInput() {
-    let modificationsButtonsDiv = document.querySelector(
-      '.modificationsButtonsDiv',
-    )
-
-    let timeShiftInput = document.querySelector('.timeShiftInput')
-
-    if (!timeShiftInput) {
-      timeShiftInput = document.createElement('input')
-      timeShiftInput.type = 'number'
-      timeShiftInput.placeholder = 'Enter time shift value'
-      timeShiftInput.className = 'timeShiftInput'
-
-      modificationsButtonsDiv.appendChild(timeShiftInput)
-      timeShiftInput.focus()
-
-      timeShiftInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          const shiftValue = parseFloat(timeShiftInput.value)
-          if (!isNaN(shiftValue)) {
-            this.controller.handleTimeShift(shiftValue)
-            timeShiftInput.remove()
-          }
-        }
-      })
-    }
-  }
+//  handleTimeShiftInput() {
+//    let modificationsButtonsDiv = document.querySelector(
+//      '.modificationsButtonsDiv',
+//    )
+//
+//    let timeShiftInput = document.querySelector('.timeShiftInput')
+//
+//    if (!timeShiftInput) {
+//      timeShiftInput = document.createElement('input')
+//      timeShiftInput.type = 'number'
+//      timeShiftInput.placeholder = 'Enter time shift value'
+//      timeShiftInput.className = 'timeShiftInput'
+//
+//      modificationsButtonsDiv.appendChild(timeShiftInput)
+//      timeShiftInput.focus()
+//
+//      timeShiftInput.addEventListener('keydown', (event) => {
+//        if (event.key === 'Enter') {
+//          const shiftValue = parseFloat(timeShiftInput.value)
+//          if (!isNaN(shiftValue)) {
+//            this.controller.handleTimeShift(shiftValue)
+//            timeShiftInput.remove()
+//          }
+//        }
+//      })
+//    }
+//  }
   //________________________________________________________________________________
-  handleAmplitudeScaleInput() {
-    let modificationsButtonsDiv = document.querySelector(
-      '.modificationsButtonsDiv',
-    )
-
-    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
-
-    if (!amplitudeScaleInput) {
-      amplitudeScaleInput = document.createElement('input')
-      amplitudeScaleInput.type = 'number'
-      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
-      amplitudeScaleInput.className = 'amplitudeScaleInput'
-
-      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
-      amplitudeScaleInput.focus()
-
-      amplitudeScaleInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          const scaleValue = parseFloat(amplitudeScaleInput.value)
-          if (!isNaN(scaleValue)) {
-            this.controller.handleAmplitudeScaling(scaleValue)
-            amplitudeScaleInput.remove()
-          }
-        }
-      })
-    }
-  }
-  //________________________________________________________________________________
+//  handleAmplitudeScaleInput() {
+//    let modificationsButtonsDiv = document.querySelector(
+//      '.modificationsButtonsDiv',
+//    )
+//
+//    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
+//
+//    if (!amplitudeScaleInput) {
+//      amplitudeScaleInput = document.createElement('input')
+//      amplitudeScaleInput.type = 'number'
+//      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
+//      amplitudeScaleInput.className = 'amplitudeScaleInput'
+//
+//      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
+//      amplitudeScaleInput.focus()
+//
+//      amplitudeScaleInput.addEventListener('keydown', (event) => {
+//        if (event.key === 'Enter') {
+//          const scaleValue = parseFloat(amplitudeScaleInput.value)
+//          if (!isNaN(scaleValue)) {
+//            this.controller.handleAmplitudeScaling(scaleValue)
+//            amplitudeScaleInput.remove()
+//          }
+//        }
+//      })
+//    }
+//  }
+//  //________________________________________________________________________________
 
   killReverseTransformationButton() {
     let reverseTransformButtonDiv = document.querySelector(
@@ -480,6 +480,49 @@ class View {
   }
 
   //________________________________________________________________________________
+  drawShiftedDCTChart(labels, originalData, shiftedData) {
+    ChartDrawer.drawMultipleDataChart(
+      'amplitudeChart',
+      labels,
+      [
+        {
+          label: 'Original Amplitude (scatter)',
+          data: originalData.amplitude,
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+          type: 'scatter',
+        },
+        {
+          label: 'Shifted Amplitude (scatter)',
+          data: shiftedData.amplitude,
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          type: 'scatter',
+        },
+        {
+          label: 'Original Amplitude (bar)',
+          data: originalData.amplitude.map((point) => point.y),
+          borderColor: 'rgb(255,99,132)',
+          backgroundColor: 'rgba(255,99,132,0.5)',
+          type: 'bar',
+        },
+        {
+          label: 'Shifted Amplitude (bar)',
+          data: shiftedData.amplitude.map((point) => point.y),
+          borderColor: 'rgb(54, 162, 235)',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          type: 'bar',
+        },
+      ],
+
+      'scatter',
+      'Amplitude Spectrum',
+      '|X(f)|',
+    )
+
+  }
+
+  //________________________________________________________________________________
   drawAmplitudeAndPhaseChart(
     labels,
     amplitudeData,
@@ -508,6 +551,8 @@ class View {
   }
 
   //________________________________________________________________________________
+
+  //________________________________________________________________________________
   showReverseTransformationButton() {
     let parentDiv = document.querySelector('.boxofboxes--js')
 
@@ -531,7 +576,8 @@ class View {
     )
 
     reverseTransform.addEventListener('click', () => {
-      this.controller.handleReverseDFT()
+      this.controller.handleReverseTransform()
+      //this.controller.handleReverseDFT()
     })
   }
 
