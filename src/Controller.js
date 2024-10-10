@@ -484,16 +484,27 @@ class Controller {
   //________________________________________________________________________________
   //working on
   handleDCTTimeShift(shiftValue) {
+    // Get the original signal
     const samples = this.model.getSamples()
     if (!samples || samples.length === 0) return
 
-    const dct = new DCT(samples)
-    const shiftedResults = dct.timeShift(shiftValue)
-    this.model.saveDCT(shiftedResults)
+    // Perform the time shift on the samples
+    const shiftedSamples = samples.map((_, index) => {
+      const newIndex = (index + shiftValue) % samples.length
+      return samples[newIndex]
+    })
+
+    // Save the shifted samples to the model
+    this.model.saveSamples(shiftedSamples)
+
+    // Recalculate the DCT on the shifted signal
+    const dct = new DCT(shiftedSamples)
+    const shiftedDCT = dct.transform()
+    this.model.saveDCT(shiftedDCT)
 
     // Update the view with the modified DCT results
-    const amplitude = dct.getAmplitude(shiftedResults)
-    const labels = Array.from({ length: shiftedResults.length }, (_, i) =>
+    const amplitude = dct.getAmplitude(shiftedDCT)
+    const labels = Array.from({ length: shiftedDCT.length }, (_, i) =>
       i.toString(),
     )
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
@@ -503,17 +514,25 @@ class Controller {
   //________________________________________________________________________________
   //working on
   //________________________________
-  handleDCTAmplitudeScale(scaleFactor) {
+  handleDCTAmplitudeScaling(scaleFactor) {
+    // Get the original samples
     const samples = this.model.getSamples()
     if (!samples || samples.length === 0) return
 
-    const dct = new DCT(samples)
-    const scaledResults = dct.amplitudeScale(scaleFactor)
-    this.model.saveDCT(scaledResults)
+    // Scale the amplitude of each sample
+    const scaledSamples = samples.map((sample) => sample * scaleFactor)
+
+    // Save the scaled samples to the model
+    this.model.saveSamples(scaledSamples)
+
+    // Recalculate the DCT on the scaled signal
+    const dct = new DCT(scaledSamples)
+    const scaledDCT = dct.transform()
+    this.model.saveDCT(scaledDCT)
 
     // Update the view with the modified DCT results
-    const amplitude = dct.getAmplitude(scaledResults)
-    const labels = Array.from({ length: scaledResults.length }, (_, i) =>
+    const amplitude = dct.getAmplitude(scaledDCT)
+    const labels = Array.from({ length: scaledDCT.length }, (_, i) =>
       i.toString(),
     )
     const amplitudePoints = amplitude.map(this.convertToPointFormat(amplitude))
@@ -522,7 +541,7 @@ class Controller {
   }
   // ________________________________________________
   //to zrobic handleDCTAmpscale!!
-//  handleAmplitudeScaling(scaleFactor) {
+  //  handleAmplitudeScaling(scaleFactor) {
   handleDFTAmplitudeScaling(scaleFactor) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
