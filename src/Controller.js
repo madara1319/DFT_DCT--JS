@@ -315,7 +315,8 @@ class Controller {
     const dft = new DFT(samples)
     const result = dft.transform()
     this.model.saveDFT(result)
-
+    //console.log('to idzie do modelu ' + result)
+   // console.log(result)
     const amplitude = dft.getAmplitude(result)
     const phase = dft.getPhase(result)
     const labels = Array.from({ length: result.length }, (_, i) => i.toString())
@@ -648,15 +649,17 @@ class Controller {
     if (!dftResults || dftResults.length === 0) {
       return
     }
-
+   // console.log('tu cos powinienem wyciagnac z modelu ')
+   // console.log(this.model.getDFTResults())
     const reverseDFT = new ReverseDFT(dftResults)
+
     const reverseDFTResults = reverseDFT.reverseTransform()
 
     const labels = Array.from({ length: reverseDFTResults.length }, (_, i) =>
       (i / this.model.getSampleRate()).toString(),
     )
     this.model.saveReverseDFT(reverseDFTResults)
-
+    //console.log(reverseDFTResults)
     this.view.drawTimeDomainChart(labels, reverseDFTResults)
   }
 
