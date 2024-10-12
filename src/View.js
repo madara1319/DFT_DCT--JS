@@ -283,6 +283,7 @@ class View {
         <div class="modificationsButtonsBox">
         <button class="selectButtons">Time Shift</button>
         <button class="selectButtons">Amplitude Scale</button>
+        <button class="selectButtons">Filters</button>
         <button class="selectButtons clearModifications">Clear Modifications</button>
         </div>
         `
@@ -295,18 +296,20 @@ class View {
     const amplitudeScaleButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(2)',
     )
-    const clearModButton = modificationsButtonsDiv.querySelector( 'button:nth-child(3)',) //________________________________________________________________________________ working on
+    const clearModButton = modificationsButtonsDiv.querySelector(
+      'button:nth-child(3)',
+    ) //________________________________________________________________________________ working on
     timeShiftButton.addEventListener('click', () => {
       console.log('Timeshit button clicked')
       const shiftValue = parseFloat(prompt('Enter time shift value'))
-      console.log('Entered shift value',shiftValue)
+      console.log('Entered shift value', shiftValue)
       this.controller.timeShiftViewHandler(shiftValue)
     })
 
     amplitudeScaleButton.addEventListener('click', () => {
       console.log('Ampscale button clicked')
       const scaleFactor = parseFloat(prompt('Enter amplitude scale factor'))
-      console.log('Entered scale factor',scaleFactor)
+      console.log('Entered scale factor', scaleFactor)
       this.controller.amplitudeScaleViewHandler(scaleFactor)
     })
 
@@ -333,62 +336,62 @@ class View {
   }
 
   //________________________________________________________________________________
-//  handleTimeShiftInput() {
-//    let modificationsButtonsDiv = document.querySelector(
-//      '.modificationsButtonsDiv',
-//    )
-//
-//    let timeShiftInput = document.querySelector('.timeShiftInput')
-//
-//    if (!timeShiftInput) {
-//      timeShiftInput = document.createElement('input')
-//      timeShiftInput.type = 'number'
-//      timeShiftInput.placeholder = 'Enter time shift value'
-//      timeShiftInput.className = 'timeShiftInput'
-//
-//      modificationsButtonsDiv.appendChild(timeShiftInput)
-//      timeShiftInput.focus()
-//
-//      timeShiftInput.addEventListener('keydown', (event) => {
-//        if (event.key === 'Enter') {
-//          const shiftValue = parseFloat(timeShiftInput.value)
-//          if (!isNaN(shiftValue)) {
-//            this.controller.handleTimeShift(shiftValue)
-//            timeShiftInput.remove()
-//          }
-//        }
-//      })
-//    }
-//  }
+  //  handleTimeShiftInput() {
+  //    let modificationsButtonsDiv = document.querySelector(
+  //      '.modificationsButtonsDiv',
+  //    )
+  //
+  //    let timeShiftInput = document.querySelector('.timeShiftInput')
+  //
+  //    if (!timeShiftInput) {
+  //      timeShiftInput = document.createElement('input')
+  //      timeShiftInput.type = 'number'
+  //      timeShiftInput.placeholder = 'Enter time shift value'
+  //      timeShiftInput.className = 'timeShiftInput'
+  //
+  //      modificationsButtonsDiv.appendChild(timeShiftInput)
+  //      timeShiftInput.focus()
+  //
+  //      timeShiftInput.addEventListener('keydown', (event) => {
+  //        if (event.key === 'Enter') {
+  //          const shiftValue = parseFloat(timeShiftInput.value)
+  //          if (!isNaN(shiftValue)) {
+  //            this.controller.handleTimeShift(shiftValue)
+  //            timeShiftInput.remove()
+  //          }
+  //        }
+  //      })
+  //    }
+  //  }
   //________________________________________________________________________________
-//  handleAmplitudeScaleInput() {
-//    let modificationsButtonsDiv = document.querySelector(
-//      '.modificationsButtonsDiv',
-//    )
-//
-//    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
-//
-//    if (!amplitudeScaleInput) {
-//      amplitudeScaleInput = document.createElement('input')
-//      amplitudeScaleInput.type = 'number'
-//      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
-//      amplitudeScaleInput.className = 'amplitudeScaleInput'
-//
-//      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
-//      amplitudeScaleInput.focus()
-//
-//      amplitudeScaleInput.addEventListener('keydown', (event) => {
-//        if (event.key === 'Enter') {
-//          const scaleValue = parseFloat(amplitudeScaleInput.value)
-//          if (!isNaN(scaleValue)) {
-//            this.controller.handleAmplitudeScaling(scaleValue)
-//            amplitudeScaleInput.remove()
-//          }
-//        }
-//      })
-//    }
-//  }
-//  //________________________________________________________________________________
+  //  handleAmplitudeScaleInput() {
+  //    let modificationsButtonsDiv = document.querySelector(
+  //      '.modificationsButtonsDiv',
+  //    )
+  //
+  //    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
+  //
+  //    if (!amplitudeScaleInput) {
+  //      amplitudeScaleInput = document.createElement('input')
+  //      amplitudeScaleInput.type = 'number'
+  //      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
+  //      amplitudeScaleInput.className = 'amplitudeScaleInput'
+  //
+  //      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
+  //      amplitudeScaleInput.focus()
+  //
+  //      amplitudeScaleInput.addEventListener('keydown', (event) => {
+  //        if (event.key === 'Enter') {
+  //          const scaleValue = parseFloat(amplitudeScaleInput.value)
+  //          if (!isNaN(scaleValue)) {
+  //            this.controller.handleAmplitudeScaling(scaleValue)
+  //            amplitudeScaleInput.remove()
+  //          }
+  //        }
+  //      })
+  //    }
+  //  }
+  //  //________________________________________________________________________________
 
   killReverseTransformationButton() {
     let reverseTransformButtonDiv = document.querySelector(
@@ -519,7 +522,6 @@ class View {
       'Amplitude Spectrum',
       '|X(f)|',
     )
-
   }
 
   //________________________________________________________________________________
@@ -620,75 +622,93 @@ class View {
         </div>
         <span class="composerAddToList">Enter</span>
         <button class="closeFloatingDiv">\u00D7</button>
-      </div>`
+      </div>
+       <div class="composerFloatingDivHeader">
+<div class="dragMe">
+  <div class="firstArrow">&#x2B66;</div>
+  <div class="secondArrow">&#x2B67;</div>
+  <div class="thirdArrow">&#x2B68;</div>
+  <div class="fourthArrow">&#x2B69;</div>
+</div>
+       </div>
+        `
       document.body.appendChild(floatingDiv)
       floatingDiv.style.display = 'block'
       floatingDiv.style.top = '50%'
       floatingDiv.style.left = '50%'
-      
-      let isDragging=false
+
+      const header = floatingDiv.querySelector('.composerFloatingDivHeader')
+      let isDragging = false
       let offsetX, offsetY
 
-      const closeFloatingDiv=()=>{
+      const closeFloatingDiv = () => {
         floatingDiv.remove()
-        document.removeEventListener('keydown',handleKeyDown)
+        document.removeEventListener('keydown', handleKeyDown)
+        window.removeEventListener('popstate', closeFloatingDiv)
       }
 
       //desktop mouse event listeners
-      floatingDiv.addEventListener('mousedown', (event) => {
-        isDragging=true;
+      header.addEventListener('mousedown', (event) => {
+        isDragging = true
         offsetX = event.clientX - floatingDiv.getBoundingClientRect().left
         offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
-        event.preventDefault();
+        event.preventDefault()
 
-      //  function moveFloatingDiv(event) {
-      //    floatingDiv.style.left = `${event.clientX - offsetX}px`
-      //    floatingDiv.style.top = `${event.clientY - offsetY}px`
-        })
+        //  function moveFloatingDiv(event) {
+        //    floatingDiv.style.left = `${event.clientX - offsetX}px`
+        //    floatingDiv.style.top = `${event.clientY - offsetY}px`
+      })
 
-        document.addEventListener('mousemove',(event)=>{
-          if(isDragging){
-            floatingDiv.style.left=`${event.clientX - offsetX}px`
-            floatingDiv.style.top=`${event.clientY - offsetY}px`
-            event.preventDefault()
-          }
-        } )
-        document.addEventListener('mouseup',() => {
-          isDragging=false;
-        })
+      document.addEventListener('mousemove', (event) => {
+        if (isDragging) {
+          floatingDiv.style.left = `${event.clientX - offsetX}px`
+          floatingDiv.style.top = `${event.clientY - offsetY}px`
+          event.preventDefault()
+        }
+      })
+      document.addEventListener('mouseup', () => {
+        isDragging = false
+      })
 
       //mobile event listeners
-      floatingDiv.addEventListener('touchstart', (event) => {
-        isDragging=true;
-        const touch = event.touches[0]
-        offsetX = touch.clientX - floatingDiv.getBoundingClientRect().left
-        offsetY = touch.clientY - floatingDiv.getBoundingClientRect().top
-        event.preventDefault()
-      },{passive:false})
+      header.addEventListener(
+        'touchstart',
+        (event) => {
+          isDragging = true
+          const touch = event.touches[0]
+          offsetX = touch.clientX - floatingDiv.getBoundingClientRect().left
+          offsetY = touch.clientY - floatingDiv.getBoundingClientRect().top
+          event.preventDefault()
+        },
+        { passive: false },
+      )
 
-    document.addEventListener('touchmove', (event) => {
-      if (isDragging) {
-        const touch = event.touches[0]
-        floatingDiv.style.left = `${touch.clientX - offsetX}px`
-        floatingDiv.style.top = `${touch.clientY - offsetY}px`
-        event.preventDefault() // Prevent scrolling
-      }
-    }, { passive: false })
-
-       
-      document.addEventListener('touchend',()=>{
-        isDragging=false;
-      })
-        
-        const handleKeyDown=(event)=>{
-          if (event.key==='Escape'){
-            closeFloatingDiv()
+      document.addEventListener(
+        'touchmove',
+        (event) => {
+          if (isDragging) {
+            const touch = event.touches[0]
+            floatingDiv.style.left = `${touch.clientX - offsetX}px`
+            floatingDiv.style.top = `${touch.clientY - offsetY}px`
+            event.preventDefault() // Prevent scrolling
           }
+        },
+        { passive: false },
+      )
+
+      document.addEventListener('touchend', () => {
+        isDragging = false
+      })
+
+      const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+          closeFloatingDiv()
         }
+      }
 
-      document.addEventListener('keydown',handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown)
 
-      window.addEventListener('popstate',closeFloatingDiv)
+      window.addEventListener('popstate', closeFloatingDiv)
 
       //buttons acions
       document
@@ -714,9 +734,9 @@ class View {
 
       document
         .querySelector('.closeFloatingDiv')
-        .addEventListener('click',closeFloatingDiv)
+        .addEventListener('click', closeFloatingDiv)
 
-      history.pushState({floatingDivOpen:true},'')
+      history.pushState({ floatingDivOpen: true }, '')
     }
   }
   //________________________________________________________________________________

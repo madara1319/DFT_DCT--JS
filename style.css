@@ -1,5 +1,6 @@
 /* Global Styles */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -47,10 +48,11 @@ main {
 .descriptionParagraph {
   font-size: 15;
   margin-bottom: 20px;
-  font-style:italic;
+  font-style: italic;
 }
 
-.Selection, .Probes {
+.Selection,
+.Probes {
   font-size: 20px;
   margin-bottom: 10px;
 }
@@ -58,7 +60,7 @@ main {
 /* Buttons */
 .selectionButtons {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 20px;
 }
@@ -82,16 +84,22 @@ main {
   background-color: #0fa65d;
 }
 
-.clearModifications, .clearLocalStorage, .signalSampleRate{
-  background-color:#e65c00;
+.clearModifications,
+.clearLocalStorage,
+.signalSampleRate {
+  background-color: #e65c00;
 }
 
-.clearModifications:hover, .clearLocalStorage:hover, .signalSampleRate:hover{
-  background-color:#cc520d;
+.clearModifications:hover,
+.clearLocalStorage:hover,
+.signalSampleRate:hover {
+  background-color: #cc520d;
 }
 
-.clearModifications:active, .clearLocalStorage:active, .signalSampleRate:active{
-  background-color:#cc520d;
+.clearModifications:active,
+.clearLocalStorage:active,
+.signalSampleRate:active {
+  background-color: #cc520d;
 }
 .generateCombinedSignalButton {
   padding: 10px 20px;
@@ -113,7 +121,9 @@ main {
 }
 
 /* Options and Sliders */
-.options, .composer, .entering {
+.options,
+.composer,
+.entering {
   width: 100%;
   margin-bottom: 20px;
   display: flex;
@@ -149,7 +159,7 @@ main {
   appearance: none;
   width: 20px;
   height: 20px;
-  background: #04AA6d;
+  background: #04aa6d;
   cursor: pointer;
   border-radius: 50%;
 }
@@ -172,8 +182,8 @@ main {
 }
 
 .composerAddButton {
-  color: #fff;  
-  background-color:#15d77d; 
+  color: #fff;
+  background-color: #15d77d;
   padding: 10px 20px;
   border-radius: 30px;
   font-size: 16px;
@@ -187,8 +197,9 @@ main {
 }
 
 /* Buttons */
-.saveButton, .loadButton {
-  background-color: #e65c00; 
+.saveButton,
+.loadButton {
+  background-color: #e65c00;
   color: #fff; /* White text color */
   padding: 10px 20px;
   border-radius: 30px;
@@ -198,12 +209,14 @@ main {
   transition: background-color 0.3s ease;
 }
 
-.saveButton:hover, .loadButton:hover {
-background-color: #cc5200;
+.saveButton:hover,
+.loadButton:hover {
+  background-color: #cc5200;
 }
 
-.saveButton:active, .loadButton:active {
-background-color: #cc5200;
+.saveButton:active,
+.loadButton:active {
+  background-color: #cc5200;
 }
 
 .composerList {
@@ -221,17 +234,16 @@ background-color: #cc5200;
   border: 1px solid #ddd;
 }
 
-.enteringButtonsContainer{
-  margin-bottom:20px;
+.enteringButtonsContainer {
+  margin-bottom: 20px;
 }
-
 
 /* Charts */
 .boxofboxes {
   display: flex;
   flex-wrap: wrap;
-  flex-direction:column;
-  align-items:center;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
   justify-content: center;
   width: 100%;
@@ -239,9 +251,9 @@ background-color: #cc5200;
 
 canvas {
   width: 100%;
- /* max-width: 400px;*/
+  /* max-width: 400px;*/
   height: auto;
- /* max-height: 400px;*/
+  /* max-height: 400px;*/
 }
 .chartCloseButton {
   position: absolute;
@@ -253,11 +265,11 @@ canvas {
   color: #fff;
   border: none;
   border-radius: 50%;
- /* display: flex;*/
-/*  justify-content: center;*/
-/*  align-items: center;*/
+  /* display: flex;*/
+  /*  justify-content: center;*/
+  /*  align-items: center;*/
   cursor: pointer;
-  z-index:1000;
+  z-index: 1000;
   font-size: 16px;
   line-height: 16px;
   transition: background-color 0.3s ease;
@@ -271,39 +283,34 @@ canvas {
   background-color: maroon;
 }
 
-#sampleChart{
-  width:100% !important;
+#sampleChart {
+  width: 100% !important;
 }
 
-.chartjs-render-monitor{
-
-  width:100% !important;
+.chartjs-render-monitor {
+  width: 100% !important;
 }
 
-.chartjs-size-monitor{
-
-  width:100% !important;
+.chartjs-size-monitor {
+  width: 100% !important;
 }
 .chartContainer {
-  position: relative; 
+  position: relative;
   display: inline-block;
-  width: 100%; 
-  max-width: 600px; 
-  margin: 0 auto; 
-  padding-top: 50px; 
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 50px;
 
-  margin-bottom: 20px; 
-
+  margin-bottom: 20px;
 }
 
-
-.transformChartGrid{
-  display:grid;
-  width:100%;
-  grid-template-columns:repeat(1,minmax(0,1fr));
-  grid-template-rows:1fr;
+.transformChartGrid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: 1fr;
 }
-
 
 /*-----------------------------------------*/
 /*test*/
@@ -327,7 +334,6 @@ canvas {
   padding: 10px 0 !important;
 }
 
-
 .chartjs-axis-title {
   font-size: 14px !important;
   font-weight: bold !important;
@@ -338,7 +344,7 @@ canvas {
 .showDiv {
   position: fixed;
   width: 350px;
-  height: 225px;
+  height:150 ;
   background-color: lightblue;
   border: 1px solid #000;
   display: none;
@@ -351,6 +357,13 @@ canvas {
   box-sizing: border-box;
 }
 
+.composerFloatingDiv{
+  height:65%;
+}
+
+.composerFloatingDivHeader{
+  height:35%;
+}
 .closeFloatingDiv {
   position: absolute;
   top: 5px;
@@ -366,8 +379,39 @@ canvas {
   justify-content: center;
   align-items: center;
 }
-#canvas{
-  width:100%;
+
+/* Drag me arrows*/
+.dragMe {
+  width: 100px;
+  height: 50px;
+  position: relative;
+  float:right;
+
+}
+.firstArrow,
+.secondArrow,
+.thirdArrow,
+.fourthArrow {
+  text-align:right;
+  font-size:30px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.secondArrow {
+  z-index: 10;
+}
+.thirdArrow {
+  z-index: 20;
+}
+.fourthArrow {
+  z-index: 30;
+}
+
+#canvas {
+  width: 100%;
 }
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -375,7 +419,9 @@ canvas {
     padding: 15px;
   }
 
-  .selectButtons, .generateCombinedSignalButton, .composerAddButton {
+  .selectButtons,
+  .generateCombinedSignalButton,
+  .composerAddButton {
     font-size: 16px;
     padding: 10px;
   }
@@ -386,10 +432,9 @@ canvas {
   }
 }
 
-
-.open{
-  display:flex;
+.open {
+  display: flex;
 }
-.hidden{
-  display:none;
+.hidden {
+  display: none;
 }
