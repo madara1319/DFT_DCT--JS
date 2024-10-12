@@ -336,7 +336,6 @@ class Controller {
   //________________________________________________________________________________
   handleDCT() {
     const samples = this.model.samples
-
     if (!samples || samples.length === 0) {
       return
     }
@@ -620,6 +619,7 @@ class Controller {
 
   clearModSignal() {
     this.model.clearModDFT()
+    this.model.clearModDCT()
   }
 
   //________________________________________________________________________________

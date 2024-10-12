@@ -295,18 +295,18 @@ class View {
     const amplitudeScaleButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(2)',
     )
-    const clearModButton = modificationsButtonsDiv.querySelector(
-      'button:nth-child(3)',
-    )
-    //________________________________________________________________________________
-    //working on
+    const clearModButton = modificationsButtonsDiv.querySelector( 'button:nth-child(3)',) //________________________________________________________________________________ working on
     timeShiftButton.addEventListener('click', () => {
+      console.log('Timeshit button clicked')
       const shiftValue = parseFloat(prompt('Enter time shift value'))
+      console.log('Entered shift value',shiftValue)
       this.controller.timeShiftViewHandler(shiftValue)
     })
 
     amplitudeScaleButton.addEventListener('click', () => {
+      console.log('Ampscale button clicked')
       const scaleFactor = parseFloat(prompt('Enter amplitude scale factor'))
+      console.log('Entered scale factor',scaleFactor)
       this.controller.amplitudeScaleViewHandler(scaleFactor)
     })
 
@@ -625,50 +625,70 @@ class View {
       floatingDiv.style.display = 'block'
       floatingDiv.style.top = '50%'
       floatingDiv.style.left = '50%'
-
+      
+      let isDragging=false
       let offsetX, offsetY
+
+      const closeFloatingDiv=()=>{
+        floatingDiv.remove()
+        document.removeEventListener('keydown',handleKeyDown)
+      }
 
       //desktop mouse event listeners
       floatingDiv.addEventListener('mousedown', (event) => {
+        isDragging=true;
         offsetX = event.clientX - floatingDiv.getBoundingClientRect().left
         offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
+        event.preventDefault();
 
-        function moveFloatingDiv(event) {
-          floatingDiv.style.left = `${event.clientX - offsetX}px`
-          floatingDiv.style.top = `${event.clientY - offsetY}px`
-        }
+      //  function moveFloatingDiv(event) {
+      //    floatingDiv.style.left = `${event.clientX - offsetX}px`
+      //    floatingDiv.style.top = `${event.clientY - offsetY}px`
+        })
 
-        document.addEventListener('mousemove', moveFloatingDiv)
-        document.addEventListener(
-          'mouseup',
-          () => {
-            document.removeEventListener('mousemove', moveFloatingDiv)
-          },
-          { once: true },
-        )
-      })
+        document.addEventListener('mousemove',(event)=>{
+          if(isDragging){
+            floatingDiv.style.left=`${event.clientX - offsetX}px`
+            floatingDiv.style.top=`${event.clientY - offsetY}px`
+            event.preventDefault()
+          }
+        } )
+        document.addEventListener('mouseup',() => {
+          isDragging=false;
+        })
 
       //mobile event listeners
       floatingDiv.addEventListener('touchstart', (event) => {
+        isDragging=true;
         const touch = event.touches[0]
         offsetX = touch.clientX - floatingDiv.getBoundingClientRect().left
         offsetY = touch.clientY - floatingDiv.getBoundingClientRect().top
+        event.preventDefault()
+      },{passive:false})
 
-        function moveFloatingDivTouch(event) {
-          const touch = event.touches[0]
-          floatingDiv.style.left = `${touch.clientX - offsetX}px`
-          floatingDiv.style.top = `${touch.clientY - offsetY}px`
+    document.addEventListener('touchmove', (event) => {
+      if (isDragging) {
+        const touch = event.touches[0]
+        floatingDiv.style.left = `${touch.clientX - offsetX}px`
+        floatingDiv.style.top = `${touch.clientY - offsetY}px`
+        event.preventDefault() // Prevent scrolling
+      }
+    }, { passive: false })
+
+       
+      document.addEventListener('touchend',()=>{
+        isDragging=false;
+      })
+        
+        const handleKeyDown=(event)=>{
+          if (event.key==='Escape'){
+            closeFloatingDiv()
+          }
         }
 
-        document.addEventListener('touchmove', moveFloatingDivTouch)
-        document.addEventListener(
-          'touchend',
-          () => {
-            document.removeEventListener('touchmove', moveFloatingDivTouch)
-          },
-          { once: true },
-        )
-      })
+      document.addEventListener('keydown',handleKeyDown)
+
+      window.addEventListener('popstate',closeFloatingDiv)
 
       //buttons acions
       document
@@ -691,11 +711,12 @@ class View {
             this.controller.addElementToListHandler()
           }
         })
+
       document
         .querySelector('.closeFloatingDiv')
-        .addEventListener('click', () => {
-          floatingDiv.remove()
-        })
+        .addEventListener('click',closeFloatingDiv)
+
+      history.pushState({floatingDivOpen:true},'')
     }
   }
   //________________________________________________________________________________
