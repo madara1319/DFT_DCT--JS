@@ -653,11 +653,8 @@ class View {
         offsetX = event.clientX - floatingDiv.getBoundingClientRect().left
         offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
         event.preventDefault()
-
-        //  function moveFloatingDiv(event) {
-        //    floatingDiv.style.left = `${event.clientX - offsetX}px`
-        //    floatingDiv.style.top = `${event.clientY - offsetY}px`
       })
+      
 
       document.addEventListener('mousemove', (event) => {
         if (isDragging) {
@@ -739,6 +736,120 @@ class View {
       history.pushState({ floatingDivOpen: true }, '')
     }
   }
+
+  //________________________________________________________________________________
+  showFiltersDiv(){
+    let filtersDiv=document.querySelector('.filtersDiv')
+    if(!filtersDiv){
+      filtersDiv=document.createElement('div')
+      filtersDiv.className='filtersDiv'
+      filtersDiv.innerHTML=`
+      <div class="filtersFloatingDiv">
+      <div class="filtersInnerDiv">
+      <button class="lowPassButton">LowPass</button>
+      <button class="lowPassButton">HighPass</button>
+      <button class="lowPassButton">BandPass</button>
+      <button class="lowPassButton">Notch</button>
+      </div>
+      <button class="closeFiltersDiv">\u00D7</button>
+      </div>
+
+       <div class="filtersHeader">
+<div class="dragMe">
+  <div class="firstArrow">&#x2B66;</div>
+  <div class="secondArrow">&#x2B67;</div>
+  <div class="thirdArrow">&#x2B68;</div>
+  <div class="fourthArrow">&#x2B69;</div>
+</div>
+       </div>
+      `
+
+      document.body.appendChild(floatingDiv)
+      filtersDiv.style.display = 'block'
+      filtersDiv.style.top = '50%'
+      filtersDiv.style.left = '50%'
+
+      const filtersHeader = floatingDiv.querySelector('.filtersHeader')
+      let isDragging = false
+      let offsetX, offsetY
+
+      const closeFloatingDiv = () => {
+        filtersDiv.remove()
+        document.removeEventListener('keydown', handleKeyDown)
+        window.removeEventListener('popstate', closeFloatingDiv)
+      }
+
+      //desktop mouse event listeners
+      filtersHeader.addEventListener('mousedown', (event) => {
+        isDragging = true
+        offsetX = event.clientX - filtersDiv.getBoundingClientRect().left
+        offsetY = event.clientY - filtersDiv.getBoundingClientRect().top
+        event.preventDefault()
+
+      })
+
+      document.addEventListener('mousemove', (event) => {
+        if (isDragging) {
+          filtersDiv.style.left = `${event.clientX - offsetX}px`
+          filtersDiv.style.top = `${event.clientY - offsetY}px`
+          event.preventDefault()
+        }
+      })
+      document.addEventListener('mouseup', () => {
+        isDragging = false
+      })
+
+      //mobile event listeners
+      header.addEventListener(
+        'touchstart',
+        (event) => {
+          isDragging = true
+          const touch = event.touches[0]
+          offsetX = touch.clientX - filtersDiv.getBoundingClientRect().left
+          offsetY = touch.clientY - filtersDiv.getBoundingClientRect().top
+          event.preventDefault()
+        },
+        { passive: false },
+      )
+
+      document.addEventListener(
+        'touchmove',
+        (event) => {
+          if (isDragging) {
+            const touch = event.touches[0]
+            filtersDiv.style.left = `${touch.clientX - offsetX}px`
+            filtersDiv.style.top = `${touch.clientY - offsetY}px`
+            event.preventDefault() // Prevent scrolling
+          }
+        },
+        { passive: false },
+      )
+
+      document.addEventListener('touchend', () => {
+        isDragging = false
+      })
+
+      const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+          closeFloatingDiv()
+        }
+      }
+
+      document.addEventListener('keydown', handleKeyDown)
+
+      window.addEventListener('popstate', closeFloatingDiv)
+
+      document
+        .querySelector('.closeFloatingDiv')
+        .addEventListener('click', closeFloatingDiv)
+
+      history.pushState({ floatingDivOpen: true }, '')
+    }
+
+    }
+  }
+
+
   //________________________________________________________________________________
   addElementToListView(element) {
     const li = document.createElement('li')
