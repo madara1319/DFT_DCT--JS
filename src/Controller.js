@@ -129,13 +129,15 @@ class Controller {
       let value = 0
       waveMapArray.forEach((waveMap) => {
         // Snap the time to avoid floating-point precision issues
-        const snappedTime = parseFloat(t.toFixed(10))
+       const snappedTime = parseFloat(t)
+      //  const snappedTime = parseFloat(t)
         if (waveMap.has(snappedTime)) {
           value += waveMap.get(snappedTime)
         }
       })
-      labels.push(t.toFixed(3))
-      data.push(value.toFixed(6))
+      labels.push(t.toFixed(5))
+      //data.push(value.toFixed(6))
+      data.push(value)
     }
 
     // Sum the values at each time point
@@ -727,6 +729,59 @@ class Controller {
   //________________________________________________________________________________
   setTransformationType(type) {
     this.model.setCurrentTransformation(type)
+  }
+
+  //________________________________________________________________________________
+
+  handleLowPassFilter(cutoffFrequency){
+      const N = this.model.getSamplesCount();
+    const sampleRate = this.model.getSampleRate();
+    const originalDFT = this.model.getDFTResults();
+    
+    const filteredDFT = originalDFT.map((X_k, k) => {
+        const frequency = (k * sampleRate) / N;
+        if (frequency > cutoffFrequency) {
+            return { real: 0, imag: 0 };  // Zero out frequencies above cutoff
+        }
+        return X_k;
+    });
+
+    this.model.saveModifiedDFT(filteredDFT);
+    this.handleReverseTransform();}
+  
+
+  //________________________________________________________________________________
+
+  handleHighPassFilter(cutoffFrequency){
+     const N = this.model.getSamplesCount();
+    const sampleRate = this.model.getSampleRate();
+    const originalDFT = this.model.getDFTResults();
+
+    const filteredDFT = originalDFT.map((X_k, k) => {
+        const frequency = (k * sampleRate) / N;
+        if (frequency < cutoffFrequency) {
+            return { real: 0, imag: 0 };  // Zero out frequencies below cutoff
+        }
+        return X_k;
+    });
+
+    this.model.saveModifiedDFT(filteredDFT);
+    this.handleReverseTransform();}
+
+  //________________________________________________________________________________
+
+  handleBandPassFilter(value1,value2){
+    console.log('Wartosc bandPass')
+    console.log(value1)
+    console.log(value2)
+  }
+
+  //________________________________________________________________________________
+
+  handleNotchFilter(value1, value2){
+    console.log('Wartosci Nothca ')
+    console.log(value1)
+    console.log(value2)
   }
 
   //________________________________________________________________________________

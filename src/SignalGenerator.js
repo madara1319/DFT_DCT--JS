@@ -17,35 +17,41 @@ class SignalGenerator {
 //  }
   static generateSquareWave(frequency, amplitude = 1, sampleRate, length) {
     const wave = new Map()
-    const period = Math.floor(sampleRate / frequency)
-    const halfPeriod = Math.floor(period / 2)
-    const timeIncrement = 1 / sampleRate
+    //const period = Math.floor(sampleRate / frequency)
+    
+    //testing
+    const period=1/frequency
+    //const halfPeriod = Math.floor(period / 2)
+    //const timeIncrement = 1 / sampleRate
     for (let i = 0; i < length; i++) {
-      const time = parseFloat((i * timeIncrement).toFixed(10))
-      const phase = i % period
-      wave.set(time, phase < halfPeriod ? amplitude : -amplitude)
+      //const time = parseFloat((i * timeIncrement).toFixed(10))
+      const time = i/sampleRate
+      const normalizedTime = (time % period)/period
+      //const phase = i % period
+      wave.set(time, normalizedTime < 0.5 ? amplitude : -amplitude)
     }
     return wave
   }
   static generateTriangleWave(frequency, amplitude = 1, sampleRate, length) {
     const wave = new Map()
-    const period = Math.floor(sampleRate / frequency)
-    const halfPeriod = Math.floor(period / 2)
-    const timeIncrement = 1 / sampleRate
-    for (let i = 0; i < length; i++) {
-      const time = parseFloat((i * timeIncrement).toFixed(10))
-      const t = (i % period) / period
-      let value
+    //const period = Math.floor(sampleRate / frequency)
 
-      if (t < 0.25) {
-        value = 4 * t * amplitude
-      } else if (t < 0.75) {
-        value = (-4 * t + 2) * amplitude
+    //testing
+    const period = 1/frequency;
+    //const halfPeriod = Math.floor(period / 2)
+    //const timeIncrement = 1 / sampleRate
+        for (let i = 0; i < length; i++) {
+      const time = i / sampleRate
+      const normalizedTime = (time % period) / period
+      let value
+      if (normalizedTime < 0.25) {
+        value = (4 * normalizedTime) * amplitude
+      } else if (normalizedTime < 0.75) {
+        value = (2 - 4 * normalizedTime) * amplitude
       } else {
-        value = (4 * t - 4) * amplitude
+        value = (4 * normalizedTime - 4) * amplitude
       }
-      wave.set(time, value)
-    }
+      wave.set(time, value)}
     return wave
   }
 }

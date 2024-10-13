@@ -296,8 +296,13 @@ class View {
     const amplitudeScaleButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(2)',
     )
-    const clearModButton = modificationsButtonsDiv.querySelector(
+    //testing
+    const filtersButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(3)',
+    )
+
+    const clearModButton = modificationsButtonsDiv.querySelector(
+      'button:nth-child(4)',
     ) //________________________________________________________________________________ working on
     timeShiftButton.addEventListener('click', () => {
       console.log('Timeshit button clicked')
@@ -321,9 +326,16 @@ class View {
     //    amplitudeScaleButton.addEventListener('click', () => {
     //      this.handleAmplitudeScaleInput()
     //    })
+
+    filtersButton.addEventListener('click',()=>{
+      this.showFiltersDiv();
+    })
+
     clearModButton.addEventListener('click', () => {
       this.controller.clearModSignal()
     })
+
+
   }
   //________________________________________________________________________________
   killModificationButtons() {
@@ -654,7 +666,6 @@ class View {
         offsetY = event.clientY - floatingDiv.getBoundingClientRect().top
         event.preventDefault()
       })
-      
 
       document.addEventListener('mousemove', (event) => {
         if (isDragging) {
@@ -738,19 +749,20 @@ class View {
   }
 
   //________________________________________________________________________________
-  showFiltersDiv(){
-    let filtersDiv=document.querySelector('.filtersDiv')
-    if(!filtersDiv){
-      filtersDiv=document.createElement('div')
-      filtersDiv.className='filtersDiv'
-      filtersDiv.innerHTML=`
+  showFiltersDiv() {
+    let filtersDiv = document.querySelector('.filtersDiv')
+    if (!filtersDiv) {
+      filtersDiv = document.createElement('div')
+      filtersDiv.className = 'filtersDiv'
+      filtersDiv.innerHTML = `
       <div class="filtersFloatingDiv">
       <div class="filtersInnerDiv">
-      <button class="lowPassButton">LowPass</button>
-      <button class="lowPassButton">HighPass</button>
-      <button class="lowPassButton">BandPass</button>
-      <button class="lowPassButton">Notch</button>
+      <button class="filterButton lowPassButton">LowPass</button>
+      <button class="filterButton highPassButton">HighPass</button>
+      <button class="filterButton bandPassButton">BandPass</button>
+      <button class="filterButton notchButton">Notch</button>
       </div>
+      <div class="filterInputs"></div>
       <button class="closeFiltersDiv">\u00D7</button>
       </div>
 
@@ -764,89 +776,162 @@ class View {
        </div>
       `
 
-      document.body.appendChild(floatingDiv)
+      document.body.appendChild(filtersDiv)
       filtersDiv.style.display = 'block'
       filtersDiv.style.top = '50%'
       filtersDiv.style.left = '50%'
 
-      const filtersHeader = floatingDiv.querySelector('.filtersHeader')
-      let isDragging = false
-      let offsetX, offsetY
+      this.setupFiltersDivEventListeners(filtersDiv)
+    }
+  }
 
-      const closeFloatingDiv = () => {
-        filtersDiv.remove()
-        document.removeEventListener('keydown', handleKeyDown)
-        window.removeEventListener('popstate', closeFloatingDiv)
-      }
+  setupFiltersDivEventListeners(filtersDiv) {
+    const filtersHeader = filtersDiv.querySelector('.filtersHeader')
+    let isDragging = false
+    let offsetX, offsetY
 
-      //desktop mouse event listeners
-      filtersHeader.addEventListener('mousedown', (event) => {
-        isDragging = true
-        offsetX = event.clientX - filtersDiv.getBoundingClientRect().left
-        offsetY = event.clientY - filtersDiv.getBoundingClientRect().top
+    const closeFloatingDiv = () => {
+      filtersDiv.remove()
+      document.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('popstate', closeFloatingDiv)
+    }
+
+    // Desktop mouse event listeners
+    filtersHeader.addEventListener('mousedown', (event) => {
+      isDragging = true
+      offsetX = event.clientX - filtersDiv.getBoundingClientRect().left
+      offsetY = event.clientY - filtersDiv.getBoundingClientRect().top
+      event.preventDefault()
+    })
+
+    document.addEventListener('mousemove', (event) => {
+      if (isDragging) {
+        filtersDiv.style.left = `${event.clientX - offsetX}px`
+        filtersDiv.style.top = `${event.clientY - offsetY}px`
         event.preventDefault()
-
-      })
-
-      document.addEventListener('mousemove', (event) => {
-        if (isDragging) {
-          filtersDiv.style.left = `${event.clientX - offsetX}px`
-          filtersDiv.style.top = `${event.clientY - offsetY}px`
-          event.preventDefault()
-        }
-      })
-      document.addEventListener('mouseup', () => {
-        isDragging = false
-      })
-
-      //mobile event listeners
-      header.addEventListener(
-        'touchstart',
-        (event) => {
-          isDragging = true
-          const touch = event.touches[0]
-          offsetX = touch.clientX - filtersDiv.getBoundingClientRect().left
-          offsetY = touch.clientY - filtersDiv.getBoundingClientRect().top
-          event.preventDefault()
-        },
-        { passive: false },
-      )
-
-      document.addEventListener(
-        'touchmove',
-        (event) => {
-          if (isDragging) {
-            const touch = event.touches[0]
-            filtersDiv.style.left = `${touch.clientX - offsetX}px`
-            filtersDiv.style.top = `${touch.clientY - offsetY}px`
-            event.preventDefault() // Prevent scrolling
-          }
-        },
-        { passive: false },
-      )
-
-      document.addEventListener('touchend', () => {
-        isDragging = false
-      })
-
-      const handleKeyDown = (event) => {
-        if (event.key === 'Escape') {
-          closeFloatingDiv()
-        }
       }
+    })
 
-      document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mouseup', () => {
+      isDragging = false
+    })
 
-      window.addEventListener('popstate', closeFloatingDiv)
+    // Mobile event listeners
+    filtersHeader.addEventListener('touchstart', (event) => {
+      isDragging = true
+      const touch = event.touches[0]
+      offsetX = touch.clientX - filtersDiv.getBoundingClientRect().left
+      offsetY = touch.clientY - filtersDiv.getBoundingClientRect().top
+      event.preventDefault()
+    }, { passive: false })
 
-      document
-        .querySelector('.closeFloatingDiv')
-        .addEventListener('click', closeFloatingDiv)
+    document.addEventListener('touchmove', (event) => {
+      if (isDragging) {
+        const touch = event.touches[0]
+        filtersDiv.style.left = `${touch.clientX - offsetX}px`
+        filtersDiv.style.top = `${touch.clientY - offsetY}px`
+        event.preventDefault()
+      }
+    }, { passive: false })
 
-      history.pushState({ floatingDivOpen: true }, '')
+    document.addEventListener('touchend', () => {
+      isDragging = false
+    })
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeFloatingDiv()
+      }
     }
 
+    document.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('popstate', closeFloatingDiv)
+
+    document.querySelector('.closeFiltersDiv').addEventListener('click', closeFloatingDiv)
+
+    // Set up filter button event listeners
+    const filterButtons = filtersDiv.querySelectorAll('.filterButton')
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => this.showFilterInputs(button.className.split(' ')[1]))
+    })
+
+    history.pushState({ filtersDiv: true }, '')
+  }
+
+showFilterInputs(filterType) {
+    const filterInputsDiv = document.querySelector('.filterInputs')
+    filterInputsDiv.innerHTML = '' // Clear previous inputs
+
+    let inputHTML = ''
+    switch (filterType) {
+      case 'lowPassButton':
+        inputHTML = `
+          <input type="number" class="filterInput" placeholder="Enter cutoff frequency">
+          <button class="filterEnterButton">Enter</button>
+        `
+        break
+      case 'highPassButton':
+        inputHTML = `
+          <input type="number" class="filterInput" placeholder="Enter cutoff frequency">
+          <button class="filterEnterButton">Enter</button>
+        `
+        break
+      case 'bandPassButton':
+        inputHTML = `
+          <input type="number" class="filterInput" placeholder="Enter lower frequency">
+          <input type="number" class="filterInput" placeholder="Enter upper frequency">
+          <button class="filterEnterButton">Enter</button>
+        `
+        break
+      case 'notchButton':
+        inputHTML = `
+          <input type="number" class="filterInput" placeholder="Enter lower frequency">
+          <input type="number" class="filterInput" placeholder="Enter upper frequency">
+          <button class="filterEnterButton">Enter</button>
+        `
+        break
     }
+
+    filterInputsDiv.innerHTML = inputHTML
+
+    const enterButton = filterInputsDiv.querySelector('.filterEnterButton')
+    enterButton.addEventListener('click', () => this.handleFilterInput(filterType))
+
+    const inputs = filterInputsDiv.querySelectorAll('.filterInput')
+    inputs.forEach(input => {
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          this.handleFilterInput(filterType)
+        }
+      })
+    })
+  }
+handleFilterInput(filterType) {
+    const inputs = document.querySelectorAll('.filterInput')
+    const values = Array.from(inputs).map(input => parseFloat(input.value))
+
+    if (values.some(isNaN)) {
+      alert('Please enter valid numbers for all fields.')
+      return
+    }
+
+    switch (filterType) {
+      case 'lowPassButton':
+        this.controller.handleLowPassFilter(values[0])
+        break
+      case 'highPassButton':
+        this.controller.handleHighPassFilter(values[0])
+        break
+      case 'bandPassButton':
+        this.controller.handleBandPassFilter(values[0], values[1])
+        break
+      case 'notchButton':
+        this.controller.handleNotchFilter(values[0], values[1])
+        break
+    }
+
+    // Clear inputs after handling
+    inputs.forEach(input => input.value = '')
   }
 
 

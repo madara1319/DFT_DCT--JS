@@ -341,7 +341,7 @@ canvas {
 
 /*-----------------------------------------*/
 /* Floating Div */
-.showDiv {
+.showDiv, .filtersDiv {
   position: fixed;
   width: 350px;
   height:150 ;
@@ -357,14 +357,14 @@ canvas {
   box-sizing: border-box;
 }
 
-.composerFloatingDiv{
+.composerFloatingDiv, .filtersFloatingDiv{
   height:65%;
 }
 
-.composerFloatingDivHeader{
+.composerFloatingDivHeader, .filtersHeader{
   height:35%;
 }
-.closeFloatingDiv {
+.closeFloatingDiv, .closeFiltersDiv {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -382,7 +382,7 @@ canvas {
 
 /* Drag me arrows*/
 .dragMe {
-  width: 100px;
+  width: 100%;
   height: 50px;
   position: relative;
   float:right;
