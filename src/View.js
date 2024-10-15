@@ -304,28 +304,28 @@ class View {
     const clearModButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(4)',
     ) //________________________________________________________________________________ working on
-    timeShiftButton.addEventListener('click', () => {
-      console.log('Timeshit button clicked')
-      const shiftValue = parseFloat(prompt('Enter time shift value'))
-      console.log('Entered shift value', shiftValue)
-      this.controller.timeShiftViewHandler(shiftValue)
-    })
-
-    amplitudeScaleButton.addEventListener('click', () => {
-      console.log('Ampscale button clicked')
-      const scaleFactor = parseFloat(prompt('Enter amplitude scale factor'))
-      console.log('Entered scale factor', scaleFactor)
-      this.controller.amplitudeScaleViewHandler(scaleFactor)
-    })
+//    timeShiftButton.addEventListener('click', () => {
+//      console.log('Timeshit button clicked')
+//      const shiftValue = parseFloat(prompt('Enter time shift value'))
+//      console.log('Entered shift value', shiftValue)
+//      this.controller.timeShiftViewHandler(shiftValue)
+//    })
+//
+//    amplitudeScaleButton.addEventListener('click', () => {
+//      console.log('Ampscale button clicked')
+//      const scaleFactor = parseFloat(prompt('Enter amplitude scale factor'))
+//      console.log('Entered scale factor', scaleFactor)
+//      this.controller.amplitudeScaleViewHandler(scaleFactor)
+//    })
 
     //________________________________________________________________________________
-    //    timeShiftButton.addEventListener('click', () => {
-    //      this.handleTimeShiftInput()
-    //    })
-    //
-    //    amplitudeScaleButton.addEventListener('click', () => {
-    //      this.handleAmplitudeScaleInput()
-    //    })
+        timeShiftButton.addEventListener('click', () => {
+          this.handleTimeShiftInput()
+        })
+    
+        amplitudeScaleButton.addEventListener('click', () => {
+          this.handleAmplitudeScaleInput()
+        })
 
     filtersButton.addEventListener('click',()=>{
       this.showFiltersDiv();
@@ -348,62 +348,64 @@ class View {
   }
 
   //________________________________________________________________________________
-  //  handleTimeShiftInput() {
-  //    let modificationsButtonsDiv = document.querySelector(
-  //      '.modificationsButtonsDiv',
-  //    )
-  //
-  //    let timeShiftInput = document.querySelector('.timeShiftInput')
-  //
-  //    if (!timeShiftInput) {
-  //      timeShiftInput = document.createElement('input')
-  //      timeShiftInput.type = 'number'
-  //      timeShiftInput.placeholder = 'Enter time shift value'
-  //      timeShiftInput.className = 'timeShiftInput'
-  //
-  //      modificationsButtonsDiv.appendChild(timeShiftInput)
-  //      timeShiftInput.focus()
-  //
-  //      timeShiftInput.addEventListener('keydown', (event) => {
-  //        if (event.key === 'Enter') {
-  //          const shiftValue = parseFloat(timeShiftInput.value)
-  //          if (!isNaN(shiftValue)) {
-  //            this.controller.handleTimeShift(shiftValue)
-  //            timeShiftInput.remove()
-  //          }
-  //        }
-  //      })
-  //    }
-  //  }
+    handleTimeShiftInput() {
+      let modificationsButtonsDiv = document.querySelector(
+        '.modificationsButtonsDiv',
+      )
+  
+      let timeShiftInput = document.querySelector('.timeShiftInput')
+  
+      if (!timeShiftInput) {
+        timeShiftInput = document.createElement('input')
+        timeShiftInput.type = 'number'
+        timeShiftInput.placeholder = 'Enter time shift value'
+        timeShiftInput.className = 'timeShiftInput'
+  
+        modificationsButtonsDiv.appendChild(timeShiftInput)
+        timeShiftInput.focus()
+  
+        timeShiftInput.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            const shiftValue = parseFloat(timeShiftInput.value)
+            if (!isNaN(shiftValue)) {
+              //this.controller.handleTimeShift(shiftValue)
+              this.controller.timeShiftViewHandler(shiftValue);
+              timeShiftInput.remove()
+            }
+          }
+        })
+      }
+    }
   //________________________________________________________________________________
-  //  handleAmplitudeScaleInput() {
-  //    let modificationsButtonsDiv = document.querySelector(
-  //      '.modificationsButtonsDiv',
-  //    )
-  //
-  //    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
-  //
-  //    if (!amplitudeScaleInput) {
-  //      amplitudeScaleInput = document.createElement('input')
-  //      amplitudeScaleInput.type = 'number'
-  //      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
-  //      amplitudeScaleInput.className = 'amplitudeScaleInput'
-  //
-  //      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
-  //      amplitudeScaleInput.focus()
-  //
-  //      amplitudeScaleInput.addEventListener('keydown', (event) => {
-  //        if (event.key === 'Enter') {
-  //          const scaleValue = parseFloat(amplitudeScaleInput.value)
-  //          if (!isNaN(scaleValue)) {
-  //            this.controller.handleAmplitudeScaling(scaleValue)
-  //            amplitudeScaleInput.remove()
-  //          }
-  //        }
-  //      })
-  //    }
-  //  }
-  //  //________________________________________________________________________________
+    handleAmplitudeScaleInput() {
+      let modificationsButtonsDiv = document.querySelector(
+        '.modificationsButtonsDiv',
+      )
+  
+      let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
+  
+      if (!amplitudeScaleInput) {
+        amplitudeScaleInput = document.createElement('input')
+        amplitudeScaleInput.type = 'number'
+        amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
+        amplitudeScaleInput.className = 'amplitudeScaleInput'
+  
+        modificationsButtonsDiv.appendChild(amplitudeScaleInput)
+        amplitudeScaleInput.focus()
+  
+        amplitudeScaleInput.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') {
+            const scaleValue = parseFloat(amplitudeScaleInput.value)
+            if (!isNaN(scaleValue)) {
+              //this.controller.handleAmplitudeScaling(scaleValue)
+              this.controller.amplitudeScaleViewHandler(scaleValue);
+              amplitudeScaleInput.remove()
+            }
+          }
+        })
+      }
+    }
+    //________________________________________________________________________________
 
   killReverseTransformationButton() {
     let reverseTransformButtonDiv = document.querySelector(

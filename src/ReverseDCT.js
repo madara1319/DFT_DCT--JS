@@ -7,17 +7,14 @@ class ReverseDCT extends ReverseTransformation {
   reverseTransform() {
     const N = this.signal.length
     const x = []
-    const factor = Math.PI / N
-
     for (let n = 0; n < N; n++) {
-      let sum = this.signal[0] / 2 
+      let sum = this.signal[0] / Math.sqrt(N)
       for (let k = 1; k < N; k++) {
-        const angle = factor * k * (2 * n + 1) / 2
-        sum += this.signal[k] * Math.cos(angle)
+        const angle = (Math.PI * k * (2 * n + 1)) / (2 * N)
+        sum += this.signal[k] * Math.cos(angle) * Math.sqrt(2 / N)
       }
       x.push(sum)
     }
-    
     return x
   }
 }

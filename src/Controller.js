@@ -628,6 +628,8 @@ class Controller {
 
   clearStorage() {
     this.model.clearLocalStorage()
+    //this.model.logStorageInfo()
+
   }
 
 
