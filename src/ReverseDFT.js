@@ -17,7 +17,7 @@ class ReverseDFT extends ReverseTransformation {
           this.signal[k].real * Math.sin(angle) +
           this.signal[k].imag * Math.cos(angle)
       }
-      console.log(sum)
+      //console.log(sum)
       x.push(sum.real / N)
     }
     return x

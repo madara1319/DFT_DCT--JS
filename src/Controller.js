@@ -49,6 +49,8 @@ class Controller {
       'Entrance Signal',
     )
     this.view.showTransformationButtons()
+    this.model.clearModDCT();
+    this.model.clearModDFT();
   }
 
   //________________________________________________________________________________
@@ -287,6 +289,9 @@ class Controller {
     this.view.drawChart('sampleChart', labels, data, 'line', 'Entrance Signal')
 
     this.view.showTransformationButtons()
+
+    this.model.clearModDCT();
+    this.model.clearModDFT();
   }
 
   //________________________________________________________________________________
@@ -498,16 +503,18 @@ class Controller {
     })
 
     // Save shifted and original samples
-    this.model.saveSamples(shiftedSamples)
-    const originalSamples = this.model.getSamples()
 
-    const N = this.model.getSamplesCount()
+    //this.model.saveSamples(shiftedSamples)
+    const originalSamples = this.model.getSamples()
+    this.model.saveDCTSamples(shiftedSamples)
+
+    const N = this.model.getDCTSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     // DCT for original and shifted signals
     const dctOriginal = new DCT(originalSamples)
     const dctShifted = new DCT(shiftedSamples)
-
+    this.model.saveModifiedDCT(dctshifted);
     const originalDCT = dctOriginal.transform()
     const shiftedDCT = dctShifted.transform()
 
@@ -541,16 +548,18 @@ class Controller {
     const scaledSamples = samples.map((sample) => sample * scaleFactor)
 
     // Save both original and scaled samples
-    this.model.saveSamples(scaledSamples)
+    //this.model.saveSamples(scaledSamples)
     const originalSamples = this.model.getSamples()
+    this.model.saveDCTSamples(scaledSamples)
 
-    const N = this.model.getSamplesCount()
+    const N = this.model.getDCTSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     // DCT for original and scaled signals
     const dctOriginal = new DCT(originalSamples)
     const dctScaled = new DCT(scaledSamples)
 
+    this.model.saveModifiedDCT(dctScaled);
     const originalDCT = dctOriginal.transform()
     const scaledDCT = dctScaled.transform()
 

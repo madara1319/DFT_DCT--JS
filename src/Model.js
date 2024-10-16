@@ -1,6 +1,7 @@
 class Model {
   constructor() {
     this.samples = JSON.parse(localStorage.getItem('samples')) || []
+    this.affectedByDCTSamples = JSON.parse(localStorage.getItem('affectedByDCTSamples')) || []
     this.dftResults = JSON.parse(localStorage.getItem('dftResults')) || []
     this.dctResults = JSON.parse(localStorage.getItem('dctResults')) || []
     this.transformationType = 'DFT'
@@ -55,6 +56,10 @@ class Model {
     localStorage.setItem('samples', JSON.stringify(samples))
   }
 
+  saveDCTSamples(affectedByDCTSamples) {
+    this.affectedByDCTSamples = affectedByDCTSamples
+    localStorage.setItem('affectedByDCTSamples', JSON.stringify(affectedByDCTSamples))
+  }
   saveDFT(dftResults) {
     this.dftResults = dftResults
     localStorage.setItem('dftResults', JSON.stringify(dftResults))
@@ -89,8 +94,13 @@ class Model {
     this.reverseDCTResults = reverseDCTResults
     localStorage.setItem('reverseDCTResults', JSON.stringify(reverseDCTResults))
   }
+
   getSamples() {
     return this.samples
+  }
+
+  getDCTSamples() {
+    return this.affectedByDCTSamples;
   }
 
   clearModDFT(modifiedDftResults) {
@@ -118,6 +128,10 @@ class Model {
 
   getSamplesCount() {
     return this.samples.length
+  }
+
+  getDCTSamplesCount() {
+    return this.affectedByDCTSamples.length
   }
 
   getDFTResults() {
