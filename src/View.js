@@ -598,12 +598,12 @@ class View {
   }
 
   //________________________________________________________________________________
-  drawTimeDomainChart(labels, reverseDFTResults) {
+  drawTimeDomainChart(labels, reverseResults) {
     if (ChartDrawer.charts['sampleChart'].config.type === 'line') {
       ChartDrawer.drawChart(
         'reverseChart',
         labels,
-        reverseDFTResults,
+        reverseResults,
         'line',
         'Output Signal',
       )
@@ -611,7 +611,7 @@ class View {
       ChartDrawer.drawChart(
         'reverseChart',
         labels,
-        reverseDFTResults,
+        reverseResults,
         'bar',
         'Output Signal',
       )

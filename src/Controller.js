@@ -49,8 +49,9 @@ class Controller {
       'Entrance Signal',
     )
     this.view.showTransformationButtons()
-    this.model.clearModDCT();
-    this.model.clearModDFT();
+    this.model.clearModDCT()
+    this.model.clearModDFT()
+    this.model.clearModDCTSamples()
   }
 
   //________________________________________________________________________________
@@ -131,8 +132,8 @@ class Controller {
       let value = 0
       waveMapArray.forEach((waveMap) => {
         // Snap the time to avoid floating-point precision issues
-       const snappedTime = parseFloat(t)
-      //  const snappedTime = parseFloat(t)
+        const snappedTime = parseFloat(t)
+        //  const snappedTime = parseFloat(t)
         if (waveMap.has(snappedTime)) {
           value += waveMap.get(snappedTime)
         }
@@ -290,8 +291,9 @@ class Controller {
 
     this.view.showTransformationButtons()
 
-    this.model.clearModDCT();
-    this.model.clearModDFT();
+    this.model.clearModDCT()
+    this.model.clearModDFT()
+    this.model.clearModDCTSamples()
   }
 
   //________________________________________________________________________________
@@ -323,7 +325,7 @@ class Controller {
     const result = dft.transform()
     this.model.saveDFT(result)
     //console.log('to idzie do modelu ' + result)
-   // console.log(result)
+    // console.log(result)
     const amplitude = dft.getAmplitude(result)
     const phase = dft.getPhase(result)
     const labels = Array.from({ length: result.length }, (_, i) => i.toString())
@@ -496,28 +498,29 @@ class Controller {
     const samples = this.model.getSamples()
     if (!samples || samples.length === 0) return
 
-    // Shifted signal
-    const shiftedSamples = samples.map((_, index) => {
+    const actualDCTSamples =
+      this.model.getDCTSamples().length > 0
+        ? this.model.getDCTSamples()
+        : this.model.getSamples()
+
+    const shiftedSamples = actualDCTSamples.map((_, index) => {
       const newIndex = (index + shiftValue) % samples.length
       return samples[newIndex]
     })
-
-    // Save shifted and original samples
-
-    //this.model.saveSamples(shiftedSamples)
-    const originalSamples = this.model.getSamples()
     this.model.saveDCTSamples(shiftedSamples)
+
+
 
     const N = this.model.getDCTSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     // DCT for original and shifted signals
-    const dctOriginal = new DCT(originalSamples)
+    const dctOriginal = new DCT(samples)
     const dctShifted = new DCT(shiftedSamples)
-    this.model.saveModifiedDCT(dctshifted);
     const originalDCT = dctOriginal.transform()
     const shiftedDCT = dctShifted.transform()
 
+    this.model.saveModifiedDCT(shiftedDCT)
     const amplitudeOriginal = dctOriginal.getAmplitude(originalDCT)
     const amplitudeShifted = dctShifted.getAmplitude(shiftedDCT)
 
@@ -545,24 +548,26 @@ class Controller {
     if (!samples || samples.length === 0) return
 
     // Scaled samples
-    const scaledSamples = samples.map((sample) => sample * scaleFactor)
 
-    // Save both original and scaled samples
-    //this.model.saveSamples(scaledSamples)
-    const originalSamples = this.model.getSamples()
+    const actualDCTSamples =
+      this.model.getDCTSamples().length > 0
+        ? this.model.getDCTSamples()
+        : this.model.getSamples()
+
+    const scaledSamples = actualDCTSamples.map((sample) => sample * scaleFactor)
     this.model.saveDCTSamples(scaledSamples)
 
     const N = this.model.getDCTSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     // DCT for original and scaled signals
-    const dctOriginal = new DCT(originalSamples)
+    const dctOriginal = new DCT(samples)
     const dctScaled = new DCT(scaledSamples)
 
-    this.model.saveModifiedDCT(dctScaled);
     const originalDCT = dctOriginal.transform()
     const scaledDCT = dctScaled.transform()
 
+    this.model.saveModifiedDCT(scaledDCT)
     const amplitudeOriginal = dctOriginal.getAmplitude(originalDCT)
     const amplitudeScaled = dctScaled.getAmplitude(scaledDCT)
 
@@ -631,6 +636,7 @@ class Controller {
   clearModSignal() {
     this.model.clearModDFT()
     this.model.clearModDCT()
+    this.model.clearModDCTSamples()
   }
 
   //________________________________________________________________________________
@@ -638,20 +644,16 @@ class Controller {
   clearStorage() {
     this.model.clearLocalStorage()
     //this.model.logStorageInfo()
-
   }
 
-
   //________________________________________________________________________________
-  handleReverseTransform(){
+  handleReverseTransform() {
     if (this.model.getCurrentTransformation() === 'DFT') {
       this.handleReverseDFT()
     } else {
       this.handleReverseDCT()
     }
-
   }
-
 
   //________________________________________________________________________________
   handleReverseDFT() {
@@ -662,8 +664,8 @@ class Controller {
     if (!dftResults || dftResults.length === 0) {
       return
     }
-   // console.log('tu cos powinienem wyciagnac z modelu ')
-   // console.log(this.model.getDFTResults())
+    // console.log('tu cos powinienem wyciagnac z modelu ')
+    // console.log(this.model.getDFTResults())
     const reverseDFT = new ReverseDFT(dftResults)
 
     const reverseDFTResults = reverseDFT.reverseTransform()
@@ -676,9 +678,9 @@ class Controller {
     this.view.drawTimeDomainChart(labels, reverseDFTResults)
   }
 
-
   //________________________________________________________________________________
   handleReverseDCT() {
+    console.log(this.model.getModifiedDCT())
     const dctResults =
       this.model.getModifiedDCT().length > 0
         ? this.model.getModifiedDCT()
@@ -744,44 +746,45 @@ class Controller {
 
   //________________________________________________________________________________
 
-  handleLowPassFilter(cutoffFrequency){
-      const N = this.model.getSamplesCount();
-    const sampleRate = this.model.getSampleRate();
-    const originalDFT = this.model.getDFTResults();
-    
-    const filteredDFT = originalDFT.map((X_k, k) => {
-        const frequency = (k * sampleRate) / N;
-        if (frequency > cutoffFrequency) {
-            return { real: 0, imag: 0 };  // Zero out frequencies above cutoff
-        }
-        return X_k;
-    });
+  handleLowPassFilter(cutoffFrequency) {
+    const N = this.model.getSamplesCount()
+    const sampleRate = this.model.getSampleRate()
+    const originalDFT = this.model.getDFTResults()
 
-    this.model.saveModifiedDFT(filteredDFT);
-    this.handleReverseTransform();}
-  
+    const filteredDFT = originalDFT.map((X_k, k) => {
+      const frequency = (k * sampleRate) / N
+      if (frequency > cutoffFrequency) {
+        return { real: 0, imag: 0 } // Zero out frequencies above cutoff
+      }
+      return X_k
+    })
+
+    this.model.saveModifiedDFT(filteredDFT)
+    this.handleReverseTransform()
+  }
 
   //________________________________________________________________________________
 
-  handleHighPassFilter(cutoffFrequency){
-     const N = this.model.getSamplesCount();
-    const sampleRate = this.model.getSampleRate();
-    const originalDFT = this.model.getDFTResults();
+  handleHighPassFilter(cutoffFrequency) {
+    const N = this.model.getSamplesCount()
+    const sampleRate = this.model.getSampleRate()
+    const originalDFT = this.model.getDFTResults()
 
     const filteredDFT = originalDFT.map((X_k, k) => {
-        const frequency = (k * sampleRate) / N;
-        if (frequency < cutoffFrequency) {
-            return { real: 0, imag: 0 };  // Zero out frequencies below cutoff
-        }
-        return X_k;
-    });
+      const frequency = (k * sampleRate) / N
+      if (frequency < cutoffFrequency) {
+        return { real: 0, imag: 0 } // Zero out frequencies below cutoff
+      }
+      return X_k
+    })
 
-    this.model.saveModifiedDFT(filteredDFT);
-    this.handleReverseTransform();}
+    this.model.saveModifiedDFT(filteredDFT)
+    this.handleReverseTransform()
+  }
 
   //________________________________________________________________________________
 
-  handleBandPassFilter(value1,value2){
+  handleBandPassFilter(value1, value2) {
     console.log('Wartosc bandPass')
     console.log(value1)
     console.log(value2)
@@ -789,7 +792,7 @@ class Controller {
 
   //________________________________________________________________________________
 
-  handleNotchFilter(value1, value2){
+  handleNotchFilter(value1, value2) {
     console.log('Wartosci Nothca ')
     console.log(value1)
     console.log(value2)
