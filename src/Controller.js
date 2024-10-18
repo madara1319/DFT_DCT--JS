@@ -509,8 +509,6 @@ class Controller {
     })
     this.model.saveDCTSamples(shiftedSamples)
 
-
-
     const N = this.model.getDCTSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
 
@@ -769,35 +767,231 @@ class Controller {
     const N = this.model.getSamplesCount()
     const sampleRate = this.model.getSampleRate()
     const originalDFT = this.model.getDFTResults()
+    const nyquistFrequency = sampleRate / 2
+    const kArray = Array.from({ length: N }, (_, k) => k)
 
     const filteredDFT = originalDFT.map((X_k, k) => {
       const frequency = (k * sampleRate) / N
-      if (frequency < cutoffFrequency) {
-        return { real: 0, imag: 0 } // Zero out frequencies below cutoff
+      const mirroredK = k > N / 2 ? N - k : k
+      const mirroredFreq = (mirroredK * sampleRate) / N
+
+      if (frequency <= cutoffFrequency && frequency < nyquistFrequency) {
+        const transitionWidth = cutoffFrequency * 0.1
+        if (frequency > cutoffFrequency - transitionWidth) {
+          const ratio =
+            (frequency - (cutoffFrequency - transitionWidth)) / transitionWidth
+          const gain = (1 - Math.cos(Math.PI * ratio)) / 2
+          return {
+            real: X_k.real * gain,
+            imag: X_k.imag * gain,
+          }
+        }
+        return { real: 0, imag: 0 }
       }
       return X_k
     })
 
     this.model.saveModifiedDFT(filteredDFT)
-    this.handleReverseTransform()
-  }
 
+    // Obliczanie amplitudy i fazy dla oryginalnego i przefiltrowanego sygnału
+    const amplitudeOriginal = originalDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const amplitudeFiltered = filteredDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const phaseOriginal = originalDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+    const phaseFiltered = filteredDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+
+    // Konwersja do formatu punktów
+    const amplitudeOriginalPoints = amplitudeOriginal.map(
+      this.convertToPointFormat(amplitudeOriginal),
+    )
+    const phaseOriginalPoints = phaseOriginal.map(
+      this.convertToPointFormat(phaseOriginal),
+    )
+    const amplitudeFilteredPoints = amplitudeFiltered.map(
+      this.convertToPointFormat(amplitudeFiltered),
+    )
+    const phaseFilteredPoints = phaseFiltered.map(
+      this.convertToPointFormat(phaseFiltered),
+    )
+
+    // Wyświetlanie porównania widm
+    this.view.drawShiftedDFTChart(
+      kArray,
+      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
+      { amplitude: amplitudeFilteredPoints, phase: phaseFilteredPoints },
+    )
+  }
   //________________________________________________________________________________
 
-  handleBandPassFilter(value1, value2) {
-    console.log('Wartosc bandPass')
-    console.log(value1)
-    console.log(value2)
+  handleBandPassFilter(lowCutoff, highCutoff) {
+    const N = this.model.getSamplesCount()
+    const sampleRate = this.model.getSampleRate()
+    const originalDFT = this.model.getDFTResults()
+    const nyquistFrequency = sampleRate / 2
+    const kArray = Array.from({ length: N }, (_, k) => k)
+
+    const lowerFreq = Math.min(lowCutoff, highCutoff)
+    const upperFreq = Math.max(lowCutoff, highCutoff)
+
+    const filteredDFT = originalDFT.map((X_k, k) => {
+      const frequency = (k * sampleRate) / N
+      const mirroredK = k > N / 2 ? N - k : k
+      const mirroredFreq = (mirroredK * sampleRate) / N
+
+      if (
+        frequency >= lowerFreq &&
+        frequency <= upperFreq &&
+        frequency < nyquistFrequency
+      ) {
+        const lowerTransitionWidth = lowerFreq * 0.1
+        const upperTransitionWidth = upperFreq * 0.1
+
+        if (frequency < lowerFreq + lowerTransitionWidth) {
+          const ratio = (frequency - lowerFreq) / lowerTransitionWidth
+          const gain = (1 - Math.cos(Math.PI * ratio)) / 2
+          return {
+            real: X_k.real * gain,
+            imag: X_k.imag * gain,
+          }
+        } else if (frequency > upperFreq - upperTransitionWidth) {
+          const ratio = (upperFreq - frequency) / upperTransitionWidth
+          const gain = (1 - Math.cos(Math.PI * ratio)) / 2
+          return {
+            real: X_k.real * gain,
+            imag: X_k.imag * gain,
+          }
+        }
+        return X_k
+      }
+      return { real: 0, imag: 0 }
+    })
+
+    this.model.saveModifiedDFT(filteredDFT)
+
+    // Obliczanie amplitudy i fazy
+    const amplitudeOriginal = originalDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const amplitudeFiltered = filteredDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const phaseOriginal = originalDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+    const phaseFiltered = filteredDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+
+    // Konwersja do formatu punktów
+    const amplitudeOriginalPoints = amplitudeOriginal.map(
+      this.convertToPointFormat(amplitudeOriginal),
+    )
+    const phaseOriginalPoints = phaseOriginal.map(
+      this.convertToPointFormat(phaseOriginal),
+    )
+    const amplitudeFilteredPoints = amplitudeFiltered.map(
+      this.convertToPointFormat(amplitudeFiltered),
+    )
+    const phaseFilteredPoints = phaseFiltered.map(
+      this.convertToPointFormat(phaseFiltered),
+    )
+
+    // Wyświetlanie porównania widm
+    this.view.drawShiftedDFTChart(
+      kArray,
+      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
+      { amplitude: amplitudeFilteredPoints, phase: phaseFilteredPoints },
+    )
+  } //________________________________________________________________________________
+
+  //____________________
+  handleNotchFilter(centerFrequency, bandwidth) {
+    const N = this.model.getSamplesCount()
+    const sampleRate = this.model.getSampleRate()
+    const originalDFT = this.model.getDFTResults()
+    const nyquistFrequency = sampleRate / 2
+    const kArray = Array.from({ length: N }, (_, k) => k)
+
+    const halfBandwidth = bandwidth / 2
+    const lowerFreq = centerFrequency - halfBandwidth
+    const upperFreq = centerFrequency + halfBandwidth
+
+    const filteredDFT = originalDFT.map((X_k, k) => {
+      const frequency = (k * sampleRate) / N
+      const mirroredK = k > N / 2 ? N - k : k
+      const mirroredFreq = (mirroredK * sampleRate) / N
+
+      if (
+        frequency >= lowerFreq &&
+        frequency <= upperFreq &&
+        frequency < nyquistFrequency
+      ) {
+        const transitionWidth = bandwidth * 0.1
+
+        if (frequency < lowerFreq + transitionWidth) {
+          const ratio = (frequency - lowerFreq) / transitionWidth
+          const gain = (1 + Math.cos(Math.PI * ratio)) / 2
+          return {
+            real: X_k.real * gain,
+            imag: X_k.imag * gain,
+          }
+        } else if (frequency > upperFreq - transitionWidth) {
+          const ratio = (upperFreq - frequency) / transitionWidth
+          const gain = (1 + Math.cos(Math.PI * ratio)) / 2
+          return {
+            real: X_k.real * gain,
+            imag: X_k.imag * gain,
+          }
+        }
+        return { real: 0, imag: 0 }
+      }
+      return X_k
+    })
+
+    this.model.saveModifiedDFT(filteredDFT)
+
+    // Obliczanie amplitudy i fazy
+    const amplitudeOriginal = originalDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const amplitudeFiltered = filteredDFT.map((X_k) =>
+      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
+    )
+    const phaseOriginal = originalDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+    const phaseFiltered = filteredDFT.map((X_k) =>
+      Math.atan2(X_k.imag, X_k.real),
+    )
+
+    // Konwersja do formatu punktów
+    const amplitudeOriginalPoints = amplitudeOriginal.map(
+      this.convertToPointFormat(amplitudeOriginal),
+    )
+    const phaseOriginalPoints = phaseOriginal.map(
+      this.convertToPointFormat(phaseOriginal),
+    )
+    const amplitudeFilteredPoints = amplitudeFiltered.map(
+      this.convertToPointFormat(amplitudeFiltered),
+    )
+    const phaseFilteredPoints = phaseFiltered.map(
+      this.convertToPointFormat(phaseFiltered),
+    )
+
+    // Wyświetlanie porównania widm
+    this.view.drawShiftedDFTChart(
+      kArray,
+      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
+      { amplitude: amplitudeFilteredPoints, phase: phaseFilteredPoints },
+    )
   }
-
-  //________________________________________________________________________________
-
-  handleNotchFilter(value1, value2) {
-    console.log('Wartosci Nothca ')
-    console.log(value1)
-    console.log(value2)
-  }
-
-  //________________________________________________________________________________
+  ____________________________________________________________
 }
 export { Controller }
