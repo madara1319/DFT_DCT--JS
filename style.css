@@ -226,17 +226,39 @@ main {
   width: 100%;
 }
 
-.signalListElement {
+.signalListElement ,.signalElement {
   background: #f9f9f9;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;
   border: 1px solid #ddd;
 }
+.signalElement{
+  display:flex;
+  justify-content:space-between;
+}
+
 
 .enteringButtonsContainer {
   margin-bottom: 20px;
 }
+
+.close{
+  align-content:center;
+  text-align:center;
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 16px;
+  line-height: 16px;
+  transition: background-color 0.3s ease;
+}
+
 
 /* Charts */
 .boxofboxes {
@@ -255,7 +277,7 @@ canvas {
   height: auto;
   /* max-height: 400px;*/
 }
-.chartCloseButton {
+.chartCloseButton  {
   position: absolute;
   top: 10px; /* Adjust as necessary */
   right: 10px; /* Adjust as necessary */
@@ -275,11 +297,11 @@ canvas {
   transition: background-color 0.3s ease;
 }
 
-.chartCloseButton:hover {
+.chartCloseButton:hover, .close:hover {
   background-color: darkred;
 }
 
-.chartCloseButton:active {
+.chartCloseButton:active, .close:active {
   background-color: maroon;
 }
 

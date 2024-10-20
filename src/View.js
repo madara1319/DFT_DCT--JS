@@ -348,34 +348,39 @@ class View {
   }
 
   //________________________________________________________________________________
-    handleTimeShiftInput() {
-      let modificationsButtonsDiv = document.querySelector(
-        '.modificationsButtonsDiv',
-      )
-  
-      let timeShiftInput = document.querySelector('.timeShiftInput')
-  
-      if (!timeShiftInput) {
-        timeShiftInput = document.createElement('input')
-        timeShiftInput.type = 'number'
-        timeShiftInput.placeholder = 'Enter time shift value'
-        timeShiftInput.className = 'timeShiftInput'
-  
-        modificationsButtonsDiv.appendChild(timeShiftInput)
-        timeShiftInput.focus()
-  
-        timeShiftInput.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') {
-            const shiftValue = parseFloat(timeShiftInput.value)
-            if (!isNaN(shiftValue)) {
-              //this.controller.handleTimeShift(shiftValue)
-              this.controller.timeShiftViewHandler(shiftValue);
-              timeShiftInput.remove()
-            }
-          }
-        })
+
+
+
+handleTimeShiftInput() {
+  let modificationsButtonsDiv = document.querySelector('.modificationsButtonsDiv');
+  let timeShiftInput = document.querySelector('.timeShiftInput');
+
+  if (!timeShiftInput) {
+    timeShiftInput = document.createElement('input');
+    timeShiftInput.type = 'number';
+    timeShiftInput.placeholder = 'Enter time shift value (integer)';
+    timeShiftInput.className = 'timeShiftInput';
+
+    modificationsButtonsDiv.appendChild(timeShiftInput);
+    timeShiftInput.focus();
+
+    timeShiftInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        const shiftValue = parseFloat(timeShiftInput.value);
+
+        // Sprawdzanie, czy shiftValue jest liczbą całkowitą
+        if (Number.isInteger(shiftValue)) {
+          // Jeśli wartość jest liczbą całkowitą, kontynuuj
+          this.controller.timeShiftViewHandler(shiftValue);
+          timeShiftInput.remove();
+        } else {
+          // Jeśli wartość nie jest liczbą całkowitą, pokaż alert
+          alert('Please enter a valid integer value for time shift.');
+        }
       }
-    }
+    });
+  }
+}
   //________________________________________________________________________________
     handleAmplitudeScaleInput() {
       let modificationsButtonsDiv = document.querySelector(
@@ -887,8 +892,8 @@ showFilterInputs(filterType) {
         break
       case 'notchButton':
         inputHTML = `
-          <input type="number" class="filterInput" placeholder="Enter lower frequency">
-          <input type="number" class="filterInput" placeholder="Enter upper frequency">
+          <input type="number" class="filterInput" placeholder="Enter center frequency">
+          <input type="number" class="filterInput" placeholder="Enter bandwidth">
           <button class="filterEnterButton">Enter</button>
         `
         break
