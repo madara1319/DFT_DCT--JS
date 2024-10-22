@@ -46,6 +46,8 @@ class View {
 
     this.enteringSaveButton = document.querySelector('.enteringSaveButton')
     this.enteringLoadButton = document.querySelector('.enteringLoadButton')
+    this.enteringDisplayButton = document.querySelector('.enteringDisplayButton')
+    this.enteringRandomButton = document.querySelector('.enteringRandomButton')
   }
   //________________________________________________________________________________
   //Activate buttons like toggle eventlisteners floatingDiv and combineSignal
@@ -105,6 +107,14 @@ class View {
     })
     this.enteringLoadButton.addEventListener('click', () => {
       this.controller.loadSamples()
+    })
+
+    this.enteringDisplayButton.addEventListener('click', (event) => {
+      this.handleTextArea({key:'Enter'},true);
+    })
+
+    this.enteringRandomButton.addEventListener('click', () => {
+      this.controller.generateRandomProbes()
     })
 
     this.composerSaveButton.addEventListener('click', () => {
@@ -188,10 +198,10 @@ class View {
 
   //________________________________________________________________________________
   //probes array entering function module/
-  handleTextArea(event) {
-    if (event.key === 'Enter') {
-      const data = event.target.value.trim()
-
+  handleTextArea(event, fromButton=false) {
+    if (event.key === 'Enter' || fromButton) {
+      const textArea=this.enterBox.querySelector('.textArea')
+      const data = textArea.value.trim()
       const dataArray = data.split(',').map((value) => parseFloat(value.trim()))
       const areNumbers = dataArray.every((value) => !isNaN(value))
       if (areNumbers) {

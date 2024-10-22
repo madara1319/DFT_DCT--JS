@@ -101,7 +101,8 @@ main {
 .signalSampleRate:active {
   background-color: #cc520d;
 }
-.generateCombinedSignalButton {
+.generateCombinedSignalButton,
+.displayButton {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #007bff;
@@ -112,11 +113,13 @@ main {
   transition: background-color 0.3s ease;
 }
 
-.generateCombinedSignalButton:hover {
+.generateCombinedSignalButton:hover,
+.displayButton:hover {
   background-color: #0069d9;
 }
 
-.generateCombinedSignalButton:active {
+.generateCombinedSignalButton:active,
+.displayButton:active {
   background-color: #0056b3;
 }
 
@@ -181,7 +184,8 @@ main {
   margin-top: 20px;
 }
 
-.composerAddButton {
+.composerAddButton,
+.randomSignal {
   color: #fff;
   background-color: #15d77d;
   padding: 10px 20px;
@@ -192,7 +196,8 @@ main {
   transition: background-color 0.3s ease;
 }
 
-.composerAddButton:hover {
+.composerAddButton:hover,
+.randomSignal:hover {
   background-color: #12c06d;
 }
 
@@ -226,26 +231,29 @@ main {
   width: 100%;
 }
 
-.signalListElement ,.signalElement {
+.signalListElement,
+.signalElement {
   background: #f9f9f9;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;
   border: 1px solid #ddd;
 }
-.signalElement{
-  display:flex;
-  justify-content:space-between;
+.signalElement {
+  display: flex;
+  justify-content: space-between;
 }
 
-
 .enteringButtonsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-.close{
-  align-content:center;
-  text-align:center;
+.close {
+  align-content: center;
+  text-align: center;
   width: 25px;
   height: 25px;
   background-color: red;
@@ -258,7 +266,6 @@ main {
   line-height: 16px;
   transition: background-color 0.3s ease;
 }
-
 
 /* Charts */
 .boxofboxes {
@@ -277,7 +284,7 @@ canvas {
   height: auto;
   /* max-height: 400px;*/
 }
-.chartCloseButton  {
+.chartCloseButton {
   position: absolute;
   top: 10px; /* Adjust as necessary */
   right: 10px; /* Adjust as necessary */
@@ -297,11 +304,13 @@ canvas {
   transition: background-color 0.3s ease;
 }
 
-.chartCloseButton:hover, .close:hover {
+.chartCloseButton:hover,
+.close:hover {
   background-color: darkred;
 }
 
-.chartCloseButton:active, .close:active {
+.chartCloseButton:active,
+.close:active {
   background-color: maroon;
 }
 
@@ -363,10 +372,11 @@ canvas {
 
 /*-----------------------------------------*/
 /* Floating Div */
-.showDiv, .filtersDiv {
+.showDiv,
+.filtersDiv {
   position: fixed;
   width: 350px;
-  height:150 ;
+  height: 150;
   background-color: lightblue;
   border: 1px solid #000;
   display: none;
@@ -379,14 +389,17 @@ canvas {
   box-sizing: border-box;
 }
 
-.composerFloatingDiv, .filtersFloatingDiv{
-  height:65%;
+.composerFloatingDiv,
+.filtersFloatingDiv {
+  height: 65%;
 }
 
-.composerFloatingDivHeader, .filtersHeader{
-  height:35%;
+.composerFloatingDivHeader,
+.filtersHeader {
+  height: 35%;
 }
-.closeFloatingDiv, .closeFiltersDiv {
+.closeFloatingDiv,
+.closeFiltersDiv {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -407,15 +420,14 @@ canvas {
   width: 100%;
   height: 50px;
   position: relative;
-  float:right;
-
+  float: right;
 }
 .firstArrow,
 .secondArrow,
 .thirdArrow,
 .fourthArrow {
-  text-align:right;
-  font-size:30px;
+  text-align: right;
+  font-size: 30px;
   width: 100%;
   height: 100%;
   position: absolute;

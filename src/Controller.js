@@ -55,6 +55,19 @@ class Controller {
   }
 
   //________________________________________________________________________________
+  generateRandomProbes(){
+    const length=Math.floor(Math.random() * (100-10 + 1))+10;
+
+    const randomArray=Array.from({length},()=>Math.random());
+
+    const textArea=this.view.enterBox.querySelector('.textArea');
+    textArea.value=randomArray.join(', ');
+    console.log(randomArray)
+    this.updateChart('Custom',[],[],randomArray);
+  }
+
+
+  //________________________________________________________________________________
   //calculating input signal values using generateSignal() method and SignalGenerator class
   calculateInput(
     optionValue,
