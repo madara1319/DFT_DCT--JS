@@ -5,7 +5,8 @@
     "start": "live-server --port=8181",
     "build": "webpack --config webpack.config.cjs",
     "watch": "webpack --watch --config webpack.config.cjs",
-    "dev": "concurrently \"npm run watch\" \"npm run start\""
+    "dev": "concurrently \"npm run watch\" \"npm run start\"",
+    "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "chart.js": "^4.4.4",
@@ -15,10 +16,14 @@
   },
   "type": "module",
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.4",
+    "@babel/core": "^7.25.9",
+    "@babel/preset-env": "^7.25.9",
+    "@jest/globals": "^29.7.0",
+    "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
     "concurrently": "^9.0.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "webpack-cli": "^5.1.4"
   }
 }
