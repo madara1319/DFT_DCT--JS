@@ -57,9 +57,7 @@ class Controller {
   //________________________________________________________________________________
   generateRandomProbes(){
     const length=Math.floor(Math.random() * (100-10 + 1))+10;
-
     const randomArray=Array.from({length},()=>Math.random());
-
     const textArea=this.view.enterBox.querySelector('.textArea');
     textArea.value=randomArray.join(', ');
     console.log(randomArray)
@@ -118,15 +116,10 @@ class Controller {
   generateSignal(generatorFunction, amplitudeArray, frequencyArray) {
     const labels = []
     const data = []
-    //const duration = 1 // 1 second
-    //const length = this.model.getSampleRate() * duration
-
-    //testing
     const numberOfPeriods = 5
     const maxFrequency = Math.max(...frequencyArray)
     const period = 1 / maxFrequency
     const duration = numberOfPeriods * period
-    //const duration=numberOfPeriods/maxFrequency
     const length = Math.floor(this.model.getSampleRate() * duration)
 
     // Generate the signals for all amplitudes and frequencies
@@ -139,35 +132,18 @@ class Controller {
       )
     })
 
-    //testing
     for (let i = 0; i < length; i++) {
-      const t = i / this.model.getSampleRate() // Time value for current sample
+      const t = i / this.model.getSampleRate() 
       let value = 0
       waveMapArray.forEach((waveMap) => {
-        // Snap the time to avoid floating-point precision issues
         const snappedTime = parseFloat(t)
-        //  const snappedTime = parseFloat(t)
         if (waveMap.has(snappedTime)) {
           value += waveMap.get(snappedTime)
         }
       })
       labels.push(t.toFixed(5))
-      //data.push(value.toFixed(6))
       data.push(value)
     }
-
-    // Sum the values at each time point
-    //    for (let i = 0; i < length; i++) {
-    //      const t = Number((i / this.model.getSampleRate()).toFixed(3))
-    //      let value = 0
-    //      waveMapArray.forEach((waveMap) => {
-    //        if (waveMap.has(t)) {
-    //          value += waveMap.get(t)
-    //        }
-    //      })
-    //      labels.push(t.toFixed(3))
-    //      data.push(value.toFixed(6))
-    //    }
 
     return { labels, data }
   }
@@ -337,8 +313,6 @@ class Controller {
     const dft = new DFT(samples)
     const result = dft.transform()
     this.model.saveDFT(result)
-    //console.log('to idzie do modelu ' + result)
-    // console.log(result)
     const amplitude = dft.getAmplitude(result)
     const phase = dft.getPhase(result)
     const labels = Array.from({ length: result.length }, (_, i) => i.toString())
@@ -376,57 +350,9 @@ class Controller {
     this.view.drawAmplitudeAndPhaseChart(labels, amplitudePoints, false)
     this.view.showModificationButtons()
     this.view.showReverseTransformationButton()
-    //this.view.killModificationButtons()
-    //this.view.killReverseTransformationButton()
   }
 
   //________________________________________________________________________________
-  //  handleTimeShift(timeShiftValue) {
-  //    const N = this.model.getSamplesCount()
-  //    const kArray = Array.from({ length: N }, (_, k) => k)
-  //    const actualDFT =
-  //      this.model.getModifiedDFT().length > 0
-  //        ? this.model.getModifiedDFT()
-  //        : this.model.getDFTResults()
-  //    const originalDFT = this.model.getDFTResults()
-  //    const shiftedDFT = actualDFT.map((X_k, k) => {
-  //      const angle = (-2 * Math.PI * k * timeShiftValue) / N
-  //      return {
-  //        real: X_k.real * Math.cos(angle) - X_k.imag * Math.sin(angle),
-  //        imag: X_k.real * Math.sin(angle) + X_k.imag * Math.cos(angle),
-  //      }
-  //    })
-  //    this.model.saveModifiedDFT(shiftedDFT)
-  //    const amplitudeOriginal = originalDFT.map((X_k) =>
-  //      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
-  //    )
-  //    const amplitudeShifted = shiftedDFT.map((X_k) =>
-  //      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
-  //    )
-  //    const phaseOriginal = originalDFT.map((X_k) =>
-  //      Math.atan2(X_k.imag, X_k.real),
-  //    )
-  //    const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
-  //    const amplitudeOriginalPoints = amplitudeOriginal.map(
-  //      this.convertToPointFormat(amplitudeOriginal),
-  //    )
-  //    const phaseOriginalPoints = phaseOriginal.map(
-  //      this.convertToPointFormat(phaseOriginal),
-  //    )
-  //    const amplitudeShiftedPoints = amplitudeShifted.map(
-  //      this.convertToPointFormat(amplitudeShifted),
-  //    )
-  //    const phaseShiftedPoints = phaseShifted.map(
-  //      this.convertToPointFormat(phaseShifted),
-  //    )
-  //    this.view.drawShiftedDFTChart(
-  //      kArray,
-  //      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
-  //      { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
-  //    )
-  //  }
-  //testing
-  //dodatkowe handlery modfyikacji zeby view nie mial dostepu do modelu
 
   timeShiftViewHandler(shiftValue) {
     if (this.model.getCurrentTransformation() === 'DFT') {
@@ -436,6 +362,7 @@ class Controller {
     }
   }
 
+  //________________________________________________________________________________
   amplitudeScaleViewHandler(scaleFactor) {
     if (this.model.getCurrentTransformation() === 'DFT') {
       this.handleDFTAmplitudeScaling(scaleFactor)
@@ -443,10 +370,7 @@ class Controller {
       this.handleDCTAmplitudeScaling(scaleFactor)
     }
   }
-
-  //to zrobic handleDFTTimeShift!!
-  //handleTimeShift(timeShiftValue) {
-
+  //________________________________________________________________________________
   handleDFTTimeShift(timeShiftValue) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
@@ -456,7 +380,6 @@ class Controller {
         : this.model.getDFTResults()
     const originalDFT = this.model.getDFTResults()
 
-    // Poprawiona implementacja przesunięcia czasowego
     const shiftedDFT = actualDFT.map((X_k, k) => {
       const angle = (-2 * Math.PI * k * timeShiftValue) / N
       const magnitude = Math.sqrt(X_k.real ** 2 + X_k.imag ** 2)
@@ -470,7 +393,6 @@ class Controller {
 
     this.model.saveModifiedDFT(shiftedDFT)
 
-    // Obliczanie amplitudy i fazy dla oryginalnego i przesuniętego sygnału
     const amplitudeOriginal = originalDFT.map((X_k) =>
       Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
     )
@@ -482,7 +404,6 @@ class Controller {
     )
     const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
 
-    // Konwersja do formatu punktów
     const amplitudeOriginalPoints = amplitudeOriginal.map(
       this.convertToPointFormat(amplitudeOriginal),
     )
@@ -496,7 +417,6 @@ class Controller {
       this.convertToPointFormat(phaseShifted),
     )
 
-    // Aktualizacja wykresu
     this.view.drawShiftedDFTChart(
       kArray,
       { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
@@ -504,8 +424,6 @@ class Controller {
     )
   }
 
-  //________________________________________________________________________________
-  //working on
   //_________________________________
   handleDCTTimeShift(shiftValue) {
     const samples = this.model.getSamples()
@@ -551,14 +469,10 @@ class Controller {
     )
   }
   //_______________________________________________
-  //working on
-  //________________________________
-  // _____________________________
   handleDCTAmplitudeScaling(scaleFactor) {
     const samples = this.model.getSamples()
     if (!samples || samples.length === 0) return
 
-    // Scaled samples
 
     const actualDCTSamples =
       this.model.getDCTSamples().length > 0
@@ -597,9 +511,7 @@ class Controller {
       { amplitude: amplitudeScaledPoints },
     )
   }
-  ___________________
-  //to zrobic handleDCTAmpscale!!
-  //  handleAmplitudeScaling(scaleFactor) {
+  //________________________________________________________________________________
   handleDFTAmplitudeScaling(scaleFactor) {
     const N = this.model.getSamplesCount()
     const kArray = Array.from({ length: N }, (_, k) => k)
@@ -628,7 +540,6 @@ class Controller {
 
   clearStorage() {
     this.model.clearLocalStorage()
-    //this.model.logStorageInfo()
   }
 
   //________________________________________________________________________________
@@ -649,8 +560,6 @@ class Controller {
     if (!dftResults || dftResults.length === 0) {
       return
     }
-    // console.log('tu cos powinienem wyciagnac z modelu ')
-    // console.log(this.model.getDFTResults())
     const reverseDFT = new ReverseDFT(dftResults)
 
     const reverseDFTResults = reverseDFT.reverseTransform()
@@ -659,7 +568,6 @@ class Controller {
       (i / this.model.getSampleRate()).toString(),
     )
     this.model.saveReverseDFT(reverseDFTResults)
-    //console.log(reverseDFTResults)
     this.view.drawTimeDomainChart(labels, reverseDFTResults)
   }
 
@@ -686,7 +594,6 @@ class Controller {
   }
   //________________________________________________________________________________
 
-  //________________________________________________________________________________
   saveSignals() {
     const signals = Array.from(
       this.view.list.querySelectorAll('.signalElement'),
@@ -735,16 +642,16 @@ class Controller {
     const N = this.model.getSamplesCount()
     const sampleRate = this.model.getSampleRate()
     const originalDFT = this.model.getDFTResults()
-    const nyquistFrequency = sampleRate / 2 // Częstotliwość Nyquista
+    const nyquistFrequency = sampleRate / 2 
     const kArray = Array.from({ length: N }, (_, k) => k)
 
     const filteredDFT = originalDFT.map((X_k, k) => {
       const frequency = (k * sampleRate) / N
-      const mirroredK = k > N / 2 ? N - k : k // Odbita częstotliwość
+      const mirroredK = k > N / 2 ? N - k : k 
       const mirroredFreq = (mirroredK * sampleRate) / N
 
       if (frequency > cutoffFrequency && mirroredFreq > cutoffFrequency) {
-        return { real: 0, imag: 0 } // Zerujemy częstotliwości powyżej cutoff
+        return { real: 0, imag: 0 } 
       }
       return X_k
     })
@@ -785,7 +692,6 @@ class Controller {
     this.model.saveModifiedDFT(filteredDFT)
 
     this.updateDFTCharts(originalDFT, filteredDFT)
-    // Obliczanie amplitudy i fazy dla oryginalnego i przefiltrowanego sygnału
   }
   //________________________________________________________________________________
 
@@ -799,14 +705,14 @@ class Controller {
 
     const filteredDFT = originalDFT.map((X_k, k) => {
       const frequency = (k * sampleRate) / N
-      const mirroredK = k > N / 2 ? N - k : k // Odbita częstotliwość
+      const mirroredK = k > N / 2 ? N - k : k 
       const mirroredFreq = (mirroredK * sampleRate) / N
 
       if (
         (frequency < lowerFreq || frequency > upperFreq) &&
         (mirroredFreq < lowerFreq || mirroredFreq > upperFreq)
       ) {
-        return { real: 0, imag: 0 } // Zerujemy częstotliwości poza zakresem
+        return { real: 0, imag: 0 } 
       }
       return X_k
     })
@@ -828,14 +734,14 @@ class Controller {
 
     const filteredDFT = originalDFT.map((X_k, k) => {
       const frequency = (k * sampleRate) / N
-      const mirroredK = k > N / 2 ? N - k : k // Odbita częstotliwość
+      const mirroredK = k > N / 2 ? N - k : k 
       const mirroredFreq = (mirroredK * sampleRate) / N
 
       if (
         (frequency >= lowerFreq && frequency <= upperFreq) ||
         (mirroredFreq >= lowerFreq && mirroredFreq <= upperFreq)
       ) {
-        return { real: 0, imag: 0 } // Zerujemy pasmo
+        return { real: 0, imag: 0 } 
       }
       return X_k
     })

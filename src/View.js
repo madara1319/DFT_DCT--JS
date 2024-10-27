@@ -46,7 +46,9 @@ class View {
 
     this.enteringSaveButton = document.querySelector('.enteringSaveButton')
     this.enteringLoadButton = document.querySelector('.enteringLoadButton')
-    this.enteringDisplayButton = document.querySelector('.enteringDisplayButton')
+    this.enteringDisplayButton = document.querySelector(
+      '.enteringDisplayButton',
+    )
     this.enteringRandomButton = document.querySelector('.enteringRandomButton')
   }
   //________________________________________________________________________________
@@ -110,7 +112,7 @@ class View {
     })
 
     this.enteringDisplayButton.addEventListener('click', (event) => {
-      this.handleTextArea({key:'Enter'},true);
+      this.handleTextArea({ key: 'Enter' }, true)
     })
 
     this.enteringRandomButton.addEventListener('click', () => {
@@ -198,9 +200,9 @@ class View {
 
   //________________________________________________________________________________
   //probes array entering function module/
-  handleTextArea(event, fromButton=false) {
+  handleTextArea(event, fromButton = false) {
     if (event.key === 'Enter' || fromButton) {
-      const textArea=this.enterBox.querySelector('.textArea')
+      const textArea = this.enterBox.querySelector('.textArea')
       const data = textArea.value.trim()
       const dataArray = data.split(',').map((value) => parseFloat(value.trim()))
       const areNumbers = dataArray.every((value) => !isNaN(value))
@@ -313,39 +315,23 @@ class View {
 
     const clearModButton = modificationsButtonsDiv.querySelector(
       'button:nth-child(4)',
-    ) //________________________________________________________________________________ working on
-//    timeShiftButton.addEventListener('click', () => {
-//      console.log('Timeshit button clicked')
-//      const shiftValue = parseFloat(prompt('Enter time shift value'))
-//      console.log('Entered shift value', shiftValue)
-//      this.controller.timeShiftViewHandler(shiftValue)
-//    })
-//
-//    amplitudeScaleButton.addEventListener('click', () => {
-//      console.log('Ampscale button clicked')
-//      const scaleFactor = parseFloat(prompt('Enter amplitude scale factor'))
-//      console.log('Entered scale factor', scaleFactor)
-//      this.controller.amplitudeScaleViewHandler(scaleFactor)
-//    })
-
+    )
     //________________________________________________________________________________
-        timeShiftButton.addEventListener('click', () => {
-          this.handleTimeShiftInput()
-        })
-    
-        amplitudeScaleButton.addEventListener('click', () => {
-          this.handleAmplitudeScaleInput()
-        })
+    timeShiftButton.addEventListener('click', () => {
+      this.handleTimeShiftInput()
+    })
 
-    filtersButton.addEventListener('click',()=>{
-      this.showFiltersDiv();
+    amplitudeScaleButton.addEventListener('click', () => {
+      this.handleAmplitudeScaleInput()
+    })
+
+    filtersButton.addEventListener('click', () => {
+      this.showFiltersDiv()
     })
 
     clearModButton.addEventListener('click', () => {
       this.controller.clearModSignal()
     })
-
-
   }
   //________________________________________________________________________________
   killModificationButtons() {
@@ -359,68 +345,64 @@ class View {
 
   //________________________________________________________________________________
 
+  handleTimeShiftInput() {
+    let modificationsButtonsDiv = document.querySelector(
+      '.modificationsButtonsDiv',
+    )
+    let timeShiftInput = document.querySelector('.timeShiftInput')
 
+    if (!timeShiftInput) {
+      timeShiftInput = document.createElement('input')
+      timeShiftInput.type = 'number'
+      timeShiftInput.placeholder = 'Enter time shift value (integer)'
+      timeShiftInput.className = 'timeShiftInput'
 
-handleTimeShiftInput() {
-  let modificationsButtonsDiv = document.querySelector('.modificationsButtonsDiv');
-  let timeShiftInput = document.querySelector('.timeShiftInput');
+      modificationsButtonsDiv.appendChild(timeShiftInput)
+      timeShiftInput.focus()
 
-  if (!timeShiftInput) {
-    timeShiftInput = document.createElement('input');
-    timeShiftInput.type = 'number';
-    timeShiftInput.placeholder = 'Enter time shift value (integer)';
-    timeShiftInput.className = 'timeShiftInput';
+      timeShiftInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const shiftValue = parseFloat(timeShiftInput.value)
 
-    modificationsButtonsDiv.appendChild(timeShiftInput);
-    timeShiftInput.focus();
-
-    timeShiftInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        const shiftValue = parseFloat(timeShiftInput.value);
-
-        // Sprawdzanie, czy shiftValue jest liczbą całkowitą
-        if (Number.isInteger(shiftValue)) {
-          // Jeśli wartość jest liczbą całkowitą, kontynuuj
-          this.controller.timeShiftViewHandler(shiftValue);
-          timeShiftInput.remove();
-        } else {
-          // Jeśli wartość nie jest liczbą całkowitą, pokaż alert
-          alert('Please enter a valid integer value for time shift.');
-        }
-      }
-    });
-  }
-}
-  //________________________________________________________________________________
-    handleAmplitudeScaleInput() {
-      let modificationsButtonsDiv = document.querySelector(
-        '.modificationsButtonsDiv',
-      )
-  
-      let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
-  
-      if (!amplitudeScaleInput) {
-        amplitudeScaleInput = document.createElement('input')
-        amplitudeScaleInput.type = 'number'
-        amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
-        amplitudeScaleInput.className = 'amplitudeScaleInput'
-  
-        modificationsButtonsDiv.appendChild(amplitudeScaleInput)
-        amplitudeScaleInput.focus()
-  
-        amplitudeScaleInput.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') {
-            const scaleValue = parseFloat(amplitudeScaleInput.value)
-            if (!isNaN(scaleValue)) {
-              //this.controller.handleAmplitudeScaling(scaleValue)
-              this.controller.amplitudeScaleViewHandler(scaleValue);
-              amplitudeScaleInput.remove()
-            }
+          if (Number.isInteger(shiftValue)) {
+            this.controller.timeShiftViewHandler(shiftValue)
+            timeShiftInput.remove()
+          } else {
+            alert('Please enter a valid integer value for time shift.')
           }
-        })
-      }
+        }
+      })
     }
-    //________________________________________________________________________________
+  }
+  //________________________________________________________________________________
+  handleAmplitudeScaleInput() {
+    let modificationsButtonsDiv = document.querySelector(
+      '.modificationsButtonsDiv',
+    )
+
+    let amplitudeScaleInput = document.querySelector('.amplitudeScaleInput')
+
+    if (!amplitudeScaleInput) {
+      amplitudeScaleInput = document.createElement('input')
+      amplitudeScaleInput.type = 'number'
+      amplitudeScaleInput.placeholder = 'Enter amplitude scale value'
+      amplitudeScaleInput.className = 'amplitudeScaleInput'
+
+      modificationsButtonsDiv.appendChild(amplitudeScaleInput)
+      amplitudeScaleInput.focus()
+
+      amplitudeScaleInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const scaleValue = parseFloat(amplitudeScaleInput.value)
+          if (!isNaN(scaleValue)) {
+            this.controller.amplitudeScaleViewHandler(scaleValue)
+            amplitudeScaleInput.remove()
+          }
+        }
+      })
+    }
+  }
+  //________________________________________________________________________________
 
   killReverseTransformationButton() {
     let reverseTransformButtonDiv = document.querySelector(
@@ -583,7 +565,6 @@ handleTimeShiftInput() {
 
   //________________________________________________________________________________
 
-  //________________________________________________________________________________
   showReverseTransformationButton() {
     let parentDiv = document.querySelector('.boxofboxes--js')
 
@@ -608,7 +589,6 @@ handleTimeShiftInput() {
 
     reverseTransform.addEventListener('click', () => {
       this.controller.handleReverseTransform()
-      //this.controller.handleReverseDFT()
     })
   }
 
@@ -834,22 +814,30 @@ handleTimeShiftInput() {
     })
 
     // Mobile event listeners
-    filtersHeader.addEventListener('touchstart', (event) => {
-      isDragging = true
-      const touch = event.touches[0]
-      offsetX = touch.clientX - filtersDiv.getBoundingClientRect().left
-      offsetY = touch.clientY - filtersDiv.getBoundingClientRect().top
-      event.preventDefault()
-    }, { passive: false })
-
-    document.addEventListener('touchmove', (event) => {
-      if (isDragging) {
+    filtersHeader.addEventListener(
+      'touchstart',
+      (event) => {
+        isDragging = true
         const touch = event.touches[0]
-        filtersDiv.style.left = `${touch.clientX - offsetX}px`
-        filtersDiv.style.top = `${touch.clientY - offsetY}px`
+        offsetX = touch.clientX - filtersDiv.getBoundingClientRect().left
+        offsetY = touch.clientY - filtersDiv.getBoundingClientRect().top
         event.preventDefault()
-      }
-    }, { passive: false })
+      },
+      { passive: false },
+    )
+
+    document.addEventListener(
+      'touchmove',
+      (event) => {
+        if (isDragging) {
+          const touch = event.touches[0]
+          filtersDiv.style.left = `${touch.clientX - offsetX}px`
+          filtersDiv.style.top = `${touch.clientY - offsetY}px`
+          event.preventDefault()
+        }
+      },
+      { passive: false },
+    )
 
     document.addEventListener('touchend', () => {
       isDragging = false
@@ -864,18 +852,22 @@ handleTimeShiftInput() {
     document.addEventListener('keydown', handleKeyDown)
     window.addEventListener('popstate', closeFloatingDiv)
 
-    document.querySelector('.closeFiltersDiv').addEventListener('click', closeFloatingDiv)
+    document
+      .querySelector('.closeFiltersDiv')
+      .addEventListener('click', closeFloatingDiv)
 
     // Set up filter button event listeners
     const filterButtons = filtersDiv.querySelectorAll('.filterButton')
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => this.showFilterInputs(button.className.split(' ')[1]))
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () =>
+        this.showFilterInputs(button.className.split(' ')[1]),
+      )
     })
 
     history.pushState({ filtersDiv: true }, '')
   }
 
-showFilterInputs(filterType) {
+  showFilterInputs(filterType) {
     const filterInputsDiv = document.querySelector('.filterInputs')
     filterInputsDiv.innerHTML = '' // Clear previous inputs
 
@@ -912,10 +904,12 @@ showFilterInputs(filterType) {
     filterInputsDiv.innerHTML = inputHTML
 
     const enterButton = filterInputsDiv.querySelector('.filterEnterButton')
-    enterButton.addEventListener('click', () => this.handleFilterInput(filterType))
+    enterButton.addEventListener('click', () =>
+      this.handleFilterInput(filterType),
+    )
 
     const inputs = filterInputsDiv.querySelectorAll('.filterInput')
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
           this.handleFilterInput(filterType)
@@ -923,9 +917,9 @@ showFilterInputs(filterType) {
       })
     })
   }
-handleFilterInput(filterType) {
+  handleFilterInput(filterType) {
     const inputs = document.querySelectorAll('.filterInput')
-    const values = Array.from(inputs).map(input => parseFloat(input.value))
+    const values = Array.from(inputs).map((input) => parseFloat(input.value))
 
     if (values.some(isNaN)) {
       alert('Please enter valid numbers for all fields.')
@@ -948,9 +942,8 @@ handleFilterInput(filterType) {
     }
 
     // Clear inputs after handling
-    inputs.forEach(input => input.value = '')
+    inputs.forEach((input) => (input.value = ''))
   }
-
 
   //________________________________________________________________________________
   addElementToListView(element) {

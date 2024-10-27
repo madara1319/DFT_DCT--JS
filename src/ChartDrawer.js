@@ -47,7 +47,6 @@ class ChartDrawer {
           datasets: [
             {
               barThickness: 2,
-              // barPercentage:0.1,
               label: 'Signal',
               data,
               fill: false,
@@ -145,7 +144,6 @@ class ChartDrawer {
       document.getElementById(chartId).getContext('2d'),
       {
         type: 'bar',
-        //barThickness: 2,
         barPercentage: 50,
         data: {
           labels,
