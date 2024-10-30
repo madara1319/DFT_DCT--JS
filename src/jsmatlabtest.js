@@ -24,9 +24,7 @@ function compareResults(jsResults, matlabResults, tolerance = 1e-4) {
     for (let i = 0; i < differences.totalComparisons; i++) {
         let jsVal, matlabVal;
         
-        // Handle different data formats
         if (typeof jsResults[i] === 'object' && jsResults[i] !== null) {
-            // DFT format
             jsVal = Math.sqrt(
                 Math.pow(jsResults[i].real, 2) + 
                 Math.pow(jsResults[i].imag, 2)
@@ -36,7 +34,6 @@ function compareResults(jsResults, matlabResults, tolerance = 1e-4) {
                 Math.pow(matlabResults[i][1], 2)
             );
         } else {
-            // DCT format
             jsVal = Math.abs(jsResults[i]);
             matlabVal = Math.abs(Array.isArray(matlabResults[i]) ? 
                 matlabResults[i][0] : matlabResults[i]);
@@ -73,11 +70,9 @@ async function runSignalTests() {
     const length = 512;
     const amplitude = 1;
 
-    // Generate base sine wave
     const baseSignal = SignalGenerator.generateSineWave(frequency, amplitude, sampleRate, length);
     const baseValues = Array.from(baseSignal.values());
 
-    // Create three different signals according to MATLAB implementation
     const signals = {
         sine_1: baseValues,
         sine_2: baseValues.map((value, index) => {
@@ -93,7 +88,6 @@ async function runSignalTests() {
         })
     };
 
-    // Perform transformations for each signal
     const results = {};
     for (const [signalType, signal] of Object.entries(signals)) {
         const dft = new DFT(signal);
@@ -105,7 +99,6 @@ async function runSignalTests() {
             original: signal
         };
 
-        // Save original signal to CSV
         fs.writeFileSync(
             `signal_${signalType}.csv`,
             signal.join('\n'),
@@ -117,10 +110,8 @@ async function runSignalTests() {
 }
 
 async function main() {
-    // Run tests for all signals
     const testResults = await runSignalTests();
     
-    // Compare with MATLAB results
     for (let i = 1; i <= 3; i++) {
         const signalKey = `sine_${i}`;
         
@@ -140,7 +131,6 @@ async function main() {
             );
         }
 
-        // Save detailed results
         const detailedResults = {
             signal: signalKey,
             originalSignal: testResults[signalKey].original.slice(0, 10),
