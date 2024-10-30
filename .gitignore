@@ -1,2 +1,6 @@
 node_modules
 tests
+*.csv
+detailed_results_sine_1.json
+detailed_results_sine_2.json
+detailed_results_sine_3.json
