@@ -392,36 +392,8 @@ class Controller {
     })
 
     this.model.saveModifiedDFT(shiftedDFT)
+    this.updateDFTCharts(originalDFT,shiftedDFT);
 
-    const amplitudeOriginal = originalDFT.map((X_k) =>
-      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
-    )
-    const amplitudeShifted = shiftedDFT.map((X_k) =>
-      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
-    )
-    const phaseOriginal = originalDFT.map((X_k) =>
-      Math.atan2(X_k.imag, X_k.real),
-    )
-    const phaseShifted = shiftedDFT.map((X_k) => Math.atan2(X_k.imag, X_k.real))
-
-    const amplitudeOriginalPoints = amplitudeOriginal.map(
-      this.convertToPointFormat(amplitudeOriginal),
-    )
-    const phaseOriginalPoints = phaseOriginal.map(
-      this.convertToPointFormat(phaseOriginal),
-    )
-    const amplitudeShiftedPoints = amplitudeShifted.map(
-      this.convertToPointFormat(amplitudeShifted),
-    )
-    const phaseShiftedPoints = phaseShifted.map(
-      this.convertToPointFormat(phaseShifted),
-    )
-
-    this.view.drawShiftedDFTChart(
-      kArray,
-      { amplitude: amplitudeOriginalPoints, phase: phaseOriginalPoints },
-      { amplitude: amplitudeShiftedPoints, phase: phaseShiftedPoints },
-    )
   }
 
   //_________________________________
@@ -851,12 +823,15 @@ class Controller {
   //________________________________________________________
 
   updateDFTCharts(originalDFT, filteredDFT) {
-    const amplitudeOriginal = originalDFT.map((X_k) =>
-      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
-    )
-    const amplitudeFiltered = filteredDFT.map((X_k) =>
-      Math.sqrt(X_k.real ** 2 + X_k.imag ** 2),
-    )
+    const N=originalDFT.length;
+
+  const amplitudeOriginal = originalDFT.map((X_k) => 
+    parseFloat(((Math.sqrt(X_k.real ** 2 + X_k.imag ** 2) * 2) / N).toFixed(4))
+  );
+  const amplitudeFiltered = filteredDFT.map((X_k) => 
+    parseFloat(((Math.sqrt(X_k.real ** 2 + X_k.imag ** 2) * 2) / N).toFixed(4))
+  );
+
     const phaseOriginal = originalDFT.map((X_k) =>
       Math.atan2(X_k.imag, X_k.real),
     )
@@ -884,6 +859,7 @@ class Controller {
       { amplitude: amplitudeFilteredPoints, phase: phaseFilteredPoints },
     )
   }
+
 
   //________________________________________________________
   updateDCTCharts(originalDCT, filteredDCT) {
