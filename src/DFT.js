@@ -51,7 +51,7 @@ class DFT extends Transformation {
   getPhase(dftResults) {
     const amplitudes = this.getAmplitude(dftResults)
     const maxAmp = Math.max(...amplitudes)
-    const threshold = maxAmp / 2
+    const threshold = maxAmp / 10000;
     return dftResults.map((r, index) => {
       if (amplitudes[index] > threshold) {
         return parseFloat(
